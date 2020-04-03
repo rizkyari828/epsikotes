@@ -65,50 +65,52 @@
                                 <!-- START BOX -->
                                 <div class="row widget-row">
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                        <div class="widget-body alert alert-success">
-                                            <div class="details">
-                                                <div class="number">
-                                                    <span data-counter="counterup" data-value="1349" style="font-size: 25px"><span class="value_box_total_iuran"></span> {{$COMPLETE}}</span>
+                                        <a href="#applicantList?status=COMPLETE">
+                                            <div class="widget-body alert alert-success">
+                                                <div class="details">
+                                                    <div class="number">
+                                                        <span data-counter="counterup" data-value="1349" style="font-size: 25px"><span class="value_box_total_iuran"></span> {{$COMPLETE}}</span>
+                                                    </div>
+                                                    <div class="desc">Total Complete</div>
                                                 </div>
-                                                <div class="desc">Total Complete</div>
                                             </div>
-                                        </div>
+                                        </a>
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                        <div class="widget-body alert alert-warning">
-                                            <div class="details">
-                                                <div class="number">
-                                                    <span data-counter="counterup" data-value="1349" style="font-size: 25px"><span class="value_box_total_iuran"></span> {{$INCOMPLETE}}</span>
+                                        <a href="#applicantList?status=INCOMPLETE">
+                                            <div class="widget-body alert alert-warning">
+                                                <div class="details">
+                                                    <div class="number">
+                                                        <span data-counter="counterup" data-value="1349" style="font-size: 25px"><span class="value_box_total_iuran"></span> {{$INCOMPLETE}}</span>
+                                                    </div>
+                                                    <div class="desc">Total Incomplete</div>
                                                 </div>
-                                                <div class="desc">Total Incomplete</div>
                                             </div>
-                                        </div>
-
+                                        </a>
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                        <div class="widget-body alert alert-danger">
-
-                                            <div class="details">
-                                                <div class="number">
-                                                    <span data-counter="counterup" data-value="1349" style="font-size: 25px"><span class="value_box_total_iuran"></span> {{$NOT_ATTEMPT}}</span>
+                                        <a href="#applicantList?status=NOT_ATTEMPT">
+                                            <div class="widget-body alert alert-danger">
+                                                <div class="details">
+                                                    <div class="number">
+                                                        <span data-counter="counterup" data-value="1349" style="font-size: 25px"><span class="value_box_total_iuran"></span> {{$NOT_ATTEMPT}}</span>
+                                                    </div>
+                                                    <div class="desc">Total Not Attempt</div>
                                                 </div>
-                                                <div class="desc">Total Not Attempt</div>
                                             </div>
-                                        </div>
-
+                                        </a>
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                        <div class="widget-body alert alert-info">
-
-                                            <div class="details">
-                                                <div class="number">
-                                                    <span data-counter="counterup" data-value="1349" style="font-size: 25px"><span class="value_box_total_iuran"></span> {{$CANCEL}}</span>
+                                        <a href="#applicantList?status=CANCEL">
+                                            <div class="widget-body alert alert-info">
+                                                <div class="details">
+                                                    <div class="number">
+                                                        <span data-counter="counterup" data-value="1349" style="font-size: 25px"><span class="value_box_total_iuran"></span> {{$CANCEL}}</span>
+                                                    </div>
+                                                    <div class="desc">Total Cancel</div>
                                                 </div>
-                                                <div class="desc">Total Cancel</div>
                                             </div>
-
-                                        </div>
-
+                                        </a>
                                     </div>
                                 </div>
                                 <!-- END BOX -->

@@ -15,7 +15,7 @@
 Route::get('/', function () {
     return view('workspace');
 });
-*/	
+*/
 Route::get('/testAPI', 'Dashboard\DasboardPage@index');
 
 Route::get('/testExcel', 'TestExcel@index');
@@ -133,10 +133,12 @@ Route::get('lookup/sub-category','SubCategoryController@lookupfindByName');
 Route::get('viewsubcategory/{id}','SubCategoryController@viewSubCategory');
 Route::get('addsubcategory','SubCategoryController@addSubCategory');
 //Route::post('getSubCategories', 'SubCategoryController@subCategories');
-Route::post('addSubCate', 'SubCategoryController@saveAddSubCategory');	
+Route::post('addSubCate', 'SubCategoryController@saveAddSubCategory');
 Route::get('editsubcategory/{id}','SubCategoryController@editSubCategory');
 /*end route SubCategory Setup*/
 
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/applicantList', 'ApplicantListController@index');

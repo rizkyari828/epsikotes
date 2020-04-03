@@ -154,7 +154,7 @@ class Schedules extends Model
         return $isFuture;
     }
 
-    public function countScheduleByStatusPsikotest($paramFilter)
+    public function scheduleByStatusPsikotes($paramFilter)
     {
         $applicant = DB::table('psi.mst_applicant')
             ->join('psi.psy_schedules', 'psy_schedules.candidate_id', '=', 'mst_applicant.candidate_id')
@@ -173,14 +173,24 @@ class Schedules extends Model
                     $applicant->where('mst_applicant.CABANG_ID', '=', $paramFilter['cabangId']);
                 }
             }
-
         }
-        $data = $applicant
+
+        return $applicant;
+    }
+
+    public function countScheduleByStatusPsikotest($paramFilter)
+    {
+        $applicant = $this->scheduleByStatusPsikotes($paramFilter);
+        return $applicant
             ->select(array('psy_schedule_histories.test_status', DB::raw('count(psy_schedule_histories.test_status) as total_test_status')))
             ->groupBy('psy_schedule_histories.test_status')
             ->get();
+    }
 
-        return $data;
+    public function getScheduleByStatusPsikotes($paramFilter, $status)
+    {
+        $applicant = $this->scheduleByStatusPsikotes($paramFilter);
+        return $applicant->where('psy_schedule_histories.test_status', '=', $status);
     }
 
     public function countResultByJob($paramFilter)
