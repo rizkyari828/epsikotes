@@ -54,7 +54,7 @@
                     <!-- widget edit box -->
                     <div class="jarviswidget-editbox">
 
-                        
+
                     </div>
                     <!-- end widget edit box -->
 
@@ -75,39 +75,39 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                       <div class="widget-body alert alert-warning">
-                                        <div class="details">
+                                        <div class="widget-body alert alert-warning">
+                                            <div class="details">
                                                 <div class="number">
                                                     <span data-counter="counterup" data-value="1349" style="font-size: 25px"><span class="value_box_total_iuran"></span> {{$INCOMPLETE}}</span>
                                                 </div>
                                                 <div class="desc">Total Incomplete</div>
                                             </div>
-                                    </div>
+                                        </div>
 
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                       <div class="widget-body alert alert-danger">
+                                        <div class="widget-body alert alert-danger">
 
-                                        <div class="details">
+                                            <div class="details">
                                                 <div class="number">
                                                     <span data-counter="counterup" data-value="1349" style="font-size: 25px"><span class="value_box_total_iuran"></span> {{$NOT_ATTEMPT}}</span>
                                                 </div>
                                                 <div class="desc">Total Not Attempt</div>
                                             </div>
-                                    </div>
+                                        </div>
 
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                       <div class="widget-body alert alert-info">
+                                        <div class="widget-body alert alert-info">
 
-                                          <div class="details">
+                                            <div class="details">
                                                 <div class="number">
                                                     <span data-counter="counterup" data-value="1349" style="font-size: 25px"><span class="value_box_total_iuran"></span> {{$CANCEL}}</span>
                                                 </div>
                                                 <div class="desc">Total Cancel</div>
                                             </div>
 
-                                    </div>
+                                        </div>
 
                                     </div>
                                 </div>
@@ -121,9 +121,9 @@
                                     </div>
                                     <div class="col-sm-12">
                                         <form class="form-inline" role="form">
-                                
+
                                             <fieldset>
-                                                 <div class="form-group">
+                                                <div class="form-group">
                                                     <label><span>Plan Date</span></label>
                                                 </div>
                                                 <div class="form-group">
@@ -138,56 +138,56 @@
                                                     Serach
                                                 </button>
                                             </fieldset>
-                                            
+
                                         </form>
                                     </div>
                                     <div class="col-sm-4">
                                         <p>
-                                        Above Requirment
+                                            Above Requirment
                                         </p>
                                         <div class="well no-padding">
                                             <table class="table table-striped table-bordered table-hover" id="table-result-above">
                                                 <thead>
-                                                    <tr>
-                                                        <th width="50%">Job Name</th>
-                                                        <th width="50%">Total</th>
-                                                    </tr>
+                                                <tr>
+                                                    <th width="50%">Job Name</th>
+                                                    <th width="50%">Total</th>
+                                                </tr>
                                                 </thead>
                                                 <tbody>
-                                                    
+
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <p>
-                                        Meet Requirment
+                                            Meet Requirment
                                         </p>
                                         <div class="well no-padding">
                                             <table class="table table-striped table-bordered table-hover" id="table-result-meet">
                                                 <thead>
-                                                    <tr>
-                                                        <th width="50%">Job Name</th>
-                                                        <th width="50%">Total</th>
-                                                    </tr>
+                                                <tr>
+                                                    <th width="50%">Job Name</th>
+                                                    <th width="50%">Total</th>
+                                                </tr>
                                                 </thead>
                                                 <tbody>
-                                                    
+
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <p>
-                                        Below Requirment
+                                            Below Requirment
                                         </p>
                                         <div class="well no-padding">
                                             <table class="table table-striped table-bordered table-hover" id="table-result-below">
                                                 <thead>
-                                                    <tr>
-                                                        <th width="50%">Job Name</th>
-                                                        <th width="50%">Total</th>
-                                                    </tr>
+                                                <tr>
+                                                    <th width="50%">Job Name</th>
+                                                    <th width="50%">Total</th>
+                                                </tr>
                                                 </thead>
                                                 <tbody>
 
@@ -206,11 +206,11 @@
                                 </div>
 
                                 <div class="row widget-row">
-                                     <div class="col-sm-12">
+                                    <div class="col-sm-12">
                                         <form class="form-inline" role="form">
-                                
+
                                             <fieldset>
-                                                 <div class="form-group">
+                                                <div class="form-group">
                                                     <label><span>Plan Date</span></label>
                                                 </div>
                                                 <div class="form-group">
@@ -225,7 +225,7 @@
                                                     Serach
                                                 </button>
                                             </fieldset>
-                                            
+
                                         </form>
                                     </div>
                                 </div>
@@ -235,14 +235,14 @@
                                         <p>
                                             Above Requirment
                                         </p>
-                                    <div class="well no-padding">
-                                        <table class="table table-striped table-bordered table-hover table-result-network-above" id="table-result-network-above">
-                                            <thead>
+                                        <div class="well no-padding">
+                                            <table class="table table-striped table-bordered table-hover table-result-network-above" id="table-result-network-above">
+                                                <thead>
                                                 <tr>
 
                                                 </tr>
-                                            </thead>
-                                        </table>
+                                                </thead>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -252,13 +252,13 @@
                                         <p>
                                             Meet Requirment
                                         </p>
-                                    <div class="well no-padding">
-                                        <table class="table table-striped table-bordered table-hover table-result-network-meet" id="table-result-network-meet">
-                                            <thead>
+                                        <div class="well no-padding">
+                                            <table class="table table-striped table-bordered table-hover table-result-network-meet" id="table-result-network-meet">
+                                                <thead>
                                                 <tr>
                                                 </tr>
-                                            </thead>
-                                        </table>
+                                                </thead>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -268,13 +268,13 @@
                                         <p>
                                             Below Requirment
                                         </p>
-                                    <div class="well no-padding">
-                                        <table class="table table-striped table-bordered table-hover table-result-network-below" id="table-result-network-below">
-                                            <thead>
+                                        <div class="well no-padding">
+                                            <table class="table table-striped table-bordered table-hover table-result-network-below" id="table-result-network-below">
+                                                <thead>
                                                 <tr>
                                                 </tr>
-                                            </thead>
-                                        </table>
+                                                </thead>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -304,186 +304,186 @@
 
     <!-- end row -->
 
-   
+
 
 </section>
 <!-- end widget grid -->
 
 <script>
 
-        $('input[name="network"]').on("blur",function(){
-            if($(this).val() == ''){
-                $('input[name="network_id"]').val('');
-                $('input[name="cabang_id"]').val('');
-            }
-        });
+    $('input[name="network"]').on("blur",function(){
+        if($(this).val() == ''){
+            $('input[name="network_id"]').val('');
+            $('input[name="cabang_id"]').val('');
+        }
+    });
 
-        $('#plan_start_date').datepicker({
-            dateFormat : 'dd-M-yy',
-            prevText : '<i class="fa fa-chevron-left"></i>',
-            nextText : '<i class="fa fa-chevron-right"></i>',
-            onSelect : function(selectedDate) {
-                    var day = new Date(selectedDate);
-                    var nextDay = new Date(day);
-                    nextDay.setDate(day.getDate()+1);
-                    $('.plan_end_date').datepicker('option', 'minDate', nextDay);
+    $('#plan_start_date').datepicker({
+        dateFormat : 'dd-M-yy',
+        prevText : '<i class="fa fa-chevron-left"></i>',
+        nextText : '<i class="fa fa-chevron-right"></i>',
+        onSelect : function(selectedDate) {
+            var day = new Date(selectedDate);
+            var nextDay = new Date(day);
+            nextDay.setDate(day.getDate()+1);
+            $('.plan_end_date').datepicker('option', 'minDate', nextDay);
+        }
+    });
+    $('#plan_end_date').datepicker({
+        dateFormat : 'dd-M-yy',
+        prevText : '<i class="fa fa-chevron-left"></i>',
+        nextText : '<i class="fa fa-chevron-right"></i>'
+    });
+
+
+    $('#date_from').datepicker({
+        dateFormat : 'dd-M-yy',
+        prevText : '<i class="fa fa-chevron-left"></i>',
+        nextText : '<i class="fa fa-chevron-right"></i>',
+        onSelect : function(selectedDate) {
+            var day = new Date(selectedDate);
+            var nextDay = new Date(day);
+            nextDay.setDate(day.getDate()+1);
+            $('.date_to').datepicker('option', 'minDate', nextDay);
+        }
+    });
+    $('#date_to').datepicker({
+        dateFormat : 'dd-M-yy',
+        prevText : '<i class="fa fa-chevron-left"></i>',
+        nextText : '<i class="fa fa-chevron-right"></i>'
+    });
+
+    $("#network").autocomplete({
+        source : function(request, response) {
+            $.ajax({
+                type: "POST",
+                url : "getNetworks",
+                dataType : "json",
+                data : {
+                    _token : $('input[name="_token"]').val(),
+                    networkName : request.term
+                },
+                success : function(data) {
+                    response($.map(data.data_rows, function(item) {
+                        return {
+                            label : item.networkName,
+                            value : item.networkName,
+                            valueInput : item.networkId,
+                            valueCabangId: item.cabangId
+                        }
+                    }));
                 }
-        });
-        $('#plan_end_date').datepicker({
-            dateFormat : 'dd-M-yy',
-            prevText : '<i class="fa fa-chevron-left"></i>',
-            nextText : '<i class="fa fa-chevron-right"></i>'
-        });
+            });
+        },
+        minLength : 2,
+        select : function(event, ui) {
+            $('#network_id').val(ui.item.valueInput);
+            $('#cabang_id').val(ui.item.valueCabangId);
+            console.log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
+        }
+    });
 
+    var objByJobAbove = {};
 
-        $('#date_from').datepicker({
-            dateFormat : 'dd-M-yy',
-            prevText : '<i class="fa fa-chevron-left"></i>',
-            nextText : '<i class="fa fa-chevron-right"></i>',
-            onSelect : function(selectedDate) {
-                    var day = new Date(selectedDate);
-                    var nextDay = new Date(day);
-                    nextDay.setDate(day.getDate()+1);
-                    $('.date_to').datepicker('option', 'minDate', nextDay);
-                }
-        });
-        $('#date_to').datepicker({
-            dateFormat : 'dd-M-yy',
-            prevText : '<i class="fa fa-chevron-left"></i>',
-            nextText : '<i class="fa fa-chevron-right"></i>'
-        });
+    objByJobAbove["resultBySystem"] = 'ABOVE_REQUIREMENT';
+    objByJobAbove["cabangId"] =  $('input[name="cabang_id"]').val();
+    objByJobAbove["planDateFrom"] = $('input[name="plan_start_date"]').val();
+    objByJobAbove["planDateTo"] = $('input[name="plan_end_date"]').val();
 
-        $("#network").autocomplete({
-            source : function(request, response) {
-                $.ajax({
-                    type: "POST",
-                    url : "getNetworks",
-                    dataType : "json",
-                    data : {
-                        _token : $('input[name="_token"]').val(),
-                        networkName : request.term
-                    },
-                    success : function(data) {
-                        response($.map(data.data_rows, function(item) {
-                            return {
-                                label : item.networkName,
-                                value : item.networkName,
-                                valueInput : item.networkId,
-                                valueCabangId: item.cabangId
-                            }
-                        }));
-                    }
-                });
-            },
-            minLength : 2,
-            select : function(event, ui) {
-                $('#network_id').val(ui.item.valueInput);
-                $('#cabang_id').val(ui.item.valueCabangId);
-                console.log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
-            }
-        }); 
+    var table_result_above = $('#table-result-above').DataTable({
+        "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f>r>"+
+            "t"+
+            "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+        "ajax": {
+            "type": "POST",
+            "data": function( d ) {
 
-        var objByJobAbove = {};
+                d._token= $('input[name="_token"]').val();
+                d.paramFilters=objByJobAbove;
+            },  //{ _token : $('input[name="_token"]').val(),paramFilters:obj},
+            "dataType": "JSON",
+            "url": "getResultByJob" // ajax source
+        },
+        "language": {
+            "emptyTable": "No data available in table"
+        },
+        "autoWidth" : true,
+        "columns" :[
+            {'data':'jobName'},
+            {'data':'totalResult'}
+        ],
+        "order": [
+            [1, "asc"]
+        ]// set first column as a default sort by asc
+    });
 
-        objByJobAbove["resultBySystem"] = 'ABOVE_REQUIREMENT';
-        objByJobAbove["cabangId"] =  $('input[name="cabang_id"]').val();
-        objByJobAbove["planDateFrom"] = $('input[name="plan_start_date"]').val();
-        objByJobAbove["planDateTo"] = $('input[name="plan_end_date"]').val();
+    var objByJobMeet = {};
 
-        var table_result_above = $('#table-result-above').DataTable({
-                    "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f>r>"+
-                    "t"+
-                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",  
-                    "ajax": {
-                            "type": "POST",
-                            "data": function( d ) {
-                                      
-                                  d._token= $('input[name="_token"]').val();
-                                  d.paramFilters=objByJobAbove;
-                                },  //{ _token : $('input[name="_token"]').val(),paramFilters:obj},
-                            "dataType": "JSON",
-                            "url": "getResultByJob" // ajax source
-                    },
-                    "language": {
-                      "emptyTable": "No data available in table"
-                    },
-                    "autoWidth" : true,
-                    "columns" :[
-                        {'data':'jobName'},
-                        {'data':'totalResult'}
-                    ],
-                    "order": [
-                        [1, "asc"]
-                    ]// set first column as a default sort by asc
-        });
+    objByJobMeet["resultBySystem"] = 'MEET_REQUIREMENT';
+    objByJobMeet["cabangId"] =  $('input[name="cabang_id"]').val();
+    objByJobMeet["planDateFrom"] = $('input[name="plan_start_date"]').val();
+    objByJobMeet["planDateTo"] = $('input[name="plan_end_date"]').val();
 
-        var objByJobMeet = {};
+    var table_result_meet = $('#table-result-meet').DataTable({
+        "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f>r>"+
+            "t"+
+            "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+        "ajax": {
+            "type": "POST",
+            "data": function( d ) {
 
-        objByJobMeet["resultBySystem"] = 'MEET_REQUIREMENT';
-        objByJobMeet["cabangId"] =  $('input[name="cabang_id"]').val();
-        objByJobMeet["planDateFrom"] = $('input[name="plan_start_date"]').val();
-        objByJobMeet["planDateTo"] = $('input[name="plan_end_date"]').val();
+                d._token= $('input[name="_token"]').val();
+                d.paramFilters=objByJobMeet;
+            },  //{ _token : $('input[name="_token"]').val(),paramFilters:obj},
+            "dataType": "JSON",
+            "url": "getResultByJob" // ajax source
+        },
+        "language": {
+            "emptyTable": "No data available in table"
+        },
+        "autoWidth" : true,
+        "columns" :[
+            {'data':'jobName'},
+            {'data':'totalResult'}
+        ],
+        "order": [
+            [1, "asc"]
+        ]// set first column as a default sort by asc
+    });
 
-         var table_result_meet = $('#table-result-meet').DataTable({
-                    "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f>r>"+
-                    "t"+
-                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",  
-                    "ajax": {
-                            "type": "POST",
-                            "data": function( d ) {
-                                      
-                                  d._token= $('input[name="_token"]').val();
-                                  d.paramFilters=objByJobMeet;
-                                },  //{ _token : $('input[name="_token"]').val(),paramFilters:obj},
-                            "dataType": "JSON",
-                            "url": "getResultByJob" // ajax source
-                    },
-                    "language": {
-                      "emptyTable": "No data available in table"
-                    },
-                    "autoWidth" : true,
-                    "columns" :[
-                        {'data':'jobName'},
-                        {'data':'totalResult'}
-                    ],
-                    "order": [
-                        [1, "asc"]
-                    ]// set first column as a default sort by asc
-        });
+    var objByJobBelow = {};
 
-        var objByJobBelow = {};
+    objByJobBelow["resultBySystem"] = 'BELOW_REQUIREMENT';
+    objByJobBelow["cabangId"] =  $('input[name="cabang_id"]').val();
+    objByJobBelow["planDateFrom"] = $('input[name="plan_start_date"]').val();
+    objByJobBelow["planDateTO"] = $('input[name="plan_end_date"]').val();
 
-        objByJobBelow["resultBySystem"] = 'BELOW_REQUIREMENT';
-        objByJobBelow["cabangId"] =  $('input[name="cabang_id"]').val();
-        objByJobBelow["planDateFrom"] = $('input[name="plan_start_date"]').val();
-        objByJobBelow["planDateTO"] = $('input[name="plan_end_date"]').val();
+    var table_result_below = $('#table-result-below').DataTable({
+        "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f>r>"+
+            "t"+
+            "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+        "ajax": {
+            "type": "POST",
+            "data": function( d ) {
 
-         var table_result_below = $('#table-result-below').DataTable({
-                    "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f>r>"+
-                    "t"+
-                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",  
-                    "ajax": {
-                            "type": "POST",
-                            "data": function( d ) {
-                                      
-                                  d._token= $('input[name="_token"]').val();
-                                  d.paramFilters=objByJobBelow;
-                                },  //{ _token : $('input[name="_token"]').val(),paramFilters:obj},
-                            "dataType": "JSON",
-                            "url": "getResultByJob" // ajax source
-                    },
-                    "language": {
-                      "emptyTable": "No data available in table"
-                    },
-                    "autoWidth" : true,
-                    "columns" :[
-                        {'data':'jobName'},
-                        {'data':'totalResult'}
-                    ],
-                    "order": [
-                        [1, "asc"]
-                    ]// set first column as a default sort by asc
-        });
+                d._token= $('input[name="_token"]').val();
+                d.paramFilters=objByJobBelow;
+            },  //{ _token : $('input[name="_token"]').val(),paramFilters:obj},
+            "dataType": "JSON",
+            "url": "getResultByJob" // ajax source
+        },
+        "language": {
+            "emptyTable": "No data available in table"
+        },
+        "autoWidth" : true,
+        "columns" :[
+            {'data':'jobName'},
+            {'data':'totalResult'}
+        ],
+        "order": [
+            [1, "asc"]
+        ]// set first column as a default sort by asc
+    });
 
     $('#btn-search-by-job').on('click', function (e) {
         e.preventDefault();
@@ -495,7 +495,7 @@
         objByJobAbove["planDateTo"] = $('input[name="plan_end_date"]').val();
 
         console.log(table_result_above.ajax.params());
-        
+
         table_result_above.ajax.reload();
 
         objByJobMeet["resultBySystem"] = 'MEET_REQUIREMENT';
@@ -504,7 +504,7 @@
         objByJobMeet["planDateTo"] = $('input[name="plan_end_date"]').val();
 
         console.log(table_result_meet.ajax.params());
-        
+
         table_result_meet.ajax.reload();
 
         objByJobBelow["resultBySystem"] = 'BELOW_REQUIREMENT';
@@ -513,23 +513,23 @@
         objByJobBelow["planDateTo"] = $('input[name="plan_end_date"]').val();
 
         console.log(table_result_below.ajax.params());
-        
+
         table_result_below.ajax.reload();
 
     });
-  
-  var obj = {};
-  obj["resultBySystem"] = 'ABOVE_REQUIREMENT';
-  obj["cabangId"] =  $('input[name="cabang_id"]').val();
-  obj["planDateFrom"] = $('input[name="date_from"]').val();
-  obj["planDateTo"] = $('input[name="date_to"]').val();
 
-  var dataAboveRequirement,
+    var obj = {};
+    obj["resultBySystem"] = 'ABOVE_REQUIREMENT';
+    obj["cabangId"] =  $('input[name="cabang_id"]').val();
+    obj["planDateFrom"] = $('input[name="date_from"]').val();
+    obj["planDateTo"] = $('input[name="date_to"]').val();
+
+    var dataAboveRequirement,
         tableNameAboveRequirement= '#table-result-network-above',
         columnsAboveRequirement,
         strAboveRequirement,jqxhrAboveRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:obj})
-  .done(function(response) {
-     dataAboveRequirement = JSON.parse(response);
+            .done(function(response) {
+                dataAboveRequirement = JSON.parse(response);
 
                 // Iterate each column and print table headers for Datatables
                 $.each(dataAboveRequirement.columns, function (k, colObj) {
@@ -542,10 +542,10 @@
                 dataAboveRequirement.columns[0].render = function (data, type, row) {
                     return '<h4>' + data + '</h4>';
                 }
-                        // Debug? console.log(data.columns[0]);
+                // Debug? console.log(data.columns[0]);
 
                 $(tableNameAboveRequirement).dataTable({
-                     "scrollX": true,
+                    "scrollX": true,
                     "data": dataAboveRequirement.data,
                     "columns": dataAboveRequirement.columns,
                     "fnInitComplete": function () {
@@ -553,38 +553,38 @@
                         console.log('Datatable rendering complete');
                     }
                 });
-  }).fail(function(jqXHR, exception) {
-     var msg = '';
-                            if (jqXHR.status === 0) {
-                                msg = 'Not connect.\n Verify Network.';
-                            } else if (jqXHR.status == 404) {
-                                msg = 'Requested page not found. [404]';
-                            } else if (jqXHR.status == 500) {
-                                msg = 'Internal Server Error [500].';
-                            } else if (exception === 'parsererror') {
-                                msg = 'Requested JSON parse failed.';
-                            } else if (exception === 'timeout') {
-                                msg = 'Time out error.';
-                            } else if (exception === 'abort') {
-                                msg = 'Ajax request aborted.';
-                            } else {
-                                msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                            }
+            }).fail(function(jqXHR, exception) {
+                var msg = '';
+                if (jqXHR.status === 0) {
+                    msg = 'Not connect.\n Verify Network.';
+                } else if (jqXHR.status == 404) {
+                    msg = 'Requested page not found. [404]';
+                } else if (jqXHR.status == 500) {
+                    msg = 'Internal Server Error [500].';
+                } else if (exception === 'parsererror') {
+                    msg = 'Requested JSON parse failed.';
+                } else if (exception === 'timeout') {
+                    msg = 'Time out error.';
+                } else if (exception === 'abort') {
+                    msg = 'Ajax request aborted.';
+                } else {
+                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                }
                 console.log(msg);
-  });
+            });
 
-  var objMeeet = {};
-  objMeeet["resultBySystem"] = 'MEET_REQUIREMENT';
-  objMeeet["cabangId"] =  $('input[name="cabang_id"]').val();
-  objMeeet["planDateFrom"] = $('input[name="date_from"]').val();
-  objMeeet["planDateTo"] = $('input[name="date_to"]').val();
+    var objMeeet = {};
+    objMeeet["resultBySystem"] = 'MEET_REQUIREMENT';
+    objMeeet["cabangId"] =  $('input[name="cabang_id"]').val();
+    objMeeet["planDateFrom"] = $('input[name="date_from"]').val();
+    objMeeet["planDateTo"] = $('input[name="date_to"]').val();
 
-  var dataMeetRequirement,
+    var dataMeetRequirement,
         tableNameMeetRequirement= '#table-result-network-meet',
         columnsMeetRequirement,
         strMeetRequirement,jqxhrMeetRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:objMeeet})
-  .done(function(response) {
-     dataMeetRequirement = JSON.parse(response);
+            .done(function(response) {
+                dataMeetRequirement = JSON.parse(response);
 
                 // Iterate each column and print table headers for Datatables
                 $.each(dataMeetRequirement.columns, function (k, colObj) {
@@ -597,10 +597,10 @@
                 dataMeetRequirement.columns[0].render = function (data, type, row) {
                     return '<h4>' + data + '</h4>';
                 }
-                        // Debug? console.log(data.columns[0]);
+                // Debug? console.log(data.columns[0]);
 
                 $(tableNameMeetRequirement).dataTable({
-                     "scrollX": true,
+                    "scrollX": true,
                     "data": dataMeetRequirement.data,
                     "columns": dataMeetRequirement.columns,
                     "fnInitComplete": function () {
@@ -608,39 +608,39 @@
                         console.log('Datatable rendering complete');
                     }
                 });
-  })
-  .fail(function(jqXHR, exception) {
-     var msg = '';
-                            if (jqXHR.status === 0) {
-                                msg = 'Not connect.\n Verify Network.';
-                            } else if (jqXHR.status == 404) {
-                                msg = 'Requested page not found. [404]';
-                            } else if (jqXHR.status == 500) {
-                                msg = 'Internal Server Error [500].';
-                            } else if (exception === 'parsererror') {
-                                msg = 'Requested JSON parse failed.';
-                            } else if (exception === 'timeout') {
-                                msg = 'Time out error.';
-                            } else if (exception === 'abort') {
-                                msg = 'Ajax request aborted.';
-                            } else {
-                                msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                            }
+            })
+            .fail(function(jqXHR, exception) {
+                var msg = '';
+                if (jqXHR.status === 0) {
+                    msg = 'Not connect.\n Verify Network.';
+                } else if (jqXHR.status == 404) {
+                    msg = 'Requested page not found. [404]';
+                } else if (jqXHR.status == 500) {
+                    msg = 'Internal Server Error [500].';
+                } else if (exception === 'parsererror') {
+                    msg = 'Requested JSON parse failed.';
+                } else if (exception === 'timeout') {
+                    msg = 'Time out error.';
+                } else if (exception === 'abort') {
+                    msg = 'Ajax request aborted.';
+                } else {
+                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                }
                 console.log(msg);
-  });
+            });
 
-  var objBelowRequirement = {};
-  objBelowRequirement["resultBySystem"] = 'BELOW_REQUIREMENT';
-  objBelowRequirement["cabangId"] =  $('input[name="cabang_id"]').val();
-  objBelowRequirement["planDateFrom"] = $('input[name="date_from"]').val();
-  objBelowRequirement["planDateTo"] = $('input[name="date_to"]').val();
+    var objBelowRequirement = {};
+    objBelowRequirement["resultBySystem"] = 'BELOW_REQUIREMENT';
+    objBelowRequirement["cabangId"] =  $('input[name="cabang_id"]').val();
+    objBelowRequirement["planDateFrom"] = $('input[name="date_from"]').val();
+    objBelowRequirement["planDateTo"] = $('input[name="date_to"]').val();
 
-  var dataBelowRequirement,
+    var dataBelowRequirement,
         tableNameBelowRequirement= '.table-result-network-below',
         columnsBelowRequirement,
         strBelowRequirement,jqxhrBelowRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:objBelowRequirement})
-  .done(function(response) {
-     dataBelowRequirement = JSON.parse(response);
+            .done(function(response) {
+                dataBelowRequirement = JSON.parse(response);
 
                 // Iterate each column and print table headers for Datatables
                 $.each(dataBelowRequirement.columns, function (k, colObj) {
@@ -653,10 +653,10 @@
                 dataBelowRequirement.columns[0].render = function (data, type, row) {
                     return '<h4>' + data + '</h4>';
                 }
-                        // Debug? console.log(data.columns[0]);
+                // Debug? console.log(data.columns[0]);
 
                 $(tableNameBelowRequirement).dataTable({
-                     "scrollX": true,
+                    "scrollX": true,
                     "data": dataBelowRequirement.data,
                     "columns": dataBelowRequirement.columns,
                     "fnInitComplete": function () {
@@ -664,31 +664,31 @@
                         console.log('Datatable rendering complete');
                     }
                 });
-  })
-  .fail(function(jqXHR, exception) {
-     var msg = '';
-                            if (jqXHR.status === 0) {
-                                msg = 'Not connect.\n Verify Network.';
-                            } else if (jqXHR.status == 404) {
-                                msg = 'Requested page not found. [404]';
-                            } else if (jqXHR.status == 500) {
-                                msg = 'Internal Server Error [500].';
-                            } else if (exception === 'parsererror') {
-                                msg = 'Requested JSON parse failed.';
-                            } else if (exception === 'timeout') {
-                                msg = 'Time out error.';
-                            } else if (exception === 'abort') {
-                                msg = 'Ajax request aborted.';
-                            } else {
-                                msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                            }
+            })
+            .fail(function(jqXHR, exception) {
+                var msg = '';
+                if (jqXHR.status === 0) {
+                    msg = 'Not connect.\n Verify Network.';
+                } else if (jqXHR.status == 404) {
+                    msg = 'Requested page not found. [404]';
+                } else if (jqXHR.status == 500) {
+                    msg = 'Internal Server Error [500].';
+                } else if (exception === 'parsererror') {
+                    msg = 'Requested JSON parse failed.';
+                } else if (exception === 'timeout') {
+                    msg = 'Time out error.';
+                } else if (exception === 'abort') {
+                    msg = 'Ajax request aborted.';
+                } else {
+                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                }
                 console.log(msg);
-  });
-
- 
+            });
 
 
-$('#btn-search-by-network').on('click', function (e) {
+
+
+    $('#btn-search-by-network').on('click', function (e) {
         e.preventDefault();
 
         var obj = {};
@@ -701,26 +701,26 @@ $('#btn-search-by-network').on('click', function (e) {
             tableNameAboveRequirement= '#table-result-network-above',
             columnsAboveRequirement,
             strAboveRequirement,jqxhrAboveRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:obj})
-        .done(function(response) {
-         dataAboveRequirement = JSON.parse(response);
+                .done(function(response) {
+                    dataAboveRequirement = JSON.parse(response);
 
-                if ($.fn.DataTable.isDataTable(tableNameAboveRequirement)) {
-                    $(tableNameAboveRequirement).DataTable().destroy();
-                    $(tableNameAboveRequirement).empty();
-                }
+                    if ($.fn.DataTable.isDataTable(tableNameAboveRequirement)) {
+                        $(tableNameAboveRequirement).DataTable().destroy();
+                        $(tableNameAboveRequirement).empty();
+                    }
 
 
-                var TableHeader = "<thead><tr>";
+                    var TableHeader = "<thead><tr>";
 
-                $.each(dataAboveRequirement.columns, function (key, value) {
-                    TableHeader += "<th>" + value.name + "</th>"
-                });
+                    $.each(dataAboveRequirement.columns, function (key, value) {
+                        TableHeader += "<th>" + value.name + "</th>"
+                    });
                     TableHeader += "</thead></tr>";
-                    
-                $(tableNameAboveRequirement).append(TableHeader);
+
+                    $(tableNameAboveRequirement).append(TableHeader);
 
                     $(tableNameAboveRequirement).dataTable({
-                         "scrollX": true,
+                        "scrollX": true,
                         "data": dataAboveRequirement.data,
                         "columns": dataAboveRequirement.columns,
                         "fnInitComplete": function () {
@@ -728,25 +728,25 @@ $('#btn-search-by-network').on('click', function (e) {
                             console.log('Datatable rendering complete');
                         }
                     });
-        }).fail(function(jqXHR, exception) {
-         var msg = '';
-                                if (jqXHR.status === 0) {
-                                    msg = 'Not connect.\n Verify Network.';
-                                } else if (jqXHR.status == 404) {
-                                    msg = 'Requested page not found. [404]';
-                                } else if (jqXHR.status == 500) {
-                                    msg = 'Internal Server Error [500].';
-                                } else if (exception === 'parsererror') {
-                                    msg = 'Requested JSON parse failed.';
-                                } else if (exception === 'timeout') {
-                                    msg = 'Time out error.';
-                                } else if (exception === 'abort') {
-                                    msg = 'Ajax request aborted.';
-                                } else {
-                                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                                }
+                }).fail(function(jqXHR, exception) {
+                    var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
                     console.log(msg);
-        });
+                });
 
         var objMeeet = {};
         objMeeet["resultBySystem"] = 'MEET_REQUIREMENT';
@@ -758,26 +758,26 @@ $('#btn-search-by-network').on('click', function (e) {
             tableNameMeetRequirement= '#table-result-network-meet',
             columnsMeetRequirement,
             strMeetRequirement,jqxhrMeetRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:objMeeet})
-        .done(function(response) {
-         dataMeetRequirement = JSON.parse(response);
+                .done(function(response) {
+                    dataMeetRequirement = JSON.parse(response);
 
-                if ($.fn.DataTable.isDataTable(tableNameMeetRequirement)) {
-                    $(tableNameMeetRequirement).DataTable().destroy();
-                    $(tableNameMeetRequirement).empty();
-                }
+                    if ($.fn.DataTable.isDataTable(tableNameMeetRequirement)) {
+                        $(tableNameMeetRequirement).DataTable().destroy();
+                        $(tableNameMeetRequirement).empty();
+                    }
 
 
-                var TableHeader = "<thead><tr>";
+                    var TableHeader = "<thead><tr>";
 
-                $.each(dataMeetRequirement.columns, function (key, value) {
-                    TableHeader += "<th>" + value.name + "</th>"
-                });
+                    $.each(dataMeetRequirement.columns, function (key, value) {
+                        TableHeader += "<th>" + value.name + "</th>"
+                    });
                     TableHeader += "</thead></tr>";
-                    
-                $(tableNameMeetRequirement).append(TableHeader);
+
+                    $(tableNameMeetRequirement).append(TableHeader);
 
                     $(tableNameMeetRequirement).dataTable({
-                         "scrollX": true,
+                        "scrollX": true,
                         "data": dataMeetRequirement.data,
                         "columns": dataMeetRequirement.columns,
                         "fnInitComplete": function () {
@@ -785,26 +785,26 @@ $('#btn-search-by-network').on('click', function (e) {
                             console.log('Datatable rendering complete');
                         }
                     });
-        })
-        .fail(function(jqXHR, exception) {
-         var msg = '';
-                                if (jqXHR.status === 0) {
-                                    msg = 'Not connect.\n Verify Network.';
-                                } else if (jqXHR.status == 404) {
-                                    msg = 'Requested page not found. [404]';
-                                } else if (jqXHR.status == 500) {
-                                    msg = 'Internal Server Error [500].';
-                                } else if (exception === 'parsererror') {
-                                    msg = 'Requested JSON parse failed.';
-                                } else if (exception === 'timeout') {
-                                    msg = 'Time out error.';
-                                } else if (exception === 'abort') {
-                                    msg = 'Ajax request aborted.';
-                                } else {
-                                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                                }
+                })
+                .fail(function(jqXHR, exception) {
+                    var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
                     console.log(msg);
-        });
+                });
 
 
 
@@ -817,65 +817,65 @@ $('#btn-search-by-network').on('click', function (e) {
         objBelowRequirement["planDateTo"] = $('input[name="date_to"]').val();
 
         var dataBelowRequirement,
-        tableNameBelowRequirement= '#table-result-network-below',
-        columnsBelowRequirement,
-        strBelowRequirement,jqxhrBelowRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:objBelowRequirement})
-            .done(function(response) {
+            tableNameBelowRequirement= '#table-result-network-below',
+            columnsBelowRequirement,
+            strBelowRequirement,jqxhrBelowRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:objBelowRequirement})
+                .done(function(response) {
 
-                if ($.fn.DataTable.isDataTable(tableNameBelowRequirement)) {
-                    $(tableNameBelowRequirement).DataTable().destroy();
-                    $(tableNameBelowRequirement).empty();
-                }
-                dataBelowRequirement = JSON.parse(response);
-
-
-                var TableHeader = "<thead><tr>";
-
-                $.each(dataBelowRequirement.columns, function (key, value) {
-                    TableHeader += "<th>" + value.name + "</th>"
-                });
-                    TableHeader += "</thead></tr>";
-                    
-                $(tableNameBelowRequirement).append(TableHeader);
-
-
-                // Add some Render transformations to Columns
-                // Not a good practice to add any of this in API/ Json side
-                dataBelowRequirement.columns[0].render = function (data, type, row) {
-                    return '<h4>' + data + '</h4>';
-                }
-                // Debug? console.log(data.columns[0]);
-                $(tableNameBelowRequirement).dataTable({
-                    "scrollX": true,
-                    "data": dataBelowRequirement.data,
-                    "columns": dataBelowRequirement.columns,
-                    "fnInitComplete": function () {
-                        // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
-                        console.log('Datatable rendering complete');
+                    if ($.fn.DataTable.isDataTable(tableNameBelowRequirement)) {
+                        $(tableNameBelowRequirement).DataTable().destroy();
+                        $(tableNameBelowRequirement).empty();
                     }
+                    dataBelowRequirement = JSON.parse(response);
+
+
+                    var TableHeader = "<thead><tr>";
+
+                    $.each(dataBelowRequirement.columns, function (key, value) {
+                        TableHeader += "<th>" + value.name + "</th>"
+                    });
+                    TableHeader += "</thead></tr>";
+
+                    $(tableNameBelowRequirement).append(TableHeader);
+
+
+                    // Add some Render transformations to Columns
+                    // Not a good practice to add any of this in API/ Json side
+                    dataBelowRequirement.columns[0].render = function (data, type, row) {
+                        return '<h4>' + data + '</h4>';
+                    }
+                    // Debug? console.log(data.columns[0]);
+                    $(tableNameBelowRequirement).dataTable({
+                        "scrollX": true,
+                        "data": dataBelowRequirement.data,
+                        "columns": dataBelowRequirement.columns,
+                        "fnInitComplete": function () {
+                            // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
+                            console.log('Datatable rendering complete');
+                        }
+                    });
+
+                })
+                .fail(function(jqXHR, exception) {
+                    var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                    console.log(msg);
                 });
 
-            })
-            .fail(function(jqXHR, exception) {
-                var msg = '';
-                if (jqXHR.status === 0) {
-                    msg = 'Not connect.\n Verify Network.';
-                } else if (jqXHR.status == 404) {
-                    msg = 'Requested page not found. [404]';
-                } else if (jqXHR.status == 500) {
-                    msg = 'Internal Server Error [500].';
-                } else if (exception === 'parsererror') {
-                    msg = 'Requested JSON parse failed.';
-                } else if (exception === 'timeout') {
-                    msg = 'Time out error.';
-                } else if (exception === 'abort') {
-                    msg = 'Ajax request aborted.';
-                } else {
-                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                }
-                console.log(msg);
-            });
-          
 
     });
 
@@ -884,237 +884,237 @@ $('#btn-search-by-network').on('click', function (e) {
 
     $('#btn-refresh-dashboard').on('click', function (e) {
 
-                    var $btn = $(this);
-                    $btn.button('loading');
+        var $btn = $(this);
+        $btn.button('loading');
 
-                    // wait for animation to finish and execute send script
-                    setTimeout(function () {
-
-
-        objByJobAbove["resultBySystem"] = 'ABOVE_REQUIREMENT';
-        objByJobAbove["cabangId"] =  $('input[name="cabang_id"]').val();
-        objByJobAbove["planDateFrom"] = null;
-        objByJobAbove["planDateTo"] = null;
-
-        console.log(table_result_above.ajax.params());
-        
-        table_result_above.ajax.reload();
+        // wait for animation to finish and execute send script
+        setTimeout(function () {
 
 
+            objByJobAbove["resultBySystem"] = 'ABOVE_REQUIREMENT';
+            objByJobAbove["cabangId"] =  $('input[name="cabang_id"]').val();
+            objByJobAbove["planDateFrom"] = null;
+            objByJobAbove["planDateTo"] = null;
 
-        objByJobMeet["resultBySystem"] = 'MEET_REQUIREMENT';
-        objByJobMeet["cabangId"] =  $('input[name="cabang_id"]').val();
-        objByJobMeet["planDateFrom"] = null;
-        objByJobMeet["planDateTo"] = null;
+            console.log(table_result_above.ajax.params());
 
-        console.log(table_result_meet.ajax.params());
-        
-        table_result_meet.ajax.reload();
-
-        objByJobBelow["resultBySystem"] = 'BELOW_REQUIREMENT';
-        objByJobBelow["cabangId"] =  $('input[name="cabang_id"]').val();
-        objByJobBelow["planDateFrom"] = null;
-        objByJobBelow["planDateTo"] = null;
-
-        console.log(table_result_below.ajax.params());
-        
-        table_result_below.ajax.reload();
-
-                        var obj = {};
-        obj["resultBySystem"] = 'ABOVE_REQUIREMENT';
-        obj["cabangId"] =  $('input[name="cabang_id"]').val();
-        obj["planDateFrom"] = null;
-        obj["planDateTo"] = null;
-
-        var dataAboveRequirement,
-            tableNameAboveRequirement= '#table-result-network-above',
-            columnsAboveRequirement,
-            strAboveRequirement,jqxhrAboveRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:obj})
-        .done(function(response) {
-         dataAboveRequirement = JSON.parse(response);
-
-                if ($.fn.DataTable.isDataTable(tableNameAboveRequirement)) {
-                    $(tableNameAboveRequirement).DataTable().destroy();
-                    $(tableNameAboveRequirement).empty();
-                }
+            table_result_above.ajax.reload();
 
 
-                var TableHeader = "<thead><tr>";
 
-                $.each(dataAboveRequirement.columns, function (key, value) {
-                    TableHeader += "<th>" + value.name + "</th>"
-                });
-                    TableHeader += "</thead></tr>";
-                    
-                $(tableNameAboveRequirement).append(TableHeader);
+            objByJobMeet["resultBySystem"] = 'MEET_REQUIREMENT';
+            objByJobMeet["cabangId"] =  $('input[name="cabang_id"]').val();
+            objByJobMeet["planDateFrom"] = null;
+            objByJobMeet["planDateTo"] = null;
 
-                    $(tableNameAboveRequirement).dataTable({
-                         "scrollX": true,
-                        "data": dataAboveRequirement.data,
-                        "columns": dataAboveRequirement.columns,
-                        "fnInitComplete": function () {
-                            // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
-                            console.log('Datatable rendering complete');
+            console.log(table_result_meet.ajax.params());
+
+            table_result_meet.ajax.reload();
+
+            objByJobBelow["resultBySystem"] = 'BELOW_REQUIREMENT';
+            objByJobBelow["cabangId"] =  $('input[name="cabang_id"]').val();
+            objByJobBelow["planDateFrom"] = null;
+            objByJobBelow["planDateTo"] = null;
+
+            console.log(table_result_below.ajax.params());
+
+            table_result_below.ajax.reload();
+
+            var obj = {};
+            obj["resultBySystem"] = 'ABOVE_REQUIREMENT';
+            obj["cabangId"] =  $('input[name="cabang_id"]').val();
+            obj["planDateFrom"] = null;
+            obj["planDateTo"] = null;
+
+            var dataAboveRequirement,
+                tableNameAboveRequirement= '#table-result-network-above',
+                columnsAboveRequirement,
+                strAboveRequirement,jqxhrAboveRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:obj})
+                    .done(function(response) {
+                        dataAboveRequirement = JSON.parse(response);
+
+                        if ($.fn.DataTable.isDataTable(tableNameAboveRequirement)) {
+                            $(tableNameAboveRequirement).DataTable().destroy();
+                            $(tableNameAboveRequirement).empty();
                         }
-                    });
-        }).fail(function(jqXHR, exception) {
-         var msg = '';
-                                if (jqXHR.status === 0) {
-                                    msg = 'Not connect.\n Verify Network.';
-                                } else if (jqXHR.status == 404) {
-                                    msg = 'Requested page not found. [404]';
-                                } else if (jqXHR.status == 500) {
-                                    msg = 'Internal Server Error [500].';
-                                } else if (exception === 'parsererror') {
-                                    msg = 'Requested JSON parse failed.';
-                                } else if (exception === 'timeout') {
-                                    msg = 'Time out error.';
-                                } else if (exception === 'abort') {
-                                    msg = 'Ajax request aborted.';
-                                } else {
-                                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                                }
-                    console.log(msg);
-        });
-
-        var objMeeet = {};
-        objMeeet["resultBySystem"] = 'MEET_REQUIREMENT';
-        objMeeet["cabangId"] =  $('input[name="cabang_id"]').val();
-        objMeeet["planDateFrom"] = null;
-        objMeeet["planDateTo"] = null;
-
-        var dataMeetRequirement,
-            tableNameMeetRequirement= '#table-result-network-meet',
-            columnsMeetRequirement,
-            strMeetRequirement,jqxhrMeetRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:objMeeet})
-        .done(function(response) {
-         dataMeetRequirement = JSON.parse(response);
-
-                if ($.fn.DataTable.isDataTable(tableNameMeetRequirement)) {
-                    $(tableNameMeetRequirement).DataTable().destroy();
-                    $(tableNameMeetRequirement).empty();
-                }
 
 
-                var TableHeader = "<thead><tr>";
+                        var TableHeader = "<thead><tr>";
 
-                $.each(dataMeetRequirement.columns, function (key, value) {
-                    TableHeader += "<th>" + value.name + "</th>"
-                });
-                    TableHeader += "</thead></tr>";
-                    
-                $(tableNameMeetRequirement).append(TableHeader);
+                        $.each(dataAboveRequirement.columns, function (key, value) {
+                            TableHeader += "<th>" + value.name + "</th>"
+                        });
+                        TableHeader += "</thead></tr>";
 
-                    $(tableNameMeetRequirement).dataTable({
-                         "scrollX": true,
-                        "data": dataMeetRequirement.data,
-                        "columns": dataMeetRequirement.columns,
-                        "fnInitComplete": function () {
-                            // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
-                            console.log('Datatable rendering complete');
+                        $(tableNameAboveRequirement).append(TableHeader);
+
+                        $(tableNameAboveRequirement).dataTable({
+                            "scrollX": true,
+                            "data": dataAboveRequirement.data,
+                            "columns": dataAboveRequirement.columns,
+                            "fnInitComplete": function () {
+                                // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
+                                console.log('Datatable rendering complete');
+                            }
+                        });
+                    }).fail(function(jqXHR, exception) {
+                        var msg = '';
+                        if (jqXHR.status === 0) {
+                            msg = 'Not connect.\n Verify Network.';
+                        } else if (jqXHR.status == 404) {
+                            msg = 'Requested page not found. [404]';
+                        } else if (jqXHR.status == 500) {
+                            msg = 'Internal Server Error [500].';
+                        } else if (exception === 'parsererror') {
+                            msg = 'Requested JSON parse failed.';
+                        } else if (exception === 'timeout') {
+                            msg = 'Time out error.';
+                        } else if (exception === 'abort') {
+                            msg = 'Ajax request aborted.';
+                        } else {
+                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
                         }
+                        console.log(msg);
                     });
-        })
-        .fail(function(jqXHR, exception) {
-         var msg = '';
-                                if (jqXHR.status === 0) {
-                                    msg = 'Not connect.\n Verify Network.';
-                                } else if (jqXHR.status == 404) {
-                                    msg = 'Requested page not found. [404]';
-                                } else if (jqXHR.status == 500) {
-                                    msg = 'Internal Server Error [500].';
-                                } else if (exception === 'parsererror') {
-                                    msg = 'Requested JSON parse failed.';
-                                } else if (exception === 'timeout') {
-                                    msg = 'Time out error.';
-                                } else if (exception === 'abort') {
-                                    msg = 'Ajax request aborted.';
-                                } else {
-                                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                                }
-                    console.log(msg);
-        });
+
+            var objMeeet = {};
+            objMeeet["resultBySystem"] = 'MEET_REQUIREMENT';
+            objMeeet["cabangId"] =  $('input[name="cabang_id"]').val();
+            objMeeet["planDateFrom"] = null;
+            objMeeet["planDateTo"] = null;
+
+            var dataMeetRequirement,
+                tableNameMeetRequirement= '#table-result-network-meet',
+                columnsMeetRequirement,
+                strMeetRequirement,jqxhrMeetRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:objMeeet})
+                    .done(function(response) {
+                        dataMeetRequirement = JSON.parse(response);
+
+                        if ($.fn.DataTable.isDataTable(tableNameMeetRequirement)) {
+                            $(tableNameMeetRequirement).DataTable().destroy();
+                            $(tableNameMeetRequirement).empty();
+                        }
+
+
+                        var TableHeader = "<thead><tr>";
+
+                        $.each(dataMeetRequirement.columns, function (key, value) {
+                            TableHeader += "<th>" + value.name + "</th>"
+                        });
+                        TableHeader += "</thead></tr>";
+
+                        $(tableNameMeetRequirement).append(TableHeader);
+
+                        $(tableNameMeetRequirement).dataTable({
+                            "scrollX": true,
+                            "data": dataMeetRequirement.data,
+                            "columns": dataMeetRequirement.columns,
+                            "fnInitComplete": function () {
+                                // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
+                                console.log('Datatable rendering complete');
+                            }
+                        });
+                    })
+                    .fail(function(jqXHR, exception) {
+                        var msg = '';
+                        if (jqXHR.status === 0) {
+                            msg = 'Not connect.\n Verify Network.';
+                        } else if (jqXHR.status == 404) {
+                            msg = 'Requested page not found. [404]';
+                        } else if (jqXHR.status == 500) {
+                            msg = 'Internal Server Error [500].';
+                        } else if (exception === 'parsererror') {
+                            msg = 'Requested JSON parse failed.';
+                        } else if (exception === 'timeout') {
+                            msg = 'Time out error.';
+                        } else if (exception === 'abort') {
+                            msg = 'Ajax request aborted.';
+                        } else {
+                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                        }
+                        console.log(msg);
+                    });
 
 
 
 
-        //bellow requirment
-        var objBelowRequirement = {};
-        objBelowRequirement["resultBySystem"] = 'BELOW_REQUIREMENT';
-        objBelowRequirement["cabangId"] =  $('input[name="cabang_id"]').val();
-        objBelowRequirement["planDateFrom"] = null;
-        objBelowRequirement["planDateTo"] = null;
+            //bellow requirment
+            var objBelowRequirement = {};
+            objBelowRequirement["resultBySystem"] = 'BELOW_REQUIREMENT';
+            objBelowRequirement["cabangId"] =  $('input[name="cabang_id"]').val();
+            objBelowRequirement["planDateFrom"] = null;
+            objBelowRequirement["planDateTo"] = null;
 
-        var dataBelowRequirement,
-        tableNameBelowRequirement= '#table-result-network-below',
-        columnsBelowRequirement,
-        strBelowRequirement,jqxhrBelowRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:objBelowRequirement})
-            .done(function(response) {
+            var dataBelowRequirement,
+                tableNameBelowRequirement= '#table-result-network-below',
+                columnsBelowRequirement,
+                strBelowRequirement,jqxhrBelowRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:objBelowRequirement})
+                    .done(function(response) {
 
-                if ($.fn.DataTable.isDataTable(tableNameBelowRequirement)) {
-                    $(tableNameBelowRequirement).DataTable().destroy();
-                    $(tableNameBelowRequirement).empty();
-                }
-                dataBelowRequirement = JSON.parse(response);
-
-
-                var TableHeader = "<thead><tr>";
-
-                $.each(dataBelowRequirement.columns, function (key, value) {
-                    TableHeader += "<th>" + value.name + "</th>"
-                });
-                    TableHeader += "</thead></tr>";
-                    
-                $(tableNameBelowRequirement).append(TableHeader);
+                        if ($.fn.DataTable.isDataTable(tableNameBelowRequirement)) {
+                            $(tableNameBelowRequirement).DataTable().destroy();
+                            $(tableNameBelowRequirement).empty();
+                        }
+                        dataBelowRequirement = JSON.parse(response);
 
 
-                // Add some Render transformations to Columns
-                // Not a good practice to add any of this in API/ Json side
-                dataBelowRequirement.columns[0].render = function (data, type, row) {
-                    return '<h4>' + data + '</h4>';
-                }
-                // Debug? console.log(data.columns[0]);
-                $(tableNameBelowRequirement).dataTable({
-                    "scrollX": true,
-                    "data": dataBelowRequirement.data,
-                    "columns": dataBelowRequirement.columns,
-                    "fnInitComplete": function () {
-                        // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
-                        console.log('Datatable rendering complete');
-                    }
-                });
+                        var TableHeader = "<thead><tr>";
 
-            })
-            .fail(function(jqXHR, exception) {
-                var msg = '';
-                if (jqXHR.status === 0) {
-                    msg = 'Not connect.\n Verify Network.';
-                } else if (jqXHR.status == 404) {
-                    msg = 'Requested page not found. [404]';
-                } else if (jqXHR.status == 500) {
-                    msg = 'Internal Server Error [500].';
-                } else if (exception === 'parsererror') {
-                    msg = 'Requested JSON parse failed.';
-                } else if (exception === 'timeout') {
-                    msg = 'Time out error.';
-                } else if (exception === 'abort') {
-                    msg = 'Ajax request aborted.';
-                } else {
-                    msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                }
-                console.log(msg);
-            });
+                        $.each(dataBelowRequirement.columns, function (key, value) {
+                            TableHeader += "<th>" + value.name + "</th>"
+                        });
+                        TableHeader += "</thead></tr>";
 
-                                        $btn.button('reset');
+                        $(tableNameBelowRequirement).append(TableHeader);
 
 
-                    }, 1000); // how long do you want the delay to be? 
+                        // Add some Render transformations to Columns
+                        // Not a good practice to add any of this in API/ Json side
+                        dataBelowRequirement.columns[0].render = function (data, type, row) {
+                            return '<h4>' + data + '</h4>';
+                        }
+                        // Debug? console.log(data.columns[0]);
+                        $(tableNameBelowRequirement).dataTable({
+                            "scrollX": true,
+                            "data": dataBelowRequirement.data,
+                            "columns": dataBelowRequirement.columns,
+                            "fnInitComplete": function () {
+                                // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
+                                console.log('Datatable rendering complete');
+                            }
+                        });
+
+                    })
+                    .fail(function(jqXHR, exception) {
+                        var msg = '';
+                        if (jqXHR.status === 0) {
+                            msg = 'Not connect.\n Verify Network.';
+                        } else if (jqXHR.status == 404) {
+                            msg = 'Requested page not found. [404]';
+                        } else if (jqXHR.status == 500) {
+                            msg = 'Internal Server Error [500].';
+                        } else if (exception === 'parsererror') {
+                            msg = 'Requested JSON parse failed.';
+                        } else if (exception === 'timeout') {
+                            msg = 'Time out error.';
+                        } else if (exception === 'abort') {
+                            msg = 'Ajax request aborted.';
+                        } else {
+                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                        }
+                        console.log(msg);
+                    });
+
+            $btn.button('reset');
+
+
+        }, 1000); // how long do you want the delay to be?
 
 
 
-        });
- 
-         
+    });
+
+
 
 
 </script>
