@@ -24,13 +24,13 @@ class WorkspaceController extends Controller
 
     public function index(Request $request)
     {
-        
+
 
 
         $userName  = $request->session()->get('user.username');
                 $personId  = $request->session()->get('user.personId');
         if(isset($userName)){
-          
+
             $tempAllMenu = $this->getMenu();
             $page_nav = $this->createTree($personId,$tempAllMenu, null);
 
@@ -44,7 +44,7 @@ class WorkspaceController extends Controller
 
             return view('workspace',$param);
         }else{
-          return view('loginPage'); 
+          return view('loginPage');
         }
 
 
