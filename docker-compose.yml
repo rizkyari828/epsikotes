@@ -39,6 +39,6 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: password
         volumes:
-            - ./storage/rawdb:/var/lib/mysql
+            - ~/.mysql/rawdb:/var/lib/mysql
         networks:
             - laravel
