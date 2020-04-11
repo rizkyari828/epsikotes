@@ -13,3 +13,4 @@ yarn-error.log
 .env
 .phpunit.result.cache
 /storage/rawdb
+.DS_Store
