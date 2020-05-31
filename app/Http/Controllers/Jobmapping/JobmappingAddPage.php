@@ -37,6 +37,7 @@ class JobmappingAddPage extends Controller
             $valeInput['GENERAL_INSTRUCTION_NAME'] = '';
             $valeInput['GENERAL_INSTRUCTION_ID'] = '';
             $valeInput['FINAL_GREATING'] = '';
+            $valeInput['FINAL_GREATING_ID'] = '';
             $valeInput['VERSION_NUMBER'] = '<option value=New>New</option>';
             $valeInput['DESCRIPTION'] = '';
             $valeInput['DATE_FROM'] = '';
@@ -136,11 +137,11 @@ class JobmappingAddPage extends Controller
         /* start insert job mapping versions */
         $paramInsertJobMappingVersions['JOB_MAPPING_ID'] = $idJobMapping;
         $paramInsertJobMappingVersions['VERSION_NUMBER'] = 1;
-        $paramInsertJobMappingVersions['DATE_FROM'] = date( "Y-m-d", strtotime( $param['date_from'] ) );
-        $paramInsertJobMappingVersions['DATE_TO'] =  isset($param['date_to']) ? date( "Y-m-d", strtotime( $param['date_to'] ) ) : date( "Y-m-d", strtotime( '4712-12-31' ) ) ;
+        $paramInsertJobMappingVersions['DATE_FROM'] = isset($param['date_to']) ? date( "Y-m-d", strtotime( $param['date_to'] ) ) : date( "Y-m-d");
+        $paramInsertJobMappingVersions['DATE_TO'] =  isset($param['date_to']) ? date( "Y-m-d", strtotime( $param['date_to'] ) ) : date( "Y-m-d", strtotime("+1 day")) ;
         $paramInsertJobMappingVersions['DESCRIPTION'] = $param['description'];
         $paramInsertJobMappingVersions['GENERAL_INSTRUCTION'] = $param['general_instruction'];
-        $paramInsertJobMappingVersions['FINAL_GREATING'] = $param['final_greating'];
+        $paramInsertJobMappingVersions['FINAL_GREATING'] = $param['final_greating_id'];
         $paramInsertJobMappingVersions['RANDOM_CATEGORY'] = 1;
         $paramInsertJobMappingVersions['CREATED_BY'] = $request->session()->get('user.username');
         $paramInsertJobMappingVersions['CREATION_DATE'] = date("Y-m-d h:i:s");
@@ -180,7 +181,7 @@ class JobmappingAddPage extends Controller
         }
         /* end insert */
 
-        return redirect('/jobmappingsetup');
+        return redirect('/workspace#jobmappingsetup');
     }
 
     public function getJobMappingSetup($jobMappingId){
@@ -202,7 +203,8 @@ class JobmappingAddPage extends Controller
             $valeInput['NAME'] = $rowJobmapping->NAME;
             $valeInput['GENERAL_INSTRUCTION_NAME'] = $rowJobmapping->narration_name;
             $valeInput['GENERAL_INSTRUCTION_ID'] = $rowJobmapping->narration_id;
-            $valeInput['FINAL_GREATING'] = '';
+            $valeInput['FINAL_GREATING'] = $rowJobmapping->final_greating_name;
+            $valeInput['FINAL_GREATING_ID'] = $rowJobmapping->final_greating_id;
             $valeInput['VERSION_ID'] = $rowJobmapping->VERSION_ID;
             $valeInput['VERSION_NUMBER'] = $rowJobmapping->VERSION_NUMBER;
             $valeInput['DESCRIPTION'] = $rowJobmapping->DESCRIPTION;
@@ -268,6 +270,7 @@ class JobmappingAddPage extends Controller
             $valeInput['GENERAL_INSTRUCTION_NAME'] = $rowJobmapping->narration_name;
             $valeInput['GENERAL_INSTRUCTION_ID'] = $rowJobmapping->narration_id;
             $valeInput['FINAL_GREATING'] = '';
+            $valeInput['FINAL_GREATING_ID'] = '';
             $valeInput['VERSION_ID'] = $rowJobmapping->VERSION_ID;
             $valeInput['VERSION_NUMBER'] = $rowJobmapping->VERSION_NUMBER;
             $valeInput['DESCRIPTION'] = $rowJobmapping->DESCRIPTION;

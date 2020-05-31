@@ -71,7 +71,7 @@
                                         <label class="label col col-2">Description</label>
                                             <div class="col col-8">
                                                 <label class="textarea">
-                                                    <textarea rows="5" name="description" {{$isDisableCurrent}} placeholder="Description">{!! $valeInput['DESCRIPTION'] !!}</textarea>
+                                                    <textarea rows="5" name="description"   placeholder="Description">{!! $valeInput['DESCRIPTION'] !!}</textarea>
                                                 </label>
                                             </div>
                                     </section>
@@ -79,12 +79,12 @@
                                         <label class="label col col-2">Effective Date</label>
                                             <div class="col col-4">
                                                 <label class="input"> <i class="icon-append fa fa-calendar"></i>
-                                                    <input type="text" name="date_from" id="date_from" value="{{$valeInput['DATE_FROM']}}" {{$isDisableCurrent}} placeholder="From">
+                                                    <input type="text" name="date_from" id="date_from" value="{{$valeInput['DATE_FROM']}}"   placeholder="From">
                                                 </label>
                                             </div>
                                             <div class="col col-4">
                                                 <label class="input"> <i class="icon-append fa fa-calendar"></i>
-                                                    <input type="text" name="date_to" value="{{$valeInput['DATE_TO']}}" {{$isDisablePast}} id="date_to" placeholder="To">
+                                                    <input type="text" name="date_to" value="{{$valeInput['DATE_TO']}}"   id="date_to" placeholder="To">
                                                 </label>
                                             </div>
                                     </section>
@@ -95,7 +95,7 @@
                                             <div class="col col-8">
                                                 <label class="input">
                                                     <i class="icon-append fa fa-search"></i>
-                                                    <input type="text" name="general_instruction_name" {{$isDisableCurrent}} value="{{$valeInput['GENERAL_INSTRUCTION_NAME']}}"  id="general_instruction" placeholder="General Instruction">
+                                                    <input type="text" name="general_instruction_name" value="{{$valeInput['GENERAL_INSTRUCTION_NAME']}}"  id="general_instruction" placeholder="General Instruction">
                                                     <input type="hidden" name="general_instruction" value="{{$valeInput['GENERAL_INSTRUCTION_ID']}}"  id="general_instruction_id">
 
                                                 </label>
@@ -108,7 +108,8 @@
                                             <div class="col col-8">
                                                 <label class="input">
                                                     <i class="icon-append fa fa-search"></i>
-                                                    <input type="text" name="final_greating" id="final_greating" value="{{$valeInput['FINAL_GREATING']}}" {{$isDisableCurrent}} placeholder="Final Grading">
+                                                    <input type="text" name="final_greating" id="final_greating" value="{{$valeInput['FINAL_GREATING']}}"  placeholder="Final Grading">
+                                                     <input type="hidden" name="final_greating_id" value="{{$valeInput['FINAL_GREATING_ID']}}"  id="final_greating_id">
                                                 </label>
                                             </div>
                                     </section>
@@ -259,7 +260,7 @@
                     var day = new Date(selectedDate);
                     var nextDay = new Date(day);
                     nextDay.setDate(day.getDate()+1);
-                    $('#enddate').datepicker('option', 'minDate', nextDay);
+                    $('#date_to').datepicker('option', 'minDate', nextDay);
                 }
             });
          $('#date_to').datepicker({
@@ -268,7 +269,7 @@
                 nextText : '<i class="fa fa-chevron-right"></i>',
                 dateFormat: 'yy-mm-dd',
                 onSelect : function(selectedDate) {
-                    $('#finishdate').datepicker('option', 'minDate', selectedDate);
+                     
                 }
             });
 
@@ -447,6 +448,34 @@
             minLength : 2,
             select : function(event, ui) {
                 $('#general_instruction_id').val(ui.item.valueInput);
+                console.log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
+            }
+        });
+        $("#final_greating").autocomplete({
+            source : function(request, response) {
+                $.ajax({
+                    type: "POST",
+                    url : "getNarrations",
+                    dataType : "json",
+                    data : {
+                        _token : $('input[name="_token"]').val(),
+                        narrationName : request.term
+                    },
+                    success : function(data) {
+                        response($.map(data.data_rows, function(item) {
+                            return {
+                                label : item.narrationName,
+                                value : item.narrationName,
+                                valueInput : item.narrationId
+                            }
+                        }));
+                    }
+                });
+            },
+            minLength : 2,
+            select : function(event, ui) {
+                console.log(ui.item.valueInput);
+                $('#final_greating_id').val(ui.item.valueInput);
                 console.log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
             }
         });

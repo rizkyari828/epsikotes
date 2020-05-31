@@ -43,7 +43,7 @@ class NormaPage extends Controller
 
     public function allCategories(){
 
-        $this->middleware('auth');
+        // $this->middleware('auth');
 
         $paramFilters = \Request::input('paramFilters');
         $Norma = new Norma();
