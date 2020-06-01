@@ -34,7 +34,8 @@ class Jobmapping extends Model
 
         $jobMapping = DB::table('psi.psy_job_mappings')
         ->join('psi.psy_job_mapping_versions','psy_job_mappings.job_mapping_id','=','psy_job_mapping_versions.job_mapping_id')
-         ->join('psi.que_narrations','que_narrations.narration_id','=','psy_job_mapping_versions.GENERAL_INSTRUCTION');
+         ->join('psi.que_narrations as A','A.narration_id','=','psy_job_mapping_versions.GENERAL_INSTRUCTION')
+         ->join('psi.que_narrations as B','B.narration_id','=','psy_job_mapping_versions.FINAL_GREATING');
 
         //->whereBetween(date("Y-m-d"), ['que_sub_category_versions.date_from','que_sub_category_versions.date_to'])
        // ->whereRaw('date(sysdate()) between psy_job_mapping_versions.date_from and psy_job_mapping_versions.date_to')
@@ -52,7 +53,7 @@ class Jobmapping extends Model
         if(isset($paramFilter)){
             $jobMapping->where('psy_job_mappings.job_mapping_id','=',$paramFilter['jobMappingId']);
         }
-        $data = $jobMapping->select('psy_job_mappings.NAME','psy_job_mapping_versions.random_category','psy_job_mapping_versions.VERSION_ID','psy_job_mapping_versions.VERSION_NUMBER','psy_job_mapping_versions.DESCRIPTION','psy_job_mapping_versions.DATE_FROM','psy_job_mapping_versions.DATE_TO','psy_job_mappings.last_updated_by','psy_job_mappings.last_update_date','psy_job_mappings.JOB_MAPPING_ID','que_narrations.narration_id','que_narrations.narration_name')
+        $data = $jobMapping->select('psy_job_mappings.NAME','psy_job_mapping_versions.random_category','psy_job_mapping_versions.VERSION_ID','psy_job_mapping_versions.VERSION_NUMBER','psy_job_mapping_versions.DESCRIPTION','psy_job_mapping_versions.DATE_FROM','psy_job_mapping_versions.DATE_TO','psy_job_mappings.last_updated_by','psy_job_mappings.last_update_date','psy_job_mappings.JOB_MAPPING_ID','A.narration_id','A.narration_name','B.narration_id as final_greating_id','B.narration_name as final_greating_name')
         ->get();
         return $data;
     }

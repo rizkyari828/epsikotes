@@ -27,14 +27,15 @@ class Narrations extends Model
 
         $narration = DB::table('psi.que_narrations');
         if(isset($paramFilter)){
-            if($paramFilter['narrationName'] != null)
+            // print_r($paramFilter);
+            if($paramFilter != null)
             {
-                $narration->whereRaw('upper(que_narrations.narration_name) like upper(\'%'.$paramFilter['narrationName'].'%\')');
+                $narration->whereRaw('upper(que_narrations.narration_name) like upper(\'%'.$paramFilter.'%\')');
             }
-            if(isset($paramFilter['narrationText'])){
-                if($paramFilter['narrationText'] != null)
+            if(isset($paramFilter)){
+                if($paramFilter != null)
                 {
-                    $narration->whereRaw('upper(CONVERT(que_narrations.narration_text USING latin1)) like upper(\'%'.$paramFilter['narrationText'].'%\')');
+                    $narration->whereRaw('upper(CONVERT(que_narrations.narration_text USING latin1)) like upper(\'%'.$paramFilter.'%\')');
                 }
             }
         }
