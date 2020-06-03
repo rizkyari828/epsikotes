@@ -76,7 +76,6 @@ class JobmappingAddPage extends Controller
         $param = array('INDUCTIVEREASONING'=>$categoryProfile['INDUCTIVEREASONING'],'DEDUCTIVEREASONING'=>$categoryProfile['DEDUCTIVEREASONING'],'READINGCOMPREHENSION'=>$categoryProfile['READINGCOMPREHENSION'],'ARITHMETICABILITY'=>$categoryProfile['ARITHMETICABILITY'],'SPATIALABILITY'=>$categoryProfile['SPATIALABILITY'],'MEMORY'=>$categoryProfile['MEMORY'],'valeInput'=>$valeInput,'isDisableCurrent'=>$isDisableCurrent,'isDisable'=>$isDisable,'isDisablePast'=>$isDisablePast);
 
 
-        return $param;
         return view('pages.JobmappingPageAdd',$param);
     }
 
