@@ -29,7 +29,7 @@ class JobmappingAddPage extends Controller
         $page = '';
 
         $categoryProfile = $this->buildCategoryProfileScore();
-        
+
         if(!$jobMappingId){
             $valeInput['JOB_MAPPING_ID'] = '';
             $valeInput['NAME'] = '';
@@ -70,13 +70,13 @@ class JobmappingAddPage extends Controller
                 $isDisable = 'readonly';
             }
         }
-       
+
 
 
         $param = array('INDUCTIVEREASONING'=>$categoryProfile['INDUCTIVEREASONING'],'DEDUCTIVEREASONING'=>$categoryProfile['DEDUCTIVEREASONING'],'READINGCOMPREHENSION'=>$categoryProfile['READINGCOMPREHENSION'],'ARITHMETICABILITY'=>$categoryProfile['ARITHMETICABILITY'],'SPATIALABILITY'=>$categoryProfile['SPATIALABILITY'],'MEMORY'=>$categoryProfile['MEMORY'],'valeInput'=>$valeInput,'isDisableCurrent'=>$isDisableCurrent,'isDisable'=>$isDisable,'isDisablePast'=>$isDisablePast);
 
 
-
+        return $param;
         return view('pages.JobmappingPageAdd',$param);
     }
 
@@ -108,14 +108,14 @@ class JobmappingAddPage extends Controller
 
         foreach ($Categories->getCategory('') as $indexCategory => $rowCategory ){
             $categoryName =  str_replace(' ', '', $rowCategory->category_name);
-            
+
               $jobMappingCategoryScoreList[$categoryName] = '<label class="input"><input type="text" name="pass_score['.$rowCategory->category_id.'][]" placeholder="Raw Score" class="pass_score"></label><label class="checkbox"><input type="checkbox" name="mandatory['.$rowCategory->category_id.'][]" id="mandatory"> <i></i><br/> Is Mandatory</label>';
         }
 
-      
+
       return $jobMappingCategoryScoreList;
 
-        
+
     }
 
     public function processJobMapping(Request $request){
@@ -196,7 +196,7 @@ class JobmappingAddPage extends Controller
         $paramFilter['isPast'] = $isPast->isEmpty() ? 0 : 1;
         $paramFilter['isCurrent'] = $isCurrent->isEmpty() ? 0 : 1;
         $paramFilter['countJobMapping'] = $Jobmapping->getVersionNumber($paramFilter)->count();
-     
+
         $valeInput = array();
         foreach ($Jobmapping->getAllJobMapping($paramFilter) as $indexJobmapping => $rowJobmapping ){
             $valeInput['JOB_MAPPING_ID'] = $rowJobmapping->JOB_MAPPING_ID;
@@ -217,7 +217,7 @@ class JobmappingAddPage extends Controller
         $versionNumber = '';
 
 
-        
+
         foreach ($Jobmapping->getVersionNumber($paramFilter) as $indexJobmapping => $rowJobmapping ){
             if($paramFilter['countJobMapping'] == 1 ){
                 $versionNumber .= '<option value="'.$rowJobmapping->VERSION_NUMBER.'" selected>'.$rowJobmapping->VERSION_NUMBER.'</option>';
@@ -225,7 +225,7 @@ class JobmappingAddPage extends Controller
                     $versionNumber .= '<option value=New>New</option>';
                 }
             }else{
-               
+
                 if($paramFilter['isFuture'] && ($maxVersionNumber[0]->version_number == $rowJobmapping->VERSION_NUMBER)){
 
                     $versionNumber .= '<option value="'.($maxVersionNumber[0]->version_number-1).'" selected>'.($maxVersionNumber[0]->version_number-1).'</option>';
@@ -252,7 +252,7 @@ class JobmappingAddPage extends Controller
         }
         $valeInput['VERSION_NUMBER'] = $versionNumber;
         $valeInput['VERSION_NUMBER_LIST']= $versionNumberList;
-       
+
         return $valeInput;
     }
 
@@ -262,7 +262,7 @@ class JobmappingAddPage extends Controller
         $paramFilter['jobMappingId'] = $paramFilter['jobMappingId'];
         $paramFilter['versionNumber'] = $paramFilter['versionNumber'];
         $paramFilter['countJobMapping'] = $Jobmapping->getVersionNumber($paramFilter)->count();
-     
+
         $valeInput = array();
         foreach ($Jobmapping->getJobmappingVersion($paramFilter) as $indexJobmapping => $rowJobmapping ){
             $valeInput['JOB_MAPPING_ID'] = $rowJobmapping->JOB_MAPPING_ID;
@@ -281,7 +281,7 @@ class JobmappingAddPage extends Controller
 
         $versionNumberList = array();
         $versionNumber = '';
-       
+
         return $valeInput;
     }
 
@@ -309,9 +309,9 @@ class JobmappingAddPage extends Controller
         foreach ($Jobmapping->getJobCategoryList($paramFilter) as $indexJobmapping => $rowJobmapping ){
 
             $rowTable .= '<tr>';
-            $rowTable .='<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label></td>';    
+            $rowTable .='<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label></td>';
             $rowTable .='<td><label class="input"><input type="input" id="sub_category_name" class="sub_category_name" name="sub_category_name[]" value="'.$rowJobmapping->category_name.'" placeholder="Category Name"><input type="hidden" name="category_id[]" class="category_id" value="'.$rowJobmapping->category_id.'" id="category_id"> <i class="icon-append fa fa-search"></i></label></td>';
-            
+
 
             $rowTable .= '</tr>';
 
@@ -345,8 +345,8 @@ class JobmappingAddPage extends Controller
         foreach ($Jobmapping->getJobCategoryList($paramFilter) as $indexJobmapping => $rowJobmapping ){
              $rowTable = '';
              $valeInput['CATEGORY_LIST'][$index]['CATEGORY'] = $rowJobmapping->category_name;
-             $valeInput['CATEGORY_LIST'][$index]['CATEGORY_ID'] = $rowJobmapping->category_id;             
-             
+             $valeInput['CATEGORY_LIST'][$index]['CATEGORY_ID'] = $rowJobmapping->category_id;
+
             $index++;
 
         }
@@ -379,8 +379,8 @@ class JobmappingAddPage extends Controller
         foreach ($Jobmapping->getJobProfile($paramFilter) as $indexJobmapping => $rowJobmapping ){
 
             $rowTable .= '<tr>';
-            $rowTable .='<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label></td>';    
-            
+            $rowTable .='<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label></td>';
+
             $rowTable .= '<td><label class="input"><input type="text" name="job_name[]" value="'.$rowJobmapping->job_name.'" class="job_name" placeholder="Job Name"><input type="hidden" name="job_id[]" value="'.$rowJobmapping->job_id.'"  class="job_id" id="job_id"> <i class="icon-append fa fa-search"></i></label></td>';
 
             $paramFilter['jobProfileId'] = $rowJobmapping->job_profile_id;
@@ -397,7 +397,7 @@ class JobmappingAddPage extends Controller
 
         }
 
-          
+
         $valeInput['JOB_PROFILE'] = $rowTable ;
 
         return $valeInput;
