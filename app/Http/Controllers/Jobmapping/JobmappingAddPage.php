@@ -54,7 +54,7 @@ class JobmappingAddPage extends Controller
             $paramFilter['isFuture'] = $isFuture->isEmpty() ? 0 : 1; 
             $paramFilter['isPast'] = $isPast->isEmpty() ? 0 : 1;
             $paramFilter['isCurrent'] = $isCurrent->isEmpty() ? 0 : 1;
-            $jobmappingsetup = $this->getJobMappingSetup($jobMappingId);
+            $jobmappingsetup = $this->getJobMappingSetup($jobMappingId); 
             $jobmappingcategory = $this->getCategoryList($jobmappingsetup['VERSION_ID'],$jobMappingId);
             $jobprofile = $this->getJobProfileScore($jobmappingsetup['VERSION_ID'],$jobMappingId);
 
@@ -68,7 +68,7 @@ class JobmappingAddPage extends Controller
                 $isDisablePast = 'readonly';
                 $isDisable = 'readonly';
             }else if($paramFilter['isFuture']){
-                $isDisable = 'readonly';
+                // $isDisable = 'readonly';
             }
         }
        
@@ -142,7 +142,7 @@ class JobmappingAddPage extends Controller
         /* start insert job mapping versions */
         $paramInsertJobMappingVersions['JOB_MAPPING_ID'] = $idJobMapping;
         $paramInsertJobMappingVersions['VERSION_NUMBER'] = 1;
-        $paramInsertJobMappingVersions['DATE_FROM'] = isset($param['date_to']) ? date( "Y-m-d", strtotime( $param['date_to'] ) ) : date( "Y-m-d");
+        $paramInsertJobMappingVersions['date_from'] = isset($param['date_from']) ? date( "Y-m-d", strtotime( $param['date_from'] ) ) : date( "Y-m-d");
         $paramInsertJobMappingVersions['DATE_TO'] =  isset($param['date_to']) ? date( "Y-m-d", strtotime( $param['date_to'] ) ) : date( "Y-m-d", strtotime("+1 day")) ;
         $paramInsertJobMappingVersions['DESCRIPTION'] = $param['description'];
         $paramInsertJobMappingVersions['GENERAL_INSTRUCTION'] = $param['general_instruction'];
