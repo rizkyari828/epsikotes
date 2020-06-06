@@ -126,7 +126,7 @@
                             </header>
 
                             <fieldset>
-                                
+
                                 <div class="row">
                                     <section class="col col-6">
                                         <label class="label col col-2">Birth Date</label>
@@ -142,11 +142,11 @@
                                     <section class="col col-6">
                                         <label class="label col col-2">Age</label>
                                             <div class="col col-8">
-                                                <label class="ageyears"> 
+                                                <label class="ageyears">
                                                      {{$valeInput['YEAR_BIRTH_DATE']}}
                                                 </label>
                                                 Years,
-                                                 <label class="agemonth"> 
+                                                 <label class="agemonth">
                                                      {{$valeInput['MONTH_BIRTH_DATE']}}
                                                 </label>
                                                 Months
@@ -194,7 +194,7 @@
                                     <section class="col col-6">
                                         <label class="label col col-2">Phone Number</label>
                                             <div class="col col-8">
-                                                <label class="input {{$disableState}}"> 
+                                                <label class="input {{$disableState}}">
                                             <input type="text" name="PHONE_NUMBER" value="{{$valeInput['PHONE_NUMBER']}}" id="phoneNumber" placeholder="Phone Number" {{$isReadOnly}}>
                                                 </label>
                                             </div>
@@ -299,21 +299,21 @@
         jQuery.validator.addMethod("atLeastOneLowercaseLetter", function (value, element) {
             return this.optional(element) || /[a-z]+/.test(value);
         }, "Must have at least one lowercase letter");
-         
+
         /**
          * Custom validator for contains at least one upper-case letter.
          */
         jQuery.validator.addMethod("atLeastOneUppercaseLetter", function (value, element) {
             return this.optional(element) || /[A-Z]+/.test(value);
         }, "Must have at least one uppercase letter");
-         
+
         /**
          * Custom validator for contains at least one number.
          */
         jQuery.validator.addMethod("atLeastOneNumber", function (value, element) {
             return this.optional(element) || /[0-9]+/.test(value);
         }, "Must have at least one number");
-         
+
         /**
          * Custom validator for contains at least one symbol.
          */
@@ -344,7 +344,7 @@
                         data: {
                           _token : $('input[name="_token"]').val()
                         }
-                    }             
+                    }
                 },
                 FULL_NAME: {
                     required : true,
@@ -419,7 +419,7 @@
                 email : {
                     required : 'Email must be filled',
                     email : 'Please enter a VALID email address'
-                    
+
                 },
                 GENDER : {
                     required : 'Gender must be filled'
@@ -459,6 +459,7 @@
         }
 
 
+        @if($isReadOnly != 'readonly')
         $('#birthdate').datepicker({
                 dateFormat : 'dd-M-yy',
                 prevText : '<i class="fa fa-chevron-left"></i>',
@@ -476,9 +477,10 @@
                              $('.agemonth').html( Math.abs(m));
                 }
             });
+        @endif
 
 
-        
+
 
         $("#network").autocomplete({
             source : function(request, response) {
@@ -506,7 +508,7 @@
                 $('#network_id').val(ui.item.valueInput);
                 console.log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
             }
-        }); 
+        });
 
          $("#role").autocomplete({
             source : function(request, response) {
@@ -537,8 +539,8 @@
         });
 
 
-        
-        
+
+
 
     </script>
 
