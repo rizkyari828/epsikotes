@@ -153,13 +153,13 @@
                         <table class="table table-striped table-bordered table-hover table-checkable" id="table-people-enter-inquiry">
                                             <thead>
                                                 <tr role="row" class="heading">
-                                                    <th width="2%">
-                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+{{--                                                    <th width="2%">--}}
+{{--                                                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">--}}
 
-       <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" />
-                                                            <span></span>
-                                                        </label>
-                                                    </th>
+{{--       <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" />--}}
+{{--                                                            <span></span>--}}
+{{--                                                        </label>--}}
+{{--                                                    </th>--}}
                                                     <th width="5%"> Action </th>
                                                     <th width="200"> Sim ID </th>
                                                     <th width="15%"> Full Name </th>
@@ -172,7 +172,7 @@
 
                                             </thead>
                                             <tbody>
-                                                
+
                                             </tbody>
                                         </table>
 
@@ -218,8 +218,8 @@
                 $('#person_id').val(ui.item.valueInput);
                 console.log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
             }
-        }); 
-        
+        });
+
         $("#network").autocomplete({
             source : function(request, response) {
                 $.ajax({
@@ -248,7 +248,7 @@
                 $('#cabang_id').val(ui.item.valueCabangId);
                 console.log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
             }
-        }); 
+        });
 
          $("#role").autocomplete({
             source : function(request, response) {
@@ -305,7 +305,7 @@
         obj["roleId"] =  $('input[name="role_id"]').val();
         obj["networkId"] =  $('input[name="cabang_id"]').val();
         obj["isActive"] =  $('input[name="IS_ACTIVE"]').is(':checked');
-        obj["isFirstPage"] = 0; 
+        obj["isFirstPage"] = 0;
 
         var table_normatest = $('#table-people-enter-inquiry').DataTable({
                     "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f>r>"+
@@ -313,11 +313,11 @@
                     "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
                     "oLanguage": {
                         "sSearch": '<span class="input-group-addon"><i class="fa fa-search"></i></span>'
-                    },  
+                    },
                     "ajax": {
                             "type": "POST",
                             "data": function( d ) {
-                                      
+
                                   d._token= $('input[name="_token"]').val();
                                   d.paramFilters=obj;
                                 },  //{ _token : $('input[name="_token"]').val(),paramFilters:obj},
@@ -329,7 +329,7 @@
                     },
                     "autoWidth" : true,
                     "columns" :[
-                        {'data':'checkbox'},
+                        // {'data':'checkbox'},
                         {'data':'action'},
                         {'data':'userNumber'},
                         {'data':'fullName'},
@@ -352,7 +352,7 @@
             var url = $(this).attr('href');
             loadURL(url, $('#content'));
 
-       
+
         });
 
         param["message"] = "Searches might be slow without any parameter. Do you want to continue ?";
