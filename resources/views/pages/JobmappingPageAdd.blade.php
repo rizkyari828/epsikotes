@@ -50,6 +50,8 @@
                                             <div class="col col-8">
                                                 <label class="input"> 
                                                     <input type="input" name="name" id="name" value="{{$valeInput['NAME']}}" {{$isDisable}} placeholder="Job Mapping Name">
+
+                                                     <input type="hidden" name="jobMappingId" value="{{$jobMappingId}}"  id="jobMappingId">
                                                 </label>
                                             </div>
                                     </section>
@@ -104,11 +106,11 @@
                                 </div>
                                 <div class="row">
                                     <section class="col col-6">
-                                        <label class="label col col-2">Final Grading</label>
+                                        <label class="label col col-2">Final Greating</label>
                                             <div class="col col-8">
                                                 <label class="input">
                                                     <i class="icon-append fa fa-search"></i>
-                                                    <input type="text" name="final_greating" id="final_greating" value="{{$valeInput['FINAL_GREATING']}}"  placeholder="Final Grading">
+                                                    <input type="text" name="final_greating" id="final_greating" value="{{$valeInput['FINAL_GREATING']}}"  placeholder="Final Greating">
                                                      <input type="hidden" name="final_greating_id" value="{{$valeInput['FINAL_GREATING_ID']}}"  id="final_greating_id">
                                                 </label>
                                             </div>

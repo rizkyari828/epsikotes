@@ -61,8 +61,9 @@ class Jobmapping extends Model
      public function getAllJobMappingActive($paramFilter){
         $jobMapping = DB::table('psi.psy_job_mappings')
         ->join('psi.psy_job_mapping_versions','psy_job_mappings.job_mapping_id','=','psy_job_mapping_versions.job_mapping_id')
-        ->whereRaw('upper(psy_job_mappings.name) like upper(\'%'.$paramFilter['jobMappingName'].'%\')')
+        ->whereRaw('upper(psy_job_mappings.name) like upper(\'%'.$paramFilter['jobMappingName'].'%\')')  ->groupBy('psy_job_mappings.JOB_MAPPING_ID')
         ->select('psy_job_mappings.NAME','psy_job_mapping_versions.random_category','psy_job_mapping_versions.VERSION_ID','psy_job_mapping_versions.VERSION_NUMBER','psy_job_mapping_versions.DESCRIPTION','psy_job_mapping_versions.DATE_FROM','psy_job_mapping_versions.DATE_TO','psy_job_mappings.last_updated_by','psy_job_mappings.last_update_date','psy_job_mappings.JOB_MAPPING_ID')
+      
         ->get();
         return $jobMapping;
     }
