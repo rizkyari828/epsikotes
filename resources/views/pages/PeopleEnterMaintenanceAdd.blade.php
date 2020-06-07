@@ -57,10 +57,10 @@
                                             <div class="col col-8">
                                                  <label class="checkbox">
                                                  @if($valeInput['IS_ACTIVE'] == '')
-                                                 <input type="checkbox" name="IS_ACTIVE" id="isActive" {{$isReadOnly}}>
+                                                 <input type="checkbox" name="IS_ACTIVE" id="isActive" {{$isReadOnly}} @if($isReadOnly == 'readonly') disabled @endif>
                                                  <input type="hidden" name="IS_BASE_ACTIVE" value="0">
                                                  @else
-                                                 <input type="checkbox" name="IS_ACTIVE" id="isActive" checked="" {{$isReadOnly}} {{$isDisableByRoles}}>
+                                                 <input type="checkbox" name="IS_ACTIVE" id="isActive" checked="" {{$isReadOnly}} {{$isDisableByRoles}} @if($isReadOnly == 'readonly') disabled @endif>
                                                  <input type="hidden" name="IS_BASE_ACTIVE" value="1">
                                                  @endif
 
