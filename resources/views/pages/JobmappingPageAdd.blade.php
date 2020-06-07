@@ -39,7 +39,7 @@
                     <!-- widget content -->
                     <div class="widget-body no-padding">
 
-                        <form action="{{url('')}}/jobmappingProcess" method="POST" id="order-form" class="smart-form" novalidate="novalidate">
+                        <form action="{{url('')}}/jobmappingProcess" method="POST" id="order-form" class="smart-form">
                             <header>
                                 Create Job Mapping Setup
                             </header>
@@ -49,7 +49,9 @@
                                         <label class="label col col-2">Job Mapping Name</label>
                                             <div class="col col-8">
                                                 <label class="input"> 
-                                                    <input type="input" name="name" id="name" value="{{$valeInput['NAME']}}" {{$isDisable}} placeholder="Job Mapping Name">
+                                                    <input type="input" name="name" id="name" value="{{$valeInput['NAME']}}" {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} placeholder="Job Mapping Name" required>
+
+                                                     <input type="hidden" name="jobMappingId" value="{{$jobMappingId}}"  id="jobMappingId">
                                                 </label>
                                             </div>
                                     </section>
@@ -71,7 +73,7 @@
                                         <label class="label col col-2">Description</label>
                                             <div class="col col-8">
                                                 <label class="textarea">
-                                                    <textarea rows="5" name="description"   placeholder="Description">{!! $valeInput['DESCRIPTION'] !!}</textarea>
+                                                    <textarea rows="5" name="description"   placeholder="Description"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} >{!! $valeInput['DESCRIPTION'] !!}</textarea>
                                                 </label>
                                             </div>
                                     </section>
@@ -79,12 +81,12 @@
                                         <label class="label col col-2">Effective Date</label>
                                             <div class="col col-4">
                                                 <label class="input"> <i class="icon-append fa fa-calendar"></i>
-                                                    <input type="text" name="date_from" id="date_from" value="{{$valeInput['DATE_FROM']}}"   placeholder="From">
+                                                    <input type="text" name="date_from" id="date_from" value="{{$valeInput['DATE_FROM']}}"   placeholder="From"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} >
                                                 </label>
                                             </div>
                                             <div class="col col-4">
                                                 <label class="input"> <i class="icon-append fa fa-calendar"></i>
-                                                    <input type="text" name="date_to" value="{{$valeInput['DATE_TO']}}"   id="date_to" placeholder="To">
+                                                    <input type="text" name="date_to" value="{{$valeInput['DATE_TO']}}"   id="date_to" placeholder="To"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} >
                                                 </label>
                                             </div>
                                     </section>
@@ -95,7 +97,7 @@
                                             <div class="col col-8">
                                                 <label class="input">
                                                     <i class="icon-append fa fa-search"></i>
-                                                    <input type="text" name="general_instruction_name" value="{{$valeInput['GENERAL_INSTRUCTION_NAME']}}"  id="general_instruction" placeholder="General Instruction">
+                                                    <input type="text" name="general_instruction_name" value="{{$valeInput['GENERAL_INSTRUCTION_NAME']}}"  id="general_instruction" placeholder="General Instruction"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} >
                                                     <input type="hidden" name="general_instruction" value="{{$valeInput['GENERAL_INSTRUCTION_ID']}}"  id="general_instruction_id">
 
                                                 </label>
@@ -104,11 +106,11 @@
                                 </div>
                                 <div class="row">
                                     <section class="col col-6">
-                                        <label class="label col col-2">Final Grading</label>
+                                        <label class="label col col-2">Final Greating</label>
                                             <div class="col col-8">
                                                 <label class="input">
                                                     <i class="icon-append fa fa-search"></i>
-                                                    <input type="text" name="final_greating" id="final_greating" value="{{$valeInput['FINAL_GREATING']}}"  placeholder="Final Grading">
+                                                    <input type="text" name="final_greating" id="final_greating" value="{{$valeInput['FINAL_GREATING']}}"  placeholder="Final Greating"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} >
                                                      <input type="hidden" name="final_greating_id" value="{{$valeInput['FINAL_GREATING_ID']}}"  id="final_greating_id">
                                                 </label>
                                             </div>
@@ -142,7 +144,7 @@
 
                                                 </tbody>
                                             </table>
-
+                                             <?php if(!$isDisable && !$isDisablePast && !$isDisableCurrent){?>
                                             <div class="row">
                                                 <section class="col col-11">
                                                     <label class="button bg-color-green"> 
@@ -158,6 +160,7 @@
                                                     </label>
                                                  </section> 
                                             </div>
+                                            <?php }?>
                                         </div>
                                     </section>
                                 </div>
@@ -195,6 +198,7 @@
 
                                                 </tbody>
                                             </table>
+                                            <?php if(!$isDisable && !$isDisablePast && !$isDisableCurrent){?>
                                             <div class="row">
                                                 <section class="col col-11">
                                                     <label class="button bg-color-green"> 
@@ -210,6 +214,7 @@
                                                     </label>
                                                  </section> 
                                              </div>
+                                            <?php }?>
                                         </div>
                                     </section>
                                    
@@ -220,10 +225,12 @@
                             <footer>
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="hidden" name="JOB_MAPPING_ID" value="{{$valeInput['JOB_MAPPING_ID']}}">
+                                <?php if(!$isDisable && !$isDisablePast && !$isDisableCurrent){?>
                                 <button type="submit" class="btn btn-primary">
                                     <i class='fa fa-save'></i>&nbsp;
                                     Submit
                                 </button>
+                            <?php } ?>
                                 <a class="btn btn-default" id="jobmappingback" href="jobmappingsetup">
                                       <i class="fa fa-chevron-left"></i>&nbsp;
                                     Cancel
@@ -256,6 +263,7 @@
                 prevText : '<i class="fa fa-chevron-left"></i>',
                 nextText : '<i class="fa fa-chevron-right"></i>',
                 dateFormat: 'yy-mm-dd',
+                beforeShow: function(i) { if ($(i).attr('readonly')) { return false; } },
                 onSelect : function(selectedDate) {
                     var day = new Date(selectedDate);
                     var nextDay = new Date(day);
@@ -268,6 +276,7 @@
                 prevText : '<i class="fa fa-chevron-left"></i>',
                 nextText : '<i class="fa fa-chevron-right"></i>',
                 dateFormat: 'yy-mm-dd',
+                beforeShow: function(i) { if ($(i).attr('readonly')) { return false; } },
                 onSelect : function(selectedDate) {
                      
                 }
