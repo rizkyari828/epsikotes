@@ -48,6 +48,39 @@ class Narrations extends Model
 
     }
 
+    public function getNarrationsByNameAndText($paramFilter){
+
+        /*DB::table('psi.que_sub_categories')
+        ->join('psi.que_sub_category_versions','que_sub_categories.sub_category_id','=','que_sub_category_versions.sub_category_id')
+       // ->whereBetween(date("Y-m-d"), ['que_sub_category_versions.date_from','que_sub_category_versions.date_to'])
+        ->whereRaw('date(sysdate()) between que_sub_category_versions.date_from and que_sub_category_versions.date_to')
+        ->whereRaw('upper(que_sub_categories.sub_category_name) like upper(\'%'.$categoryName.'%\')')
+        ->select('que_sub_categories.sub_category_name','que_sub_categories.sub_category_id','que_sub_categories.last_updated_by','que_sub_categories.last_update_date')
+        ->get();*/
+
+
+        $narration = DB::table('psi.que_narrations');
+        if(isset($paramFilter)){
+            if($paramFilter['narrationName'] != null)
+            {
+                $narration->whereRaw('upper(que_narrations.narration_name) like upper(\'%'.$paramFilter['narrationName'].'%\')');
+            }
+            if(isset($paramFilter['narrationText'])){
+                if($paramFilter['narrationText'] != null)
+                {
+                    $narration->whereRaw('upper(CONVERT(que_narrations.narration_text USING latin1)) like upper(\'%'.$paramFilter['narrationText'].'%\')');
+                }
+            }
+        }
+
+        $data = $narration->select('que_narrations.narration_name','que_narrations.narration_id','que_narrations.narration_text','que_narrations.last_updated_by','que_narrations.last_update_date')
+            ->orderBy('que_narrations.last_update_date','DESC')
+            ->get();
+
+        return $data;
+
+    }
+
     public function getNarrationsById($paramFilter){
 
         /*DB::table('psi.que_sub_categories')

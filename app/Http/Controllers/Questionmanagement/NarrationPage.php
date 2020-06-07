@@ -31,8 +31,7 @@ class NarrationPage extends Controller
         $paramFilters = \Request::input('paramFilters');
         $narrations = new Narrations();
         $records = array();
-        
-        foreach ($narrations->getNarrations($paramFilters) as $indexNarration => $rowNarration ){
+        foreach ($narrations->getNarrationsByNameAndText($paramFilters) as $indexNarration => $rowNarration ){
             $records['data'][] = array('<a href="narrationView/'.$rowNarration->narration_id.'">detail</a>',$rowNarration->narration_name,$rowNarration->last_update_date,$rowNarration->last_updated_by );
 
 
