@@ -97,9 +97,8 @@ class CategoryAddPage extends Controller
 
         }
 
-        $err = $request->session()->get('err.status');
         $param = array('valeInput' => $valeInput,'isReadOnly'=>$isReadOnly,'isDisable'=>$isDisable,'isDisableCurrent'=>$isDisableCurrent,'isDisablePast'=>$isDisablePast,'isDisableHeader'=>$isDisableHeader,'isDisableBody' => $isDisableBody,
-         'isDisableDateTo'=>$isDisableDateTo,'isDisableButtonSubmit'=>$isDisableButtonSubmit,'error'=>$err[0]);
+         'isDisableDateTo'=>$isDisableDateTo,'isDisableButtonSubmit'=>$isDisableButtonSubmit);
 
         return view('pages.CategoryPageAdd',$param);
     }
