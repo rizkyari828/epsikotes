@@ -43,7 +43,11 @@
 			window.history.forward();
 			function noBack() { window.history.forward(); }
 		</SCRIPT>
-
+		<style type="text/css">
+			.error{
+				color:red;
+			}
+		</style>
 	</head>
 
 	<!--

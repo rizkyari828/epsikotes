@@ -59,7 +59,7 @@
                                         <label class="label col col-2">Version</label>
                                             <div class="col col-3">
                                                 <label class="select">
-                                                    <select name="version_number">
+                                                    <select name="version_number" required>
                                                         <option value="0" disabled="">- Select -</option>
                                                         {!! $valeInput['VERSION_NUMBER'] !!}
                                                     </select><i></i>
@@ -73,7 +73,7 @@
                                         <label class="label col col-2">Description</label>
                                             <div class="col col-8">
                                                 <label class="textarea">
-                                                    <textarea rows="5" name="description"   placeholder="Description"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} >{!! $valeInput['DESCRIPTION'] !!}</textarea>
+                                                    <textarea rows="5" name="description" id="description"   placeholder="Description"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} required>{!! $valeInput['DESCRIPTION'] !!}</textarea>
                                                 </label>
                                             </div>
                                     </section>
@@ -81,12 +81,12 @@
                                         <label class="label col col-2">Effective Date</label>
                                             <div class="col col-4">
                                                 <label class="input"> <i class="icon-append fa fa-calendar"></i>
-                                                    <input type="text" name="date_from" id="date_from" value="{{$valeInput['DATE_FROM']}}"   placeholder="From"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} >
+                                                    <input type="text" name="date_from" id="date_from" value="{{$valeInput['DATE_FROM']}}"   placeholder="From"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} required>
                                                 </label>
                                             </div>
                                             <div class="col col-4">
                                                 <label class="input"> <i class="icon-append fa fa-calendar"></i>
-                                                    <input type="text" name="date_to" value="{{$valeInput['DATE_TO']}}"   id="date_to" placeholder="To"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} >
+                                                    <input type="text" name="date_to" value="{{$valeInput['DATE_TO']}}"   id="date_to" placeholder="To"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} required>
                                                 </label>
                                             </div>
                                     </section>
@@ -97,7 +97,7 @@
                                             <div class="col col-8">
                                                 <label class="input">
                                                     <i class="icon-append fa fa-search"></i>
-                                                    <input type="text" name="general_instruction_name" value="{{$valeInput['GENERAL_INSTRUCTION_NAME']}}"  id="general_instruction" placeholder="General Instruction"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} >
+                                                    <input type="text" name="general_instruction_name" value="{{$valeInput['GENERAL_INSTRUCTION_NAME']}}"  id="general_instruction" placeholder="General Instruction"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} required>
                                                     <input type="hidden" name="general_instruction" value="{{$valeInput['GENERAL_INSTRUCTION_ID']}}"  id="general_instruction_id">
 
                                                 </label>
@@ -110,7 +110,7 @@
                                             <div class="col col-8">
                                                 <label class="input">
                                                     <i class="icon-append fa fa-search"></i>
-                                                    <input type="text" name="final_greating" id="final_greating" value="{{$valeInput['FINAL_GREATING']}}"  placeholder="Final Greating"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} >
+                                                    <input type="text" name="final_greating" id="final_greating" value="{{$valeInput['FINAL_GREATING']}}"  placeholder="Final Greating"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} required>
                                                      <input type="hidden" name="final_greating_id" value="{{$valeInput['FINAL_GREATING_ID']}}"  id="final_greating_id">
                                                 </label>
                                             </div>
@@ -226,7 +226,7 @@
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="hidden" name="JOB_MAPPING_ID" value="{{$valeInput['JOB_MAPPING_ID']}}">
                                 <?php if(!$isDisable && !$isDisablePast && !$isDisableCurrent){?>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary btn-submit">
                                     <i class='fa fa-save'></i>&nbsp;
                                     Submit
                                 </button>
@@ -255,7 +255,146 @@
     <!-- END ROW -->
 
     <script type="text/javascript">
+        if ($("#order-form").length > 0) { 
+            $("#order-form").validate({
+                rules: {
+                    name: {
+                        required: true, 
+                    }, 
+                    description: {
+                        required: true, 
+                    } , 
+                    date_from: {
+                        required: true, 
+                    }, 
+                    date_to: {
+                        required: true, 
+                    }, 
+                    general_instruction: {
+                        required: true, 
+                    }, 
+                    final_greating: {
+                        required: true, 
+                    } 
+                },
+                messages: {
+                    name: {
+                        required: "Name is Required" 
+                    } , 
+                    description: {
+                        required: "Description is Required" 
+                    } , 
+                    date_from: {
+                         required: "Effective Date  is Required" 
+                    }, 
+                    date_to: {
+                         required: "Effective Date  is Required" 
+                    }, 
+                    general_instruction: {
+                         required: "General Instruction is Required" 
+                    }, 
+                    final_greating: {
+                       required: "Final Greating is Required" 
+                     } 
+                },
+                debug: true,
+
+                errorPlacement: function (error, element) {
+                    var name = element.attr('name');
+                    console.log(element[0].tagName);
+                    var type = element[0].tagName;
+                    var errorSelector = '.form-control-feedback[for="' + name + '"]';
+                    var $element = $(errorSelector);
+                    if ($element.length) {
+                        $(errorSelector).html(error.html());
+                    } else {
+                        if (type == 'SELECT') {
+                            error.insertAfter(element.next());
+                        }
+                        else {
+                            error.insertAfter(element);
+                        }
+                    }
+                },
+                submitHandler: function (element) { 
+                    if(checkCategoryList() && checkJobList() && checkScoreList()){
+                        var param = {};
+                        param["message"] = "Are you sure want to save this setup ?";
+                        param["title"] = "Save Job Mapping Setup";
+                        drawDialogConfirm(element,param,'submit_form');
+                        $('#dialog_simple').dialog('open');
+                       
+                    }else{
+                        if(!checkCategoryList()){
+                            alert("Category List is Required");
+                        }else if(!checkJobList()){
+                            alert("Job List is Required");
+                        }else if(!checkScoreList()){
+                            alert("Score is Required");
+                        }else{ 
+                            return false;
+                        }
+                    }
+                }
+            });
+        } 
+
+        function checkCategoryList(){
+            var categoryList = $(".sub_category_name");
+            var totalFilledCategory = 0; 
+            for (var i = 0; i < categoryList.length; i++) {
+                console.log($(categoryList[i]).val());
+                if($(categoryList[i]).val() != ""){
+                    totalFilledCategory++;
+                } 
+
+            }
+            console.log(categoryList.length);
+            console.log(totalFilledCategory); 
+
+            if(categoryList.length === 0 || categoryList.length !== totalFilledCategory){ 
+                return false;
+            }else{
+               return true;
+            }  
+        }
         
+        function checkJobList(){
+            var jobList = $(".job_name");
+            var totalFilledJob = 0; 
+            for (var i = 0; i < jobList.length; i++) {
+                console.log($(jobList[i]).val());
+                if($(jobList[i]).val() != ""){
+                    totalFilledJob++;
+                } 
+
+            }
+            console.log(jobList.length);
+            console.log(totalFilledJob); 
+            if(jobList.length === 0 || jobList.length !== totalFilledJob){ 
+                return false;
+            }else{
+               return true;
+            }  
+        }
+
+        function checkScoreList(){
+            var scoreList = $(".pass_score");
+            var totalFilledScore = 0; 
+            for (var i = 0; i < scoreList.length; i++) {
+                console.log($(scoreList[i]).val());
+                if($(scoreList[i]).val() != ""){
+                    totalFilledScore++;
+                }  
+            }
+            console.log(scoreList.length);
+            console.log(totalFilledScore); 
+            if(scoreList.length === 0 || scoreList.length !== totalFilledScore){ 
+                return false;
+            }else{
+               return true;
+            }  
+        }
         $('#date_from').datepicker({
                 defaultDate: "+1d",
                 minDate:1,
@@ -297,7 +436,7 @@
         $('#add-row-categorylist').on( 'click', function (e) {
              e.preventDefault();
             table_categorylist.row.add( [
-                '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label>',
+                '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" name="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label>',
                 '<label class="input"><input type="input" id="sub_category_name" class="sub_category_name" name="sub_category_name[]" placeholder="Category Name"><input type="hidden" name="category_id[]" class="category_id" id="category_id"> <i class="icon-append fa fa-search"></i></label>'
             ] ).draw( false );
 

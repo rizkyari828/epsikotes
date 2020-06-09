@@ -116,9 +116,7 @@
 
 <script src="{{asset('assets/js/plugin/ckeditor/ckeditor.js')}}"></script>
 
-<script src="{{asset('assets/js/misc.js')}}"></script>
-
-<script src="{{asset('assets/js/plugin/jquery-form/jquery-form.min.js')}}"></script>
+<script src="{{asset('assets/js/misc.js')}}"></script> 
 
 <!--[if IE 8]>
 <h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
