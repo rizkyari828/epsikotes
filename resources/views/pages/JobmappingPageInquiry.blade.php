@@ -141,13 +141,25 @@
                 -->
                 <header>
                     <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
-                    <h2> Job Mapping Inquiry </h2>
+                    <h2> Job Mapping Inquiry </h2> 
 
                 </header>
 
                 <!-- widget div-->
-                <div>
+                <div> 
+                    @if(session()->has('success'))
+                      <div class="alert alert-success alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button> 
+                          <strong>{{ session()->get('success') }}</strong>
+                      </div>
+                    @endif
 
+                    @if(session()->has('error'))
+                      <div class="alert alert-danger alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button> 
+                        <strong>{{ session()->get('error') }}</strong>
+                      </div>
+                    @endif
                     <!-- widget edit box -->
                     <div class="jarviswidget-editbox">
                         <!-- This area used as dropdown edit box -->

@@ -9,7 +9,7 @@ use App\Model\Job;
 use App\Model\Jobmapping;
 use App\Model\Categories;
 
-
+use Session;
 
 class JobmappingAddPage extends Controller
 {
@@ -185,7 +185,7 @@ class JobmappingAddPage extends Controller
 
         }
         /* end insert */
-
+        Session::put('success', 'Save Successfull!');
         return redirect('/workspace#jobmappingsetup');
     }
 
