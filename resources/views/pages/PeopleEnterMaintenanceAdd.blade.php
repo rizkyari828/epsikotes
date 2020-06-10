@@ -356,7 +356,8 @@
                     atLeastOneNumber: true,
                     atLeastOneSymbol: true,
                     minlength: 8,
-                    maxlength: 40
+                    maxlength: 40,
+                    required: true
                 },
                 CONFIRM_PASSWORD : {
                     equalTo : "#password"
