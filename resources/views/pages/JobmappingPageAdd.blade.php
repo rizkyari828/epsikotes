@@ -183,7 +183,7 @@
                                                             </label>
                                                         </th>
                                                         <th width="30%"> Job Name </th>
-                                                        <th width="10%"> Inductive Reasongin </th>
+                                                        <th width="10%"> Inductive Reasoning </th>
                                                         <th width="10%"> Deductive Reasoning </th>
                                                         <th width="15%"> Reading Comp </th>
                                                         <th width="15%"> Arithmetic Ability </th>
