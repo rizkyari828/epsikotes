@@ -39,7 +39,7 @@
                     <!-- widget content -->
                     <div class="widget-body no-padding">
 
-                        <form action="{{url('')}}/normasetupProcess" method="post" id="norma-form" class="smart-form" novalidate="novalidate">
+                        <form action="{{url('')}}/normasetupProcess" method="post" id="norma-form" class="smart-form" novalidate="novalidate" onsubmit="return validateNormaSetupForm()">
                             <header>
                                 Norma Setup
                             </header>
@@ -240,9 +240,6 @@
             },
             // Rules for form validation
             rules : {
-                sub_category_name : {
-                    required : true
-                },
                 description : {
                     required : true
                 },
@@ -259,9 +256,6 @@
 
             // Messages for form validation
             messages : {
-                sub_category_name : {
-                    required : 'Category Name must be filled'
-                },
                 description : {
                     required : 'Description must be filled'
                 },
@@ -460,8 +454,22 @@
 
             
         });
-        
-        //End 
+
+        function validateNormaSetupForm() {
+            $category_id_component = $('#category_id');
+            let category_id_value = $category_id_component.val();
+            if (category_id_value === "" || category_id_value == null) {
+                $component = $('#sub_category_name');
+                if (!$component.parent().hasClass("state-error")) {
+                    $component.parent().removeClass('state-success').addClass("state-error");
+                    $component.parent().parent().append('<em id="sub-category-name-error">Category name must be selected from selections</em>')
+                    $component.removeClass('valid');
+                }
+                return false;
+            }
+        }
+
+        //End
 
     </script>
 
