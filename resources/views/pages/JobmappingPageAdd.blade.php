@@ -118,14 +118,17 @@
                                 </div>
                             </fieldset>
 
-                            <header>
-                                Category List
+                            <header >
+                                Category List <br> 
+                                <div class="category-error"></div>
                             </header>
+
                             <fieldset>
                                 
                                 <div class="row">
                                     <section class="col col-12">
                                         <div class="product-content product-wrap clearfix product-deatil padding">
+
                                             <table class="table table-striped table-bordered table-hover table-checkable" width="100%" id="table-category-list">
                                                 <thead>
                                                     <tr role="row" class="heading">
@@ -165,8 +168,9 @@
                                     </section>
                                 </div>
                             </fieldset>
-                            <header>
-                                Job Profile
+                            <header >
+                                Job Profile <br> 
+                                <div class="job-error"></div>
                             </header>
                             <fieldset>
                                 
@@ -317,7 +321,7 @@
                     }
                 },
                 submitHandler: function (element) { 
-                    if(checkCategoryList() && checkJobList() && checkScoreList()){
+                    if(checkGenInfo() && checkFinalGreating() && checkCategoryList() && checkCategoryList() && checkJobList() && checkScoreList()){
                         var param = {};
                         param["message"] = "Are you sure want to save this setup ?";
                         param["title"] = "Save Job Mapping Setup";
@@ -326,11 +330,12 @@
                        
                     }else{
                         if(!checkCategoryList()){
-                            alert("Category List is Required");
+                            $(".category-error").append('<em id="sub-category-name-error" class="error">Category List Is Required</em>'); 
                         }else if(!checkJobList()){
-                            alert("Job List is Required");
+                            $(".job-error").append('<em id="sub-category-name-error"  class="error">Job List Is Required</em>'); 
                         }else if(!checkScoreList()){
-                            alert("Score is Required");
+                           $(".job-error").html("");
+                           $(".job-error").append('<em id="sub-category-name-error"  class="error">Score Is Required</em>'); 
                         }else{ 
                             return false;
                         }
@@ -339,6 +344,32 @@
             });
         } 
 
+        function checkFinalGreating(){
+            $category_id_component = $('#final_greating_id');
+            let category_id_value = $category_id_component.val();
+            if (category_id_value === "" || category_id_value == null) {
+                $component = $('#final_greating');
+                if (!$component.parent().hasClass("state-error")) {
+                    $component.parent().removeClass('state-success').addClass("state-error");
+                    $component.parent().parent().append('<em id="sub-category-name-error">Final Greating must be selected from selections</em>')
+                    $component.removeClass('valid');
+                }
+                return false;
+            }
+        }
+        function checkGenInfo(){
+            $category_id_component = $('#general_instruction_id');
+            let category_id_value = $category_id_component.val();
+            if (category_id_value === "" || category_id_value == null) {
+                $component = $('#general_instruction');
+                if (!$component.parent().hasClass("state-error")) {
+                    $component.parent().removeClass('state-success').addClass("state-error");
+                    $component.parent().parent().append('<em id="sub-category-name-error">General Instruction must be selected from selections</em>')
+                    $component.removeClass('valid');
+                }
+                return false;
+            }
+        }
         function checkCategoryList(){
             var categoryList = $(".sub_category_name");
             var totalFilledCategory = 0; 

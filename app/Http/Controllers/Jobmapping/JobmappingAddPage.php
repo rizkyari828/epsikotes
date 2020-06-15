@@ -28,7 +28,7 @@ class JobmappingAddPage extends Controller
         $isDisablePast = '';
         $page = '';
 
-        $categoryProfile = $this->buildCategoryProfileScore();
+       
 
         if(!$jobMappingId){
             $valeInput['JOB_MAPPING_ID'] = '';
@@ -54,13 +54,8 @@ class JobmappingAddPage extends Controller
             $paramFilter['isFuture'] = $isFuture->isEmpty() ? 0 : 1;
             $paramFilter['isPast'] = $isPast->isEmpty() ? 0 : 1;
             $paramFilter['isCurrent'] = $isCurrent->isEmpty() ? 0 : 1;
-            $jobmappingsetup = $this->getJobMappingSetup($jobMappingId);
-            $jobmappingcategory = $this->getCategoryList($jobmappingsetup['VERSION_ID'],$jobMappingId);
-            $jobprofile = $this->getJobProfileScore($jobmappingsetup['VERSION_ID'],$jobMappingId);
-
-            $valeInput = $jobmappingsetup;
-            $valeInput += $jobmappingcategory;
-            $valeInput += $jobprofile;
+            $jobmappingsetup = $this->getJobMappingSetup($jobMappingId); 
+            
             if($paramFilter['isCurrent']){
                 $isDisableCurrent = 'readonly';
                 $isDisable = 'readonly';
@@ -70,7 +65,16 @@ class JobmappingAddPage extends Controller
             }else if($paramFilter['isFuture']){
                 // $isDisable = 'readonly';
             }
+
+            $jobmappingcategory = $this->getCategoryList($jobmappingsetup['VERSION_ID'],$jobMappingId,$isDisablePast, $isDisableCurrent,$isDisable);
+            $jobprofile = $this->getJobProfileScore($jobmappingsetup['VERSION_ID'],$jobMappingId,$isDisablePast, $isDisableCurrent,$isDisable);
+
+            $valeInput = $jobmappingsetup;
+            $valeInput += $jobmappingcategory;
+            $valeInput += $jobprofile;
         }
+
+         $categoryProfile = $this->buildCategoryProfileScore($isDisablePast, $isDisableCurrent,$isDisable);
 
 
 
@@ -99,7 +103,7 @@ class JobmappingAddPage extends Controller
         echo json_encode($records);
     }
 
-    public function buildCategoryProfileScore(){
+    public function buildCategoryProfileScore($isDisablePast = '',$isDisableCurrent='',$isDisable=''){
 
          $Categories = new Categories();
         $records = array();
@@ -110,7 +114,7 @@ class JobmappingAddPage extends Controller
         foreach ($Categories->getCategory('') as $indexCategory => $rowCategory ){
             $categoryName =  str_replace(' ', '', $rowCategory->category_name);
 
-              $jobMappingCategoryScoreList[$categoryName] = '<label class="input"><input type="number" name="pass_score['.$rowCategory->category_id.'][]" placeholder="Raw Score" class="pass_score"></label><label class="checkbox"><input type="checkbox" name="mandatory['.$rowCategory->category_id.'][]" id="mandatory"> <i></i><br/> Is Mandatory</label>';
+              $jobMappingCategoryScoreList[$categoryName] = '<label class="input"><input type="number" name="pass_score['.$rowCategory->category_id.'][]" placeholder="Raw Score" class="pass_score" ></label><label class="checkbox"><input type="checkbox" name="mandatory['.$rowCategory->category_id.'][]" id="mandatory"> <i></i><br/> Is Mandatory</label>';
         }
 
 
@@ -290,7 +294,7 @@ class JobmappingAddPage extends Controller
         return $valeInput;
     }
 
-    public function getCategoryList($versionId,$jobMappingId){
+    public function getCategoryList($versionId,$jobMappingId,$isDisablePast = '',$isDisableCurrent='',$isDisable=''){
         $Jobmapping = new Jobmapping();
         $paramFilter['versionId'] = $versionId;
         $valeInput = array();
@@ -314,8 +318,8 @@ class JobmappingAddPage extends Controller
         foreach ($Jobmapping->getJobCategoryList($paramFilter) as $indexJobmapping => $rowJobmapping ){
 
             $rowTable .= '<tr>';
-            $rowTable .='<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label></td>';
-            $rowTable .='<td><label class="input"><input type="input" id="sub_category_name" class="sub_category_name" name="sub_category_name[]" value="'.$rowJobmapping->category_name.'" placeholder="Category Name"><input type="hidden" name="category_id[]" class="category_id" value="'.$rowJobmapping->category_id.'" id="category_id"> <i class="icon-append fa fa-search"></i></label></td>';
+            $rowTable .='<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" '.$isDisablePast.' '.$isDisableCurrent.' '. $isDisable.'/> <span></span> </label></td>';
+            $rowTable .='<td><label class="input"><input type="input" id="sub_category_name" class="sub_category_name" name="sub_category_name[]" value="'.$rowJobmapping->category_name.'" placeholder="Category Name" '.$isDisablePast.' '.$isDisableCurrent.' '. $isDisable.'><input type="hidden" name="category_id[]" class="category_id" value="'.$rowJobmapping->category_id.'" id="category_id"> <i class="icon-append fa fa-search"></i></label></td>';
 
 
             $rowTable .= '</tr>';
@@ -358,7 +362,7 @@ class JobmappingAddPage extends Controller
         return $valeInput;
     }
 
-    public function getJobProfileScore($versionId,$jobMappingId){
+    public function getJobProfileScore($versionId,$jobMappingId,$isDisablePast = '',$isDisableCurrent='',$isDisable=''){
 
          $Jobmapping = new Jobmapping();
         $paramFilter['versionId'] = $versionId;
@@ -384,16 +388,18 @@ class JobmappingAddPage extends Controller
         foreach ($Jobmapping->getJobProfile($paramFilter) as $indexJobmapping => $rowJobmapping ){
 
             $rowTable .= '<tr>';
-            $rowTable .='<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label></td>';
+            $rowTable .='<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes"
+            '.$isDisablePast.' '.$isDisableCurrent.' '. $isDisable.' /> <span></span> </label></td>';
 
-            $rowTable .= '<td><label class="input"><input type="text" name="job_name[]" value="'.$rowJobmapping->job_name.'" class="job_name" placeholder="Job Name"><input type="hidden" name="job_id[]" value="'.$rowJobmapping->job_id.'"  class="job_id" id="job_id"> <i class="icon-append fa fa-search"></i></label></td>';
+            $rowTable .= '<td><label class="input"><input type="text" name="job_name[]" value="'.$rowJobmapping->job_name.'" class="job_name" placeholder="Job Name" '.$isDisablePast.' '.$isDisableCurrent.' '. $isDisable.'>
+            <input type="hidden" name="job_id[]" value="'.$rowJobmapping->job_id.'"  class="job_id" id="job_id" '.$isDisablePast.' '.$isDisableCurrent.' '. $isDisable.'> <i class="icon-append fa fa-search"></i></label></td>';
 
             $paramFilter['jobProfileId'] = $rowJobmapping->job_profile_id;
 
             foreach ($Jobmapping->getJobProfileScore($paramFilter)  as $key => $rowJobmappingScore) {
                 $isChecked = $rowJobmappingScore->mandatory == 1 ? 'checked' : '';
 
-                $rowTable .=   '<td><label class="input"><input type="number" name="pass_score['.$rowJobmappingScore->category_id.'][]" placeholder="Raw Score" value="'.$rowJobmappingScore->pass_score.'"  class="pass_score"></label><label class="checkbox"><input type="checkbox" name="mandatory['.$rowJobmappingScore->category_id.'][]" id="mandatory" '.$isChecked .' > <i></i><br/> Is Mandatory</label></td>';
+                $rowTable .=   '<td><label class="input"><input type="number" name="pass_score['.$rowJobmappingScore->category_id.'][]" placeholder="Raw Score" value="'.$rowJobmappingScore->pass_score.'"  class="pass_score" '.$isDisablePast.' '.$isDisableCurrent.' '. $isDisable.'></label><label class="checkbox"><input type="checkbox" name="mandatory['.$rowJobmappingScore->category_id.'][]" id="mandatory" '.$isChecked .' '.$isDisablePast.' '.$isDisableCurrent.' '. $isDisable.'> <i></i><br/> Is Mandatory</label></td>';
             }
 
             $rowTable .= '<td><label class="input"><input type="number" value="'.$rowJobmapping->total_pass_score.'"  readonly name="total_pass_score[]" id="total_pass_score" class="total_pass_score" placeholder=""> </label></td>';
