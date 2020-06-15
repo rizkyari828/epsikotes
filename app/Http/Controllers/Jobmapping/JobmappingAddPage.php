@@ -147,8 +147,9 @@ class JobmappingAddPage extends Controller
              $maxVersionNumber = $Jobmapping->getMaxVersion($jobMappingId);
              $version = $maxVersionNumber[0]->version_number  +1;
         } else if($param['version_number'] > 0){
-            $version = $param['version_number'] + 1;
-        }
+            $maxVersionNumber = $Jobmapping->getMaxVersion($jobMappingId);
+            $version = $maxVersionNumber[0]->version_number  +1;
+        } 
         /* start insert job mapping versions */
         $paramInsertJobMappingVersions['JOB_MAPPING_ID'] = $idJobMapping;
         $paramInsertJobMappingVersions['VERSION_NUMBER'] = $version;
