@@ -142,10 +142,16 @@ class JobmappingAddPage extends Controller
             $idJobMapping = $jobMappingId;
         }
         /* end insert */
-
+        $version = 0;
+        if($param['version_number'] == "New"){
+             $maxVersionNumber = $Jobmapping->getMaxVersion($jobMappingId);
+             $version = $maxVersionNumber[0]->version_number  +1;
+        } else if($param['version_number'] > 0){
+            $version = $param['version_number'] + 1;
+        }
         /* start insert job mapping versions */
         $paramInsertJobMappingVersions['JOB_MAPPING_ID'] = $idJobMapping;
-        $paramInsertJobMappingVersions['VERSION_NUMBER'] = 1;
+        $paramInsertJobMappingVersions['VERSION_NUMBER'] = $version;
         $paramInsertJobMappingVersions['date_from'] = isset($param['date_from']) ? date( "Y-m-d", strtotime( $param['date_from'] ) ) : date( "Y-m-d");
         $paramInsertJobMappingVersions['DATE_TO'] =  isset($param['date_to']) ? date( "Y-m-d", strtotime( $param['date_to'] ) ) : date( "Y-m-d", strtotime("+1 day")) ;
         $paramInsertJobMappingVersions['DESCRIPTION'] = $param['description'];
@@ -235,11 +241,10 @@ class JobmappingAddPage extends Controller
                 }
             }else{
 
-                if($paramFilter['isFuture'] && ($maxVersionNumber[0]->version_number == $rowJobmapping->VERSION_NUMBER)){
+                if($paramFilter['isFuture'] && ($maxVersionNumber[0]->version_number == $rowJobmapping->VERSION_NUMBER)){ 
 
-                    $versionNumber .= '<option value="'.($maxVersionNumber[0]->version_number-1).'" selected>'.($maxVersionNumber[0]->version_number-1).'</option>';
-
-                    $versionNumber .= '<option value="'.$rowJobmapping->VERSION_NUMBER.'">'.$rowJobmapping->VERSION_NUMBER.'</option>';
+                    $versionNumber .= '<option value="'.$rowJobmapping->VERSION_NUMBER.'" selected>'.$rowJobmapping->VERSION_NUMBER.'</option>';
+                    $versionNumber .= '<option value=New>New</option>';
                 }else if($paramFilter['isCurrent'] && ($maxVersionNumber[0]->version_number == $rowJobmapping->VERSION_NUMBER)){
                     $versionNumber .= '<option value="'.$rowJobmapping->VERSION_NUMBER.'" selected>'.$rowJobmapping->VERSION_NUMBER.'</option>';
                     $versionNumber .= '<option value=New>New</option>';

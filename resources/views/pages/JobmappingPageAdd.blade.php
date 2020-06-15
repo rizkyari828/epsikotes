@@ -336,7 +336,7 @@
                         }else if(!checkScoreList()){
                            $(".job-error").html("");
                            $(".job-error").append('<em id="sub-category-name-error"  class="error">Score Is Required</em>'); 
-                        }else{ 
+                        }else{  
                             return false;
                         }
                     }
@@ -356,6 +356,7 @@
                 }
                 return false;
             }
+             return true;
         }
         function checkGenInfo(){
             $category_id_component = $('#general_instruction_id');
@@ -369,6 +370,7 @@
                 }
                 return false;
             }
+             return true;
         }
         function checkCategoryList(){
             var categoryList = $(".sub_category_name");
