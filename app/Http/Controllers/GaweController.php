@@ -12,32 +12,31 @@ class GaweController extends Controller
     public function createSchedule(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'candidate.applicant_id' => 'required|numeric',
-            'candidate.email' => 'required|email|max:127',
-            'candidate.user_name' => 'required|max:127',
-            'candidate.full_name' => 'required|max:127',
-            'candidate.gender' => 'required|in:MALE,FEMALE',
-            'candidate.ktp' => 'required|digits:16',
-            'candidate.address' => 'required|max:127',
-            'candidate.coverage_id' => 'required|numeric',
-            'candidate.last_education_id' => 'required|in:2,4,5,6,7,8,9,10',
-            'candidate.birth_date' => 'required|date',
-            'candidate.phone_number' => 'required|max:32',
-            'candidate.plan_start_date' => 'required|date',
-            'candidate.plan_end_date' => 'required|date',
-            'candidate.job_id' => 'required|numeric',
-            'candidate.network_id' => 'required|numeric',
-            'candidate.sim_id' => 'required|numeric',
-            'candidate.undangan_id' => 'required|numeric'
+            'kandidat.applicant_id' => 'required|numeric',
+            'kandidat.email' => 'required|email|max:127',
+            'kandidat.full_name' => 'required|max:127',
+            'kandidat.gender' => 'required|in:MALE,FEMALE',
+            'kandidat.ktp' => 'required|digits:16',
+            'kandidat.address' => 'required|max:127',
+            'kandidat.coverage_id' => 'required|numeric',
+            'kandidat.last_education_id' => 'required|in:2,4,5,6,7,8,9,10',
+            'kandidat.birth_date' => 'required|date',
+            'kandidat.phone_number' => 'required|max:32',
+            'kandidat.plan_start_date' => 'required|date',
+            'kandidat.plan_end_date' => 'required|date',
+            'kandidat.job_id' => 'required|numeric',
+            'kandidat.network_id' => 'required|numeric',
+            'kandidat.sim_id' => 'required|numeric',
+            'kandidat.id_schedule' => 'required|numeric'
         ]);
         if ($validator->fails()) {
             return $this->errorResponse($validator->errors());
         }
-        $candidate = $request->get('candidate');
-        $applicant = Applicant::firstOrNew(['APPLICANT_ID' => $candidate['applicant_id']]);
-        $candidate['last_educations'] = $candidate['last_education_id'];
-        $candidate['city'] = $candidate['coverage_id'];
-        $applicant->fill($candidate);
+        $kandidat = $request->get('kandidat');
+        $applicant = Applicant::firstOrNew(['APPLICANT_ID' => $kandidat['applicant_id']]);
+        $kandidat['last_educations'] = $kandidat['last_education_id'];
+        $kandidat['city'] = $kandidat['coverage_id'];
+        $applicant->fill($kandidat);
 //        $applicant->save();
         return $this->successResponse("Data received successfully", $applicant);
     }
