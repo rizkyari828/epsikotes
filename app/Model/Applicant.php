@@ -13,14 +13,34 @@ use Illuminate\Support\Facades\DB;
  */
 class Applicant extends Model
 {
-    protected $table = 'psi.mst_applicant'; 
+    protected $table = 'psi.mst_applicant';
     protected $primaryKey = 'CANDIDATE_ID';
     public $timestamps = false;
+
+    protected $fillable = [
+        'APPLICANT_ID',
+        'DATA_SOURCE',
+        'CABANG_ID',
+        'USER_NAME',
+        'FULL_NAME',
+        'BIRTH_DATE',
+        'GENDER',
+        'KTP',
+        'ADDRESS',
+        'CITY',
+        'PHONE_NUMBER',
+        'EMAIL',
+        'LAST_EDUCATIONS',
+    ];
+
+    protected $hidden = [
+        'PASSWORD',
+    ];
 
     public function Schedules(){
         return $this->hasOne('App\Model\Schedules');
     }
-    
+
 	public function getAllAplicant($paramFilter){
 
 		$applicant =  DB::table('psi.mst_applicant')
@@ -110,12 +130,12 @@ class Applicant extends Model
 
                 }
             }
-           
+
         }
         $data = $applicant->select('mst_applicant.candidate_id','mst_applicant.applicant_id','mst_applicant.user_name','mst_applicant.full_name','mst_applicant.birth_date','mst_applicant.gender','mst_applicant.ktp','mst_applicant.address','mst_applicant.city','mst_applicant.phone_number','mst_applicant.last_educations','psy_schedule_histories.plan_start_date','psy_schedule_histories.plan_end_date','psy_schedule_histories.actual_start_date','psy_schedule_histories.reschedule_seq','psy_schedule_histories.reschedule_reason_code','psy_schedule_histories.reschedule_reason_text','psy_schedule_histories.last_updated_by','psy_schedule_histories.last_update_date','psy_schedule_histories.schedule_history_id','psy_schedule_histories.test_status')
          ->orderBy('psy_schedule_histories.plan_start_date', 'desc')
 		 ->get();
-		
+
         return $data;
 
 	}
@@ -144,10 +164,10 @@ class Applicant extends Model
     }
 
     public function getUserId($userId){
-        
+
         $applicant =  DB::table('psi.mst_applicant')
         ->join('psi.psy_schedules','psy_schedules.candidate_id','=','mst_applicant.candidate_id')
-        ->join('psi.psy_schedule_histories','psy_schedule_histories.schedule_id','=','psy_schedules.schedule_id')        
+        ->join('psi.psy_schedule_histories','psy_schedule_histories.schedule_id','=','psy_schedules.schedule_id')
         ->where('mst_applicant.applicant_id',$userId)
         ->whereRaw('(12 * (YEAR(NOW()) - YEAR(psy_schedule_histories.plan_start_date)) + (MONTH(NOW()) - MONTH(psy_schedule_histories.plan_start_date))) < (select meaning from psi.mst_lookup_dtl where detail_code = ?)', 'GRACE_PERIOD')
         ->where('psy_schedule_histories.test_status','!=','CANCEL')
@@ -160,7 +180,7 @@ class Applicant extends Model
     }
 
     public function getExistsUserid($userId){
-        $applicant =  DB::table('psi.mst_applicant')        
+        $applicant =  DB::table('psi.mst_applicant')
         ->where('mst_applicant.applicant_id',$userId)
         ->select('mst_applicant.candidate_id')
         ->first();
