@@ -321,6 +321,7 @@
                     }
                 },
                 submitHandler: function (element) { 
+                   
                     if(checkGenInfo() && checkFinalGreating() && checkCategoryList() && checkCategoryList() && checkJobList() && checkScoreList()){
                         var param = {};
                         param["message"] = "Are you sure want to save this setup ?";
@@ -330,8 +331,10 @@
                        
                     }else{
                         if(!checkCategoryList()){
+                            $(".category-error").html(""); 
                             $(".category-error").append('<em id="sub-category-name-error" class="error">Category List Is Required</em>'); 
                         }else if(!checkJobList()){
+                             $(".job-error").html("");
                             $(".job-error").append('<em id="sub-category-name-error"  class="error">Job List Is Required</em>'); 
                         }else if(!checkScoreList()){
                            $(".job-error").html("");

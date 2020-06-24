@@ -114,7 +114,7 @@ class JobmappingAddPage extends Controller
         foreach ($Categories->getCategory('') as $indexCategory => $rowCategory ){
             $categoryName =  str_replace(' ', '', $rowCategory->category_name);
 
-              $jobMappingCategoryScoreList[$categoryName] = '<label class="input"><input type="number" name="pass_score['.$rowCategory->category_id.'][]" placeholder="Raw Score" class="pass_score" ></label><label class="checkbox"><input type="checkbox" name="mandatory['.$rowCategory->category_id.'][]" id="mandatory"> <i></i><br/> Is Mandatory</label>';
+              $jobMappingCategoryScoreList[$categoryName] = '<label class="input"><input type="number" min="0" name="pass_score['.$rowCategory->category_id.'][]" placeholder="Raw Score" class="pass_score" ></label><label class="checkbox"><input type="checkbox" name="mandatory['.$rowCategory->category_id.'][]" id="mandatory"> <i></i><br/> Is Mandatory</label>';
         }
 
 
@@ -405,7 +405,7 @@ class JobmappingAddPage extends Controller
             foreach ($Jobmapping->getJobProfileScore($paramFilter)  as $key => $rowJobmappingScore) {
                 $isChecked = $rowJobmappingScore->mandatory == 1 ? 'checked' : '';
 
-                $rowTable .=   '<td><label class="input"><input type="number" name="pass_score['.$rowJobmappingScore->category_id.'][]" placeholder="Raw Score" value="'.$rowJobmappingScore->pass_score.'"  class="pass_score" '.$isDisablePast.' '.$isDisableCurrent.' '. $isDisable.'></label><label class="checkbox"><input type="checkbox" name="mandatory['.$rowJobmappingScore->category_id.'][]" id="mandatory" '.$isChecked .' '.$isDisablePast.' '.$isDisableCurrent.' '. $isDisable.'> <i></i><br/> Is Mandatory</label></td>';
+                $rowTable .=   '<td><label class="input"><input type="number" min="0" name="pass_score['.$rowJobmappingScore->category_id.'][]" placeholder="Raw Score" value="'.$rowJobmappingScore->pass_score.'"  class="pass_score" '.$isDisablePast.' '.$isDisableCurrent.' '. $isDisable.'></label><label class="checkbox"><input type="checkbox" name="mandatory['.$rowJobmappingScore->category_id.'][]" id="mandatory" '.$isChecked .' '.$isDisablePast.' '.$isDisableCurrent.' '. $isDisable.'> <i></i><br/> Is Mandatory</label></td>';
             }
 
             $rowTable .= '<td width="10%"><label class="input"><input type="number" value="'.$rowJobmapping->total_pass_score.'"  readonly name="total_pass_score[]" id="total_pass_score" class="total_pass_score" placeholder=""> </label></td>';
