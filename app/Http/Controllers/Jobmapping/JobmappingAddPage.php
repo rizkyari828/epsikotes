@@ -408,7 +408,7 @@ class JobmappingAddPage extends Controller
                 $rowTable .=   '<td><label class="input"><input type="number" name="pass_score['.$rowJobmappingScore->category_id.'][]" placeholder="Raw Score" value="'.$rowJobmappingScore->pass_score.'"  class="pass_score" '.$isDisablePast.' '.$isDisableCurrent.' '. $isDisable.'></label><label class="checkbox"><input type="checkbox" name="mandatory['.$rowJobmappingScore->category_id.'][]" id="mandatory" '.$isChecked .' '.$isDisablePast.' '.$isDisableCurrent.' '. $isDisable.'> <i></i><br/> Is Mandatory</label></td>';
             }
 
-            $rowTable .= '<td><label class="input"><input type="number" value="'.$rowJobmapping->total_pass_score.'"  readonly name="total_pass_score[]" id="total_pass_score" class="total_pass_score" placeholder=""> </label></td>';
+            $rowTable .= '<td width="10%"><label class="input"><input type="number" value="'.$rowJobmapping->total_pass_score.'"  readonly name="total_pass_score[]" id="total_pass_score" class="total_pass_score" placeholder=""> </label></td>';
 
             $rowTable .= '</tr>';
 
