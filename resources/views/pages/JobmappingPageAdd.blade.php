@@ -73,7 +73,7 @@
                                         <label class="label col col-2">Description</label>
                                             <div class="col col-8">
                                                 <label class="textarea">
-                                                    <textarea rows="5" name="description" id="description"   placeholder="Description"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} required>{!! $valeInput['DESCRIPTION'] !!}</textarea>
+                                                    <textarea rows="5" name="description" id="description"   placeholder="Description"   {{$isDisableCurrent}} {{$isDisablePast}} required>{!! $valeInput['DESCRIPTION'] !!}</textarea>
                                                 </label>
                                             </div>
                                     </section>
@@ -81,12 +81,12 @@
                                         <label class="label col col-2">Effective Date</label>
                                             <div class="col col-4">
                                                 <label class="input"> <i class="icon-append fa fa-calendar"></i>
-                                                    <input type="text" name="date_from" id="date_from" value="{{$valeInput['DATE_FROM']}}"   placeholder="From"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} required>
+                                                    <input type="text" name="date_from" id="date_from" value="{{$valeInput['DATE_FROM']}}"   placeholder="From"  {{$isDisableCurrent}} {{$isDisablePast}} required>
                                                 </label>
                                             </div>
                                             <div class="col col-4">
                                                 <label class="input"> <i class="icon-append fa fa-calendar"></i>
-                                                    <input type="text" name="date_to" value="{{$valeInput['DATE_TO']}}"   id="date_to" placeholder="To"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} required>
+                                                    <input type="text" name="date_to" value="{{$valeInput['DATE_TO']}}"   id="date_to" placeholder="To"  {{$isDisableCurrent}} {{$isDisablePast}} required>
                                                 </label>
                                             </div>
                                     </section>
@@ -97,7 +97,7 @@
                                             <div class="col col-8">
                                                 <label class="input">
                                                     <i class="icon-append fa fa-search"></i>
-                                                    <input type="text" name="general_instruction_name" value="{{$valeInput['GENERAL_INSTRUCTION_NAME']}}"  id="general_instruction" placeholder="General Instruction"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} required>
+                                                    <input type="text" name="general_instruction_name" value="{{$valeInput['GENERAL_INSTRUCTION_NAME']}}"  id="general_instruction" placeholder="General Instruction"  {{$isDisableCurrent}} {{$isDisablePast}} required>
                                                     <input type="hidden" name="general_instruction" value="{{$valeInput['GENERAL_INSTRUCTION_ID']}}"  id="general_instruction_id">
 
                                                 </label>
@@ -110,7 +110,7 @@
                                             <div class="col col-8">
                                                 <label class="input">
                                                     <i class="icon-append fa fa-search"></i>
-                                                    <input type="text" name="final_greating" id="final_greating" value="{{$valeInput['FINAL_GREATING']}}"  placeholder="Final Greating"  {{$isDisable}} {{$isDisableCurrent}} {{$isDisablePast}} required>
+                                                    <input type="text" name="final_greating" id="final_greating" value="{{$valeInput['FINAL_GREATING']}}"  placeholder="Final Greating"  {{$isDisableCurrent}} {{$isDisablePast}} required>
                                                      <input type="hidden" name="final_greating_id" value="{{$valeInput['FINAL_GREATING_ID']}}"  id="final_greating_id">
                                                 </label>
                                             </div>
@@ -229,7 +229,7 @@
                             <footer>
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="hidden" name="JOB_MAPPING_ID" value="{{$valeInput['JOB_MAPPING_ID']}}">
-                                <?php if(!$isDisable && !$isDisablePast && !$isDisableCurrent){?>
+                                <?php if(!$isDisablePast && !$isDisableCurrent){?>
                                 <button type="submit" class="btn btn-primary btn-submit">
                                     <i class='fa fa-save'></i>&nbsp;
                                     Submit

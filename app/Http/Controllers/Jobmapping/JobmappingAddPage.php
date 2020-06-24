@@ -58,12 +58,12 @@ class JobmappingAddPage extends Controller
             
             if($paramFilter['isCurrent']){
                 $isDisableCurrent = 'readonly';
-                $isDisable = 'readonly';
+                // $isDisable = 'readonly';
             }else if($paramFilter['isPast']){
                 $isDisablePast = 'readonly';
-                $isDisable = 'readonly';
-            }else if($paramFilter['isFuture']){
                 // $isDisable = 'readonly';
+            }else if($paramFilter['isFuture']){
+                $isDisable = 'readonly';
             }
 
             $jobmappingcategory = $this->getCategoryList($jobmappingsetup['VERSION_ID'],$jobMappingId,$isDisablePast, $isDisableCurrent,$isDisable);
