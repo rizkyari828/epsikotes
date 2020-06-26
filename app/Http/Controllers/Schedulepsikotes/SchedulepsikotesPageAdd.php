@@ -571,18 +571,18 @@ class SchedulepsikotesPageAdd extends Controller
                  //    $schedules->insertTestCategory($valeInputCategoryList);
                  // }
 
-                $applicantName = $applicantList->result[0]->applicant_name;
-                $planStartDate = $param['plan_start_date'];
-                $planEndDate =  $param['plan_end_date'];
+//                $applicantName = $applicantList->result[0]->applicant_name;
+//                $planStartDate = $param['plan_start_date'];
+//                $planEndDate =  $param['plan_end_date'];
 
                 //$toEmail = "ajie.darmawan106@gmail.com";
-		          
-
-                $toEmail = $applicantList->result[0]->email;
 
 
+//                $toEmail = $applicantList->result[0]->email;
 
-                Mail::to($toEmail)->send(new PsikotestScheduleMail($applicantName,$planStartDate,$planEndDate));
+
+
+//                Mail::to($toEmail)->send(new PsikotestScheduleMail($applicantName,$planStartDate,$planEndDate));
 
                 // echo $toEmail;
                 // die;
