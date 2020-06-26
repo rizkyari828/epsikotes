@@ -694,13 +694,13 @@ class SchedulepsikotesPageAdd extends Controller
             $valeInput['candidate_id'] =   $applicantDetail[0]->candidate_id;
             $valeInput['birth_date'] =   $applicantDetail[0]->birth_date;
 
-			$applicantName = $valeInput['full_name'];
-			$planStartDate = $param['startdate'];
-			$planEndDate =  $param['enddate'];
+//			$applicantName = $valeInput['full_name'];
+//			$planStartDate = $param['startdate'];
+//			$planEndDate =  $param['enddate'];
 
 			//$toEmail = "muktiputut@gmail.com";
-			$toEmail =  $applicantDetail[0]->email;
-			Mail::to($toEmail)->send(new PsikotestScheduleMail($applicantName,$planStartDate,$planEndDate));
+//			$toEmail =  $applicantDetail[0]->email;
+//			Mail::to($toEmail)->send(new PsikotestScheduleMail($applicantName,$planStartDate,$planEndDate));
 
 			
 			return redirect('/workspace#psikotestschedule');
