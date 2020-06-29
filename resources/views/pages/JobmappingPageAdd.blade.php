@@ -321,8 +321,9 @@
                     }
                 },
                 submitHandler: function (element) { 
-                   
-                    if(checkGenInfo() && checkFinalGreating() && checkCategoryList() && checkCategoryList() && checkJobList() && checkScoreList()){
+                    $(".job-error").html("");
+                    $(".category-error").html(""); 
+                    if(checkGenInfo() && checkFinalGreating() &&  checkCategoryList() && checkJobList() && checkScoreList()){
                         var param = {};
                         param["message"] = "Are you sure want to save this setup ?";
                         param["title"] = "Save Job Mapping Setup";
@@ -334,7 +335,7 @@
                             $(".category-error").html(""); 
                             $(".category-error").append('<em id="sub-category-name-error" class="error">Category List Is Required</em>'); 
                         }else if(!checkJobList()){
-                             $(".job-error").html("");
+                            $(".job-error").html("");
                             $(".job-error").append('<em id="sub-category-name-error"  class="error">Job List Is Required</em>'); 
                         }else if(!checkScoreList()){
                            $(".job-error").html("");
@@ -376,7 +377,7 @@
              return true;
         }
         function checkCategoryList(){
-            var categoryList = $(".sub_category_name");
+            var categoryList = $(".category_id"); 
             var totalFilledCategory = 0; 
             for (var i = 0; i < categoryList.length; i++) {
                 console.log($(categoryList[i]).val());
@@ -396,7 +397,7 @@
         }
         
         function checkJobList(){
-            var jobList = $(".job_name");
+            var jobList = $(".job_id");
             var totalFilledJob = 0; 
             for (var i = 0; i < jobList.length; i++) {
                 console.log($(jobList[i]).val());
