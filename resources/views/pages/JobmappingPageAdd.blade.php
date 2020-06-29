@@ -379,15 +379,12 @@
         function checkCategoryList(){
             var categoryList = $(".category_id"); 
             var totalFilledCategory = 0; 
-            for (var i = 0; i < categoryList.length; i++) {
-                console.log($(categoryList[i]).val());
+            for (var i = 0; i < categoryList.length; i++) { 
                 if($(categoryList[i]).val() != ""){
                     totalFilledCategory++;
                 } 
 
-            }
-            console.log(categoryList.length);
-            console.log(totalFilledCategory); 
+            } 
 
             if(categoryList.length === 0 || categoryList.length !== totalFilledCategory){ 
                 return false;
@@ -399,15 +396,12 @@
         function checkJobList(){
             var jobList = $(".job_id");
             var totalFilledJob = 0; 
-            for (var i = 0; i < jobList.length; i++) {
-                console.log($(jobList[i]).val());
+            for (var i = 0; i < jobList.length; i++) { 
                 if($(jobList[i]).val() != ""){
                     totalFilledJob++;
                 } 
 
-            }
-            console.log(jobList.length);
-            console.log(totalFilledJob); 
+            } 
             if(jobList.length === 0 || jobList.length !== totalFilledJob){ 
                 return false;
             }else{
@@ -418,15 +412,21 @@
         function checkScoreList(){
             var scoreList = $(".pass_score");
             var totalFilledScore = 0; 
+            var totalMandatory = 0; 
             for (var i = 0; i < scoreList.length; i++) {
-                console.log($(scoreList[i]).val());
-                if($(scoreList[i]).val() != ""){
-                    totalFilledScore++;
+                var name = $(scoreList[i]).attr("name").replace(/pass_score/g,'mandatory');;
+                console.log($( "input[name*='"+name+"']:checked" ).length); 
+                console.log(name);
+                var isChecked = $( "input[name*='"+name+"']:checked" ).length;
+                if(isChecked == 1){
+
+                    if($(scoreList[i]).val() != ""){
+                        totalFilledScore++;
+                    }
+                    totalMandatory++;
                 }  
-            }
-            console.log(scoreList.length);
-            console.log(totalFilledScore); 
-            if(scoreList.length === 0 || scoreList.length !== totalFilledScore){ 
+            }  
+            if(totalMandatory === 0 || totalMandatory !== totalFilledScore){ 
                 return false;
             }else{
                return true;
@@ -589,7 +589,7 @@
                  $(this).parents('tr').find(".pass_score").each(function(){
                       sum += +($(this).val().replace(/\,/g,''));
                   });
-                console.log(sum);
+                // console.log(sum);
 
                 $(this).parents('tr').find('.total_pass_score').val(sum);
 

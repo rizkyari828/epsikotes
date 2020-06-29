@@ -187,7 +187,7 @@ class JobmappingAddPage extends Controller
             foreach ($param['pass_score'] as $key_pass_score => $value_pass_score) {
                     $paramInsertJobProfileScore['JOB_PROFILE_ID'] = $idJobProfile;
                     $paramInsertJobProfileScore['CATEGORY_ID'] = $key_pass_score;
-                    $paramInsertJobProfileScore['PASS_SCORE'] = $value_pass_score[$key];
+                    $paramInsertJobProfileScore['PASS_SCORE'] = isset($value_pass_score[$key])?$value_pass_score[$key]:0;
                     $paramInsertJobProfileScore['MANDATORY']     = isset($param['mandatory'][$key_pass_score][$key]) ? 1 : 0 ;
                     $Jobmapping->insertJobProfileScore($paramInsertJobProfileScore);
 
