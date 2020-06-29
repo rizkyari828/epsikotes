@@ -605,6 +605,27 @@
                     alert('Ada data yg belum di isi');
                 }
              });
+
+             function dialogSuccess(){
+                console.log("SUCCESS");
+                $('.message_dialog').html("Data has been Saved");
+                $('#dialog_simple').dialog({
+                    autoOpen : false,
+                    width : 600,
+                    resizable : false,
+                    modal : true,
+                    title : "<div class='widget-header'><h4><i class='fa fa-warning'></i>Information</h4></div>",
+                    buttons : [{
+                        html : "<i class='fa fa-check'></i>&nbsp; Ok",
+                        "class" : "btn btn-success",
+                        click : function() {  
+                            $(this).dialog("close");
+                            location.href = "#subcategory";
+                        }
+                    } ]
+                });
+                $('#dialog_simple').dialog('open');
+             }
              $("#btnSaves").click(function (e) {
                 e.preventDefault();
                 var validateHeaders = validateHeader();
@@ -636,13 +657,14 @@
                                  },
                             success: function( msg ) {
                                 console.log(msg);
-                                alert('sukses');
-                                location.href = "#subcategory";
+                                dialogSuccess();
                             },
                             error: function (msg) {
-                                alert('sukseess');
-                                 console.log(msg);
-                                location.href = "#subcategory";
+                                console.log(msg);
+                                dialogSuccess();
+                                // alert('sukseess');
+                                //  console.log(msg);
+                                // location.href = "#subcategory";
                             }
                         });
                         // document.getElementById("form-subCat").submit();
@@ -653,6 +675,8 @@
                     alert('Ada data yg belum di isi');
                 }
              });
+
+             
 
              function validateHeader(){
                 var validate = true;
