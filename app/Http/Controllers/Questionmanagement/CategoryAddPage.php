@@ -448,7 +448,7 @@ class CategoryAddPage extends Controller
             $rowTable .= '<tr>';
             $rowTable .='<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label></td>';    
             $rowTable .='<td><label class="input"><input type="input" id="sub_category_name" class="sub_category_name" name="sub_category_name[]" value="'.$rowcategory->sub_category_name.'" placeholder="Sub Category Name" '.$isDisable.'><input type="hidden" name="sub_category_id[]" class="sub_category_id" value="'.$rowcategory->sub_category_id.'" id="sub_category_id"><i class="icon-append fa fa-search"></i></label></td>';
-            $rowTable .='<td><a href="">view</a></td>';
+            $rowTable .='<td><a target="_blank" href="workspace#editsubcategory/'.$rowcategory->sub_category_id.'">view</a></td>';
             $rowTable .= '</tr>';
         }
 

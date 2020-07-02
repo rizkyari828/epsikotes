@@ -299,8 +299,7 @@
 
             table_subcategory.row.add( [
                 '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label>',
-                '<label class="input"><input type="input" id="sub_category_name" class="sub_category_name" name="sub_category_name[]" placeholder="Sub Category Name"><input type="hidden" name="sub_category_id[]" class="sub_category_id" id="sub_category_id"> <i class="icon-append fa fa-search"></i></label>',
-                '<a href="">view</a>'
+                '<label class="input"><input type="input" id="sub_category_name" class="sub_category_name" name="sub_category_name[]" placeholder="Sub Category Name"><input type="hidden" name="sub_category_id[]" class="sub_category_id" id="sub_category_id"> <i class="icon-append fa fa-search"></i></label>' 
             ]).draw( false );
 
             $(".sub_category_name").autocomplete({
@@ -411,7 +410,7 @@
                         table_subcategory.row.add( [
                             '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label>',
                             '<label class="input"><input type="input" id="sub_category_name" class="sub_category_name" name="sub_category_name[]" value="'+val.SUB_CATEGORY_NAME+'" placeholder="Sub Category Name"><input type="hidden" name="sub_category_id[]" value="'+val.SUB_CATEGORY_ID+'" class="sub_category_id" id="sub_category_id"> <i class="icon-append fa fa-search"></i></label>',
-                            '<a href="">view</a>'
+                            '<a href="editsubcategory/'+val.SUB_CATEGORY_ID+'">view</a>'
                         ] ).draw( false );
 
                     }); 

@@ -49,9 +49,9 @@
         });
     }
 
-    setInterval(function(){
-        check_session();
-    },10000);
+    // setInterval(function(){
+    //     check_session();
+    // },10000);
 
 
 </script>
