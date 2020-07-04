@@ -950,12 +950,13 @@ foreach ($getQuestions as $key => $value) {
         }
 
         function setVal() {
+            console.log(formQue[indexQue]);
             document.getElementById("listSubCat").value = formQue[indexQue][0];
             document.getElementById("isActive").checked = formQue[indexQue][1];
             document.getElementById("Duration").value = formQue[indexQue][2];
             document.getElementById("isExample").checked = formQue[indexQue][3];
             document.getElementById("txtareaHint").value = formQue[indexQue][4];
-            document.getElementById("imgHint").value = formQue[indexQue][5];
+            // document.getElementById("imgHint").value = formQue[indexQue][5];
             document.getElementById("narName").value = formQue[indexQue][6];
             document.getElementById("txtAreaQue").value = formQue[indexQue][7];
             // document.getElementById("imgQue").value = formQue[indexQue][8];
