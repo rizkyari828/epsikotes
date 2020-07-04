@@ -46,7 +46,7 @@
                             <fieldset>
                                 <div class="row">
                                     <section class="col col-6">
-                                        <label class="label col col-2">Network</label>
+                                        <label class="label col col-2">Network *</label>
                                             <div class="col col-8">
                                                 <label class="input {{$disableState}}">
                                                     <i class="icon-append fa fa-search"></i>
