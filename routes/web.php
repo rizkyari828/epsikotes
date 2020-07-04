@@ -24,6 +24,9 @@ Route::get('/testExcel', 'TestExcel@index');
 
 Route::resource('/', 'Authenticate\LoginPage');
 Route::post('/processLogin', 'Authenticate\LoginPage@prosesLogin');
+Route::get('/processLogin', function () {
+    return redirect('/');
+});
 Route::get('/processLogout', 'Authenticate\LoginPage@prosesLogout');
 Route::post('/checkLogin', 'Authenticate\LoginPage@checkSession');
 
