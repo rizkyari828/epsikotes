@@ -310,6 +310,15 @@ class SubCategoryController extends Controller
         $Questions = new Questions();
         $username = Session::get('user.username');;
         $catName = strtoupper($request->subCateName);
+
+        $prevSubCategory = SubCategory::query()
+            ->where('SUB_CATEGORY_NAME', $catName)
+            ->count();
+
+        if ($prevSubCategory > 0) {
+            return "Sub category name already exists!";
+        }
+
         $catDesc = $request->subCateDesc;
         $catInst = $request->subCateInst;
         $catRand = $request->subCateRandom;
@@ -483,9 +492,9 @@ class SubCategoryController extends Controller
         }
 
         if($result)
-            return 'sukses';
+            return 'Sub category has been successfully added!';
         else
-            return 'eror';
+            return 'Failed to create a new sub category!';
 
         // return $result;
     }
@@ -668,9 +677,9 @@ class SubCategoryController extends Controller
         }
 
         if($result)
-            return 'sukses';
+            return 'Sub category has been successfully edited!';
         else
-            return 'eror';
+            return 'Failed to edit sub category!';
 
         // return $result;
     }

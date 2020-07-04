@@ -606,9 +606,8 @@
                 }
              });
 
-             function dialogSuccess(){
-                console.log("SUCCESS");
-                $('.message_dialog').html("Data has been Saved");
+             function dialogSuccess(responseText){
+                $('.message_dialog').html(responseText);
                 $('#dialog_simple').dialog({
                     autoOpen : false,
                     width : 600,
@@ -618,9 +617,11 @@
                     buttons : [{
                         html : "<i class='fa fa-check'></i>&nbsp; Ok",
                         "class" : "btn btn-success",
-                        click : function() {  
+                        click : function() {
                             $(this).dialog("close");
-                            location.href = "#subcategory";
+                            if (responseText.contains("success")) {
+                                location.href = "#subcategory";
+                            }
                         }
                     } ]
                 });
@@ -657,11 +658,11 @@
                                  },
                             success: function( msg ) {
                                 console.log(msg);
-                                dialogSuccess();
+                                dialogSuccess(msg.responseText);
                             },
                             error: function (msg) {
                                 console.log(msg);
-                                dialogSuccess();
+                                dialogSuccess(msg.responseText);
                                 // alert('sukseess');
                                 //  console.log(msg);
                                 // location.href = "#subcategory";
