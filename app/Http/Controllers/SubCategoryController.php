@@ -12,6 +12,7 @@ use App\Model\SubCategory;
 use App\Model\Questions;
 use App\Model\Narrations;
 use Session;
+use Illuminate\Support\Facades\DB;
 
 class SubCategoryController extends Controller
 {
@@ -296,7 +297,10 @@ class SubCategoryController extends Controller
         $catFrom = Carbon::tomorrow()->format('d-m-Y');
         $catTo = '31-12-4712';
         $arrDate = array('from' => $catFrom, 'to' => $catTo);
-        $subCat = SubCategory::all();
+        $subCat =  DB::table('psi.que_sub_categories')
+        ->join('psi.que_sub_category_versions','que_sub_categories.sub_category_id','=','que_sub_category_versions.sub_category_id') 
+        ->whereRaw('date(sysdate()) between que_sub_category_versions.date_from and que_sub_category_versions.date_to')  
+        ->get();
         $Narrations = new Narrations();
         $getNar = $Narrations->getAllNarations();
         return view('pages.SubCategoryForm')
