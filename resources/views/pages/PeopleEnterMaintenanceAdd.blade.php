@@ -45,7 +45,7 @@
                             <fieldset>
                                 <div class="row">
                                     <section class="col col-6">
-                                        <label class="label col col-2">Sim Number</label>
+                                        <label class="label col col-2">Sim Number *</label>
                                             <div class="col col-8">
                                                  <label class="input">
                                             <input type="text" name="USER_NUMBER" id="user_number" value="{{$valeInput['USER_NUMBER']}}" placeholder="Sim Number" maxlength="10" {{$isDisableUsername}}>
@@ -53,7 +53,7 @@
                                             </div>
                                     </section>
                                     <section class="col col-6">
-                                        <label class="label col col-2">Is Active</label>
+                                        <label class="label col col-2">Is Active *</label>
                                             <div class="col col-8">
                                                  <label class="checkbox">
                                                  @if($valeInput['IS_ACTIVE'] == '')
@@ -71,7 +71,7 @@
 
                                 <div class="row">
                                     <section class="col col-6">
-                                        <label class="label col col-2">Full name</label>
+                                        <label class="label col col-2">Full name *</label>
                                             <div class="col col-8">
                                                  <label class="input {{$disableState}}">
                                             <input type="text" name="FULL_NAME" id="fullName" value="{{$valeInput['FULL_NAME']}}" placeholder="Full Name" {{$isReadOnly}}>
@@ -90,7 +90,7 @@
 
                                 <div class="row">
                                     <section class="col col-6">
-                                        <label class="label col col-2">Network</label>
+                                        <label class="label col col-2">Network *</label>
                                             <div class="col col-8">
                                                 <label class="input {{$disableState}}"> <i class="icon-append fa fa-search "></i>
                                                     <input type="text" id="network" name="network" value="{{$valeInput['NETWORK']}}" placeholder="Network" {{$isDisableByRoles}} {{$isReadOnly}}>
@@ -110,7 +110,7 @@
 
                                 <div class="row">
                                     <section class="col col-6">
-                                        <label class="label col col-2">Role</label>
+                                        <label class="label col col-2">Role *</label>
                                             <div class="col col-8">
                                                 <label class="input {{$disableState}}"> <i class="icon-append fa fa-search"></i>
                                                     <input type="text" id="role" value="{{$valeInput['ROLE']}}" name="role" placeholder="Role" {{$isDisableByRoles}} {{$isReadOnly}}>
@@ -129,7 +129,7 @@
 
                                 <div class="row">
                                     <section class="col col-6">
-                                        <label class="label col col-2">Birth Date</label>
+                                        <label class="label col col-2">Birth Date *</label>
                                             <div class="col col-8">
                                                 <label class="input {{$disableState}}"> <i class="icon-append fa fa-calendar"></i>
                                                     <input type="text" name="BIRTH_DATE" id="birthdate" value="{{$valeInput['BIRTH_DATE']}}" placeholder="Birth Date" {{$isReadOnly}}>
@@ -157,7 +157,7 @@
 
                                 <div class="row">
                                     <section class="col col-6">
-                                        <label class="label col col-2">Gender</label>
+                                        <label class="label col col-2">Gender *</label>
                                             <div class="col col-8 inline-group">
                                                 <label class="radio {{$disableState}}">
                                                      @if($valeInput['GENDER_MALE'] == '')
@@ -181,7 +181,7 @@
 
                                 <div class="row">
                                     <section class="col col-6">
-                                        <label class="label col col-2">Email</label>
+                                        <label class="label col col-2">Email *</label>
                                             <div class="col col-8">
                                                 <label class="input {{$disableState}}"> <i class="icon-append fa fa-envelope-o"></i>
                                             <input type="text" name="email" value="{{$valeInput['EMAIL']}}" id="email" placeholder="Email" {{$isReadOnly}}>
@@ -192,7 +192,7 @@
 
                                 <div class="row">
                                     <section class="col col-6">
-                                        <label class="label col col-2">Phone Number</label>
+                                        <label class="label col col-2">Phone Number *</label>
                                             <div class="col col-8">
                                                 <label class="input {{$disableState}}">
                                             <input type="text" name="PHONE_NUMBER" value="{{$valeInput['PHONE_NUMBER']}}" id="phoneNumber" placeholder="Phone Number" {{$isReadOnly}}>
