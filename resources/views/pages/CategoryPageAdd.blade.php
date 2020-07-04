@@ -299,7 +299,7 @@
 
             table_subcategory.row.add( [
                 '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label>',
-                '<label class="input"><input type="input" id="sub_category_name" class="sub_category_name" name="sub_category_name[]" placeholder="Sub Category Name"><input type="hidden" name="sub_category_id[]" class="sub_category_id" id="sub_category_id"> <i class="icon-append fa fa-search"></i></label>' 
+                '<label class="input"><input type="input" id="sub_category_name" class="sub_category_name" name="sub_category_name[]" placeholder="Sub Category Name"><input type="hidden" name="sub_category_id[]" class="sub_category_id" id="sub_category_id"> <i class="icon-append fa fa-search"></i></label>' ,""
             ]).draw( false );
 
             $(".sub_category_name").autocomplete({
@@ -335,11 +335,17 @@
         });
 
         $('#delete-row-sub-categorylist').on( 'click', function (e) {
+            console.log($('input:checkbox:checked').parents('tr').length);
             e.preventDefault();
-            table_subcategory
-            .row( $('input:checkbox:checked').parents('tr') )
-            .remove()
-            .draw();
+
+            var row = $('input:checkbox:checked').parents('tr');
+            for (var i = 0; i < row.length; i++) {
+               table_subcategory
+                .row( row[i])
+                .remove();
+            }
+            
+            table_subcategory.draw();
         });
         
         $('#btnUp').click(function(e) {
