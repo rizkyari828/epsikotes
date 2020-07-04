@@ -362,7 +362,7 @@ class PeopleentermaintenancePageAdd extends Controller
         $paramInsert['GENDER'] = $param['GENDER'];
         $paramInsert['EMAIL'] = $param['email'];
         $paramInsert['PHONE_NUMBER'] = $param['PHONE_NUMBER'];
-        $paramInsert['PASSWORD'] = isset($param['PASSWORD']) ? Crypt::encryptString($param['PASSWORD']) : Crypt::encryptString($this->random_strings(8));
+        $paramInsert['PASSWORD'] = isset($param['PASSWORD']) ? Crypt::encryptString($param['PASSWORD']) : Crypt::encryptString(date("Ymd", strtotime($param['BIRTH_DATE'])));
         $paramInsert['CONFIRM_PASSWORD'] = isset($param['PASSWORD']) ? Crypt::encryptString($param['PASSWORD']) : $paramInsert['PASSWORD'];
         $paramInsert['CREATED_BY'] = $request->session()->get('user.username');
         $paramInsert['CREATION_DATE'] = date("Y-m-d h:i:s");
