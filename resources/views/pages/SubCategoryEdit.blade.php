@@ -768,12 +768,12 @@ foreach ($getQuestions as $key => $value) {
             } else if (a != 'MEMORY') {
                 document.getElementById("errorTypeSubCategory").style.display = 'none';
 
-                if (h == '' && i == '') {
-                    document.getElementById("errorQuestion").style.display = 'block';
-                    validate = false;
-                } else {
-                    document.getElementById("errorQuestion").style.display = 'none';
-                }
+                // if (h == '' && i == '') {
+                //     document.getElementById("errorQuestion").style.display = 'block';
+                //     validate = false;
+                // } else {
+                //     document.getElementById("errorQuestion").style.display = 'none';
+                // }
                 if (j == '-') {
                     document.getElementById("errorTypeAnswer").style.display = 'block';
                     validate = false;
@@ -846,15 +846,15 @@ foreach ($getQuestions as $key => $value) {
                     arrIndex.sort(function (a, b) {
                         return b - a
                     });
-                    for (var x = 0; x < arrIndex.length; x++) {
-                        ansMultipleChoice.splice(arrIndex[x], 1);
-                    }
+                    // for (var x = 0; x < arrIndex.length; x++) {
+                    //     ansMultipleChoice.splice(arrIndex[x], 1);
+                    // }
                 }
                 for (var z = 0; z < l.length; z++) {
                     var val = l[z].value;
                     var val2 = l2[z].value;
                     var val3 = l3[z].checked;
-                    ansMultipleChoice.push([indexQue, val, val2, val3]);
+                    // ansMultipleChoice.push([indexQue, val, val2, val3]);
                 }
                 // alert(ansMultipleChoice);
             } else if (j == 'TEXT_SERIES') {
