@@ -14,7 +14,8 @@
             </div>
         @endif
         <div class="well no-padding">
-          <form method="get" action="{{url('')}}/processLogin" id="login-form" class="smart-form client-form">
+          <form method="post" action="{{url('')}}/processLogin" id="login-form" class="smart-form client-form">
+              @csrf
             <header>
               Sign In
             </header>
@@ -73,7 +74,7 @@
                 input.attr("type", "password");
               }
         });
-	  
+
     // Validation
     $("#login-form").validate({
       // Rules for form validation

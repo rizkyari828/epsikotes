@@ -23,7 +23,7 @@ Route::get('/testExcel', 'TestExcel@index');
 
 
 Route::resource('/', 'Authenticate\LoginPage');
-Route::get('/processLogin', 'Authenticate\LoginPage@prosesLogin');
+Route::post('/processLogin', 'Authenticate\LoginPage@prosesLogin');
 Route::get('/processLogout', 'Authenticate\LoginPage@prosesLogout');
 Route::post('/checkLogin', 'Authenticate\LoginPage@checkSession');
 
