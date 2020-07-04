@@ -166,7 +166,7 @@
                                             </div>
                                             <label class="col-md-1 control-label">Image</label>
                                             <div class="col-md-6">
-                                                  <input type="file" id="imgHint" disabled="true" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;">
+                                                  <input type="file" id="imgHint" disabled="true" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;" accept="image/*">
                                             </div>
                                         </div>
                                     </div>
@@ -208,7 +208,7 @@
                                             </div>
                                             <label class="col-md-1 control-label">Image</label>
                                             <div class="col-md-6">
-                                                <input type="file" id="imgQue" disabled="true" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;">
+                                                <input type="file" id="imgQue" disabled="true" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;" accept="image/*">
                                             </div>
                                         </div>
                                     </div>
