@@ -240,6 +240,167 @@ class SubCategoryController extends Controller
         return view('pages.SubCategoryView')
             ->with('getSubCat', $getSubCat)
             ->with('getQuestions', $getQuestions);
+    } 
+
+    public function viewQuestion($id){
+        $SubCategories = new SubCategory();
+        $getSubCat = $SubCategories->getSubcategoryById($id);
+        $Questions = new Questions();
+        $getQuestions = $Questions->getQuestionByVersionId2($getSubCat->VERSION_ID);
+
+
+        return view('pages.SubCategoryQuestionListView')
+            ->with('subCat', $getSubCat)
+            ->with('getQuestions', $getQuestions);
+    }
+    public function getViewQuestion(Request $request){
+         
+
+        $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID') ; 
+        $datas->join('que_questions','que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID'); 
+    
+        $datas->orderBy('creation_date','DESC');
+        $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION','que_questions.*']);
+        
+        $result = [];
+        foreach ($datas as $key=>$value){
+            $duration = 0;
+            //GET DURATION DATA
+            $countDurra = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
+            ->join('que_questions', 'que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID')
+            ->where('que_sub_categories.SUB_CATEGORY_ID', '=', $value['SUB_CATEGORY_ID'])
+            ->where('que_sub_category_versions.VERSION_NUMBER', '=', 1)
+            ->where('que_questions.IS_ACTIVED', '=',1)
+            ->where('que_questions.EXAMPLE', '=',0)
+            ->orderBy('que_sub_categories.CREATION_DATE')
+            ->get([
+                'que_questions.duration_per_que'
+            ]);
+            //SUM DURRATIONs
+            foreach ($countDurra as $dKey=>$dValue){
+                $duration = $duration + $dValue['duration_per_que'];
+             }
+
+             //GET ACTIVE DATA
+             $countActive= SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
+            ->join('que_questions', 'que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID')
+            ->where('que_sub_categories.SUB_CATEGORY_ID', '=', $value['SUB_CATEGORY_ID'])
+            ->where('que_sub_category_versions.VERSION_NUMBER', '=', 1)
+            ->where('que_questions.IS_ACTIVED', '=',1)
+            ->where('que_questions.EXAMPLE', '=',0)
+            ->orderBy('que_sub_categories.CREATION_DATE')
+            ->get([
+                'que_sub_categories.SUB_CATEGORY_ID',
+                'que_sub_categories.sub_category_name',
+            ]);
+            // get example data
+            $countexample = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
+            ->join('que_questions', 'que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID')
+            ->where('que_sub_categories.SUB_CATEGORY_ID', '=', $value['SUB_CATEGORY_ID'])
+            ->where('que_sub_category_versions.VERSION_NUMBER', '=', 1)
+            ->where('que_questions.EXAMPLE', '=',1)
+            ->orderBy('que_sub_categories.CREATION_DATE')
+            ->get([
+                'que_sub_categories.SUB_CATEGORY_ID',
+                'que_sub_categories.sub_category_name',
+            ]);
+
+            $result['data'][] =[
+                'sub_category_id' => $value['SUB_CATEGORY_ID'],
+                'question_id' => $value['QUESTION_ID'],
+                'sub_category_name' => $value['SUB_CATEGORY_NAME'],
+                'question_text' => $value['QUESTION_TEXT'],
+                'question_image' => $value['QUESTION_IMAGE'],
+                'question_digit' => $value['QUESTION_SEQUENCE'],
+                'total_duration'=>$duration,
+                'is_example'=> $value['EXAMPLE'],
+                'is_actived'=> $value['IS_ACTIVED'],
+                'type_answer'=> $value['TYPE_ANSWER'],
+                'is_random_que'=> $value['RANDOM_QUESTION'] 
+            ];
+            $vv = '';
+        }
+        return $result;
+    }
+    public function viewAnswer($id){
+        // $SubCategories = new SubCategory();
+        // $getSubCat = $SubCategories->getSubcategoryById($id);
+        // $Questions = new Questions();
+        // $getQuestions = $Questions->getQuestionByVersionId2($getSubCat->VERSION_ID);
+
+
+        return view('pages.SubCategoryAnswerListView');
+            // ->with('subCat', $getSubCat)
+            // ->with('getQuestions', $getQuestions);
+    }
+    public function getViewAnser(Request $request){
+         
+
+        $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID') ; 
+        $datas->join('que_questions','que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID'); 
+    
+        $datas->orderBy('creation_date','DESC');
+        $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION','que_questions.*']);
+        
+        $result = [];
+        foreach ($datas as $key=>$value){
+            $duration = 0;
+            //GET DURATION DATA
+            $countDurra = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
+            ->join('que_questions', 'que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID')
+            ->where('que_sub_categories.SUB_CATEGORY_ID', '=', $value['SUB_CATEGORY_ID'])
+            ->where('que_sub_category_versions.VERSION_NUMBER', '=', 1)
+            ->where('que_questions.IS_ACTIVED', '=',1)
+            ->where('que_questions.EXAMPLE', '=',0)
+            ->orderBy('que_sub_categories.CREATION_DATE')
+            ->get([
+                'que_questions.duration_per_que'
+            ]);
+            //SUM DURRATIONs
+            foreach ($countDurra as $dKey=>$dValue){
+                $duration = $duration + $dValue['duration_per_que'];
+             }
+
+             //GET ACTIVE DATA
+             $countActive= SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
+            ->join('que_questions', 'que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID')
+            ->where('que_sub_categories.SUB_CATEGORY_ID', '=', $value['SUB_CATEGORY_ID'])
+            ->where('que_sub_category_versions.VERSION_NUMBER', '=', 1)
+            ->where('que_questions.IS_ACTIVED', '=',1)
+            ->where('que_questions.EXAMPLE', '=',0)
+            ->orderBy('que_sub_categories.CREATION_DATE')
+            ->get([
+                'que_sub_categories.SUB_CATEGORY_ID',
+                'que_sub_categories.sub_category_name',
+            ]);
+            // get example data
+            $countexample = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
+            ->join('que_questions', 'que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID')
+            ->where('que_sub_categories.SUB_CATEGORY_ID', '=', $value['SUB_CATEGORY_ID'])
+            ->where('que_sub_category_versions.VERSION_NUMBER', '=', 1)
+            ->where('que_questions.EXAMPLE', '=',1)
+            ->orderBy('que_sub_categories.CREATION_DATE')
+            ->get([
+                'que_sub_categories.SUB_CATEGORY_ID',
+                'que_sub_categories.sub_category_name',
+            ]);
+
+            $result['data'][] =[
+                'sub_category_id' => $value['SUB_CATEGORY_ID'],
+                'question_id' => $value['QUESTION_ID'],
+                'sub_category_name' => $value['SUB_CATEGORY_NAME'],
+                'question_text' => $value['QUESTION_TEXT'],
+                'question_image' => $value['QUESTION_IMAGE'],
+                'question_digit' => $value['QUESTION_SEQUENCE'],
+                'total_duration'=>$duration,
+                'is_example'=> $value['EXAMPLE'],
+                'is_actived'=> $value['IS_ACTIVED'],
+                'type_answer'=> $value['TYPE_ANSWER'],
+                'is_random_que'=> $value['RANDOM_QUESTION'] 
+            ];
+            $vv = '';
+        }
+        return $result;
     }
 
      public function editSubCategory($id){

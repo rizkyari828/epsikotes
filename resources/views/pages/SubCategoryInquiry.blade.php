@@ -200,7 +200,7 @@
                                 {
                                     "data": "sub_category_id",
                                     "render": function (data, type, row) {
-                                        return "<a href='workspace#editsubcategory/" + data + "'>Edit</a> | <a href='workspace#viewsubcategory/" + data + "'>View Question</a>";
+                                        return "<a href='workspace#editsubcategory/" + data + "'>Edit</a> | <a href='workspace#viewQuestion/" + data + "'>View Question</a>";
                                     }
                                 },
                                 {"data":"sub_category_name"},
