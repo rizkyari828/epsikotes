@@ -137,7 +137,7 @@ Route::get('viewsubcategory/{id}','SubCategoryController@viewSubCategory');
 Route::get('viewQuestion/{id}','SubCategoryController@viewQuestion');
 Route::get('getViewQuestion/{id}','SubCategoryController@getViewQuestion');
 Route::get('viewAnswer/{id}','SubCategoryController@viewAnswer');
-Route::get('getViewAnswer/{id}','SubCategoryController@getViewAnswer');
+Route::get('getViewAnswer/{id}/{type_answer}','SubCategoryController@getViewAnswer');
 Route::get('addsubcategory','SubCategoryController@addSubCategory');
 //Route::post('getSubCategories', 'SubCategoryController@subCategories');
 Route::post('addSubCate', 'SubCategoryController@saveAddSubCategory');

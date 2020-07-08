@@ -253,12 +253,11 @@ class SubCategoryController extends Controller
             ->with('subCat', $getSubCat)
             ->with('getQuestions', $getQuestions);
     }
-    public function getViewQuestion(Request $request){
-         
-
+    public function getViewQuestion($id){ 
+        $kategori_id = $id;
         $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID') ; 
         $datas->join('que_questions','que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID'); 
-    
+        $datas->where('que_sub_categories.SUB_CATEGORY_ID', '=', $kategori_id);
         $datas->orderBy('creation_date','DESC');
         $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION','que_questions.*']);
         
@@ -323,83 +322,50 @@ class SubCategoryController extends Controller
         return $result;
     }
     public function viewAnswer($id){
-        // $SubCategories = new SubCategory();
-        // $getSubCat = $SubCategories->getSubcategoryById($id);
-        // $Questions = new Questions();
-        // $getQuestions = $Questions->getQuestionByVersionId2($getSubCat->VERSION_ID);
+       $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID') ; 
+        $datas->join('que_questions','que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID'); 
+        $datas->where('que_questions.QUESTION_ID', '=', $id);
+        $datas->orderBy('creation_date','DESC');
+        $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION','que_questions.*'])->toArray();
 
-
-        return view('pages.SubCategoryAnswerListView');
-            // ->with('subCat', $getSubCat)
+      
+        return view('pages.SubCategoryAnswerListView')
+            ->with('subCat', $datas[0]);
             // ->with('getQuestions', $getQuestions);
     }
-    public function getViewAnser(Request $request){
-         
-
-        $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID') ; 
-        $datas->join('que_questions','que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID'); 
-    
-        $datas->orderBy('creation_date','DESC');
-        $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION','que_questions.*']);
-        
+    public function getViewAnswer($id,$type_answer){
+        $question_id = $id;
+        $type_answer = $type_answer;
         $result = [];
-        foreach ($datas as $key=>$value){
-            $duration = 0;
-            //GET DURATION DATA
-            $countDurra = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
-            ->join('que_questions', 'que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID')
-            ->where('que_sub_categories.SUB_CATEGORY_ID', '=', $value['SUB_CATEGORY_ID'])
-            ->where('que_sub_category_versions.VERSION_NUMBER', '=', 1)
-            ->where('que_questions.IS_ACTIVED', '=',1)
-            ->where('que_questions.EXAMPLE', '=',0)
-            ->orderBy('que_sub_categories.CREATION_DATE')
-            ->get([
-                'que_questions.duration_per_que'
-            ]);
-            //SUM DURRATIONs
-            foreach ($countDurra as $dKey=>$dValue){
-                $duration = $duration + $dValue['duration_per_que'];
-             }
-
-             //GET ACTIVE DATA
-             $countActive= SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
-            ->join('que_questions', 'que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID')
-            ->where('que_sub_categories.SUB_CATEGORY_ID', '=', $value['SUB_CATEGORY_ID'])
-            ->where('que_sub_category_versions.VERSION_NUMBER', '=', 1)
-            ->where('que_questions.IS_ACTIVED', '=',1)
-            ->where('que_questions.EXAMPLE', '=',0)
-            ->orderBy('que_sub_categories.CREATION_DATE')
-            ->get([
-                'que_sub_categories.SUB_CATEGORY_ID',
-                'que_sub_categories.sub_category_name',
-            ]);
-            // get example data
-            $countexample = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
-            ->join('que_questions', 'que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID')
-            ->where('que_sub_categories.SUB_CATEGORY_ID', '=', $value['SUB_CATEGORY_ID'])
-            ->where('que_sub_category_versions.VERSION_NUMBER', '=', 1)
-            ->where('que_questions.EXAMPLE', '=',1)
-            ->orderBy('que_sub_categories.CREATION_DATE')
-            ->get([
-                'que_sub_categories.SUB_CATEGORY_ID',
-                'que_sub_categories.sub_category_name',
-            ]);
-
-            $result['data'][] =[
-                'sub_category_id' => $value['SUB_CATEGORY_ID'],
-                'question_id' => $value['QUESTION_ID'],
-                'sub_category_name' => $value['SUB_CATEGORY_NAME'],
-                'question_text' => $value['QUESTION_TEXT'],
-                'question_image' => $value['QUESTION_IMAGE'],
-                'question_digit' => $value['QUESTION_SEQUENCE'],
-                'total_duration'=>$duration,
-                'is_example'=> $value['EXAMPLE'],
-                'is_actived'=> $value['IS_ACTIVED'],
-                'type_answer'=> $value['TYPE_ANSWER'],
-                'is_random_que'=> $value['RANDOM_QUESTION'] 
-            ];
-            $vv = '';
+        if($type_answer == "MULTIPLE_CHOICE"){
+            $datas = DB::table('que_ans_choices')->where('QUESTION_ID', '=', $question_id)->get(); 
+            
+            foreach ($datas as $key=>$value){  
+                $result['data'][] =[
+                    'CHOICE_TEXT' => $value->CHOICE_TEXT,
+                    'CHOICE_IMG' => $value->CHOICE_IMG,
+                    'CORRECT_ANSWER' => $value->CORRECT_ANSWER 
+                ]; 
+            }
+        }elseif($type_answer == "TEXT_SERIES"){
+            $datas = DB::table('que_ans_text_series')->where('QUESTION_ID', '=', $question_id)->get(); 
+            
+            foreach ($datas as $key=>$value){  
+                $result['data'][] =[ 
+                    'CORRECT_TEXT' => $value->CORRECT_TEXT 
+                ]; 
+            }
+        }elseif($type_answer == "MULTIPLE_GROUP"){
+            $datas = DB::table('que_ans_group')->where('QUESTION_ID', '=', $question_id)->get(); 
+            
+            foreach ($datas as $key=>$value){  
+                $result['data'][] =[ 
+                    'IMG_SEQUENCE' => $value->IMG_SEQUENCE, 
+                    'GROUP_IMG' => $value->GROUP_IMG 
+                ]; 
+            }
         }
+        
         return $result;
     }
 

@@ -156,9 +156,18 @@
                     }
                 },
                 {
-                    "data": "question_id",
-                    "render": function (data, type, row) {
-                        return " <a href='workspace#viewAnswer/" + data + "'>Answer</a>";
+                    "data":{
+                        question_id:"question_id",
+                        type_answer:"type_answer"
+                    },
+                    "render": function (data, type, row) { 
+                        if(data.type_answer == "MEMORY"){
+
+                        return "";
+                        }else{
+
+                        return " <a href='workspace#viewAnswer/" + data.question_id + "'>Answer</a>";
+                        }
                     }
                 }
             ]

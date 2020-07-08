@@ -5,57 +5,74 @@
     <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
         <article class="col-sm-12 col-md-12 col-lg-12"> 
             <fieldset> 
-                <input type="hidden" name="answer_id" id="answer_id" value=" ">
+                 <input type="hidden" name="category_id" id="category_id" value="{{$subCat['SUB_CATEGORY_ID']}}">
+                <input type="hidden" name="question_id" id="question_id" value="{{$subCat['QUESTION_ID']}}">
             <legend><h2>View Answer</h2> </legend> 
             <div class="widget-body">
-                <div class="form-horizontal"> 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Sub Category Name *</label>
-                            <div class="col-md-8"> 
-
-                            </div>
-                        </div> 
-                         
-                        <div class="form-group"> 
-                            <label class="col-md-3 control-label">Question Text </label>
-                            <div class="col-md-8"> 
-
-                            </div>
-                        </div> 
-                        <div class="form-group"> 
-                            <label class="col-md-3 control-label">Question Image </label>
-                            <div class="col-md-8"> 
-
-                            </div>
-                        </div> 
-                        <div class="form-group"> 
-                            <label class="col-md-3 control-label">Type Of Answer</label>
-                            <div class="col-md-8"> 
-                                
-                            </div>
-                        </div> 
-                    </div>  
+                <div class="row col-lg-12" style="border-bottom: 1px solid black;margin-bottom:10px;">
+                    <div class="form-horizontal"> 
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Sub Category Name </label>
+                                <div class="col-md-8"> 
+                                    <?php echo $subCat['SUB_CATEGORY_NAME'];?>
+                                </div>
+                            </div> 
+                             
+                            <div class="form-group"> 
+                                <label class="col-md-3 control-label">Question Text </label>
+                                <div class="col-md-8"> 
+                                    <?php echo $subCat['QUESTION_TEXT'];?>
+                                </div>
+                            </div> 
+                            <div class="form-group"> 
+                                <label class="col-md-3 control-label">Question Image </label>
+                                <div class="col-md-8"> 
+                                    <?php echo $subCat['QUESTION_IMG'];?>
+                                </div>
+                            </div> 
+                            <div class="form-group"> 
+                                <label class="col-md-3 control-label">Type Of Answer</label>
+                                <div class="col-md-8"> 
+                                    <?php echo $subCat['TYPE_ANSWER'];?>
+                                    <input type="hidden" name="type_answer" id="type_answer" value="<?php echo $subCat['TYPE_ANSWER'];?>">
+                                </div>
+                            </div> 
+                        </div>  
+                    </div>
                 </div>
-
-                <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
+                <div class="row col-lg-12">
+                    <table id="multiple_choice_table" class="table table-striped table-bordered table-hover" width="100%">
                         <thead>
                             <tr> 
-                                <th>Type Of Sub Category</th>
-                                <th>Question Text</th>
-                                <th>Question Image</th>
-                                <th>Question Digit</th>
-                                <th>Duration (Seconds)</th>
-                                <th>Is Example</th>
-                                <th>Is Active</th>
-                                <th>Type Of Answer</th>
-                                <th>Is Random Answer</th>
-                                <th>Answer</th>
+                                <th>Choice Text</th>
+                                <th>Choice Image</th>
+                                <th>Correct Answer</th> 
                             </tr>
                         </thead>
                         <tbody>
                         </tbody>
                     </table>
+                    <table id="text_series_table" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>  
+                                <th>Correct Answer</th> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <table id="multiple_group_table" class="table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>  
+                                <th>Image Question Sequence</th> 
+                                <th>Group</th> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             </fieldset> 
         </article>
@@ -72,29 +89,22 @@
 
 <script type="text/javascript"> 
     $(document).ready(function() {
-        console.log("LOAD");
-        var responsiveHelper_dt_basic = undefined;
 
-        var breakpointDefinition = {
-            tablet : 1024,
-            phone : 480
-        };  
-        var table = $('#dt_basic').DataTable({
-            "bDestroy": true,
-            "searching": false,
-            "ajax":{
-                "method":"GET",
-                "dataType" : "JSON",
-                "url":"getViewQuestion/"+$("#category_id").val() 
-            },
-            "columns":[ 
-                {"data":"sub_category_name"},
-                {"data":"question_text"},
-                {"data":"question_image"},
-                {"data":"question_digit"},
-                {"data":"total_duration"}, 
-                {
-                    "data": "is_example",
+        function loadMultiChoice(type_answer){ 
+            console.log(type_answer);
+            var table = $('#multiple_choice_table').DataTable({
+                "bDestroy": true,
+                "searching": false,
+                "ajax":{
+                    "method":"GET",
+                    "dataType" : "JSON",
+                    "url":"getViewAnswer/"+$("#question_id").val()+"/"+type_answer 
+                },
+                "columns":[ 
+                    {"data":"CHOICE_TEXT"},
+                    {"data":"CHOICE_IMG"},
+                    {
+                    "data": "CORRECT_ANSWER",
                     "render": function (data, type, row) {
                         if(data == 1){
                             return 'YES'
@@ -103,34 +113,68 @@
                         }
                     }
                 }, 
-                {
-                    "data": "is_actived",
-                    "render": function (data, type, row) {
-                        if(data == 1){
-                            return 'YES'
-                        }else{
-                            return 'NO'
-                        }
-                    }
+                ]
+            }); 
+        }
+
+        function loadTextSeries(type_answer){
+            var table = $('#text_series_table').DataTable({
+                "bDestroy": true,
+                "searching": false,
+                "ajax":{
+                    "method":"GET",
+                    "dataType" : "JSON",
+                    "url":"getViewAnswer/"+$("#question_id").val()+"/"+type_answer 
                 },
-                {"data":"type_answer"}, 
-                {
-                    "data": "is_random_que",
-                    "render": function (data, type, row) {
-                        if(data == 1){
-                            return 'YES'
-                        }else{
-                            return 'NO'
-                        }
-                    }
+                "columns":[ 
+                    {"data":"CORRECT_TEXT"} 
+                ]
+            }); 
+        }
+        function loadMultipleGroup(type_answer){
+            var table = $('#multiple_group_table').DataTable({
+                "bDestroy": true,
+                "searching": false,
+                "ajax":{
+                    "method":"GET",
+                    "dataType" : "JSON",
+                    "url":"getViewAnswer/"+$("#question_id").val()+"/"+type_answer 
                 },
-                {
-                    "data": "question_id",
-                    "render": function (data, type, row) {
-                        return " <a href='workspace#viewAnswer/" + data + "'>Answer</a>";
-                    }
-                }
-            ]
-        });  
+                "columns":[ 
+                    {"data":"IMG_SEQUENCE"},
+                    {"data":"GROUP_IMG"} 
+                ]
+            }); 
+        }
+        console.log("LOAD"); 
+
+        var breakpointDefinition = {
+            tablet : 1024,
+            phone : 480
+        };  
+
+        var type_answer =$("#type_answer").val();
+
+        if(type_answer == "MULTIPLE_CHOICE"){ 
+            $('#multiple_choice_table').show();
+            $('#text_series_table').hide();
+            $('#multiple_group_table').hide();
+            loadMultiChoice(type_answer);
+        }else if(type_answer == "TEXT_SERIES"){
+
+            $('#multiple_choice_table').hide();
+            $('#text_series_table').show();
+            $('#multiple_group_table').hide();
+            loadTextSeries(type_answer);
+        }else if(type_answer == "MULTIPLE_GROUP"){
+
+            $('#multiple_choice_table').hide();
+            $('#text_series_table').hide();
+            $('#multiple_group_table').show();
+            loadMultipleGroup(type_answer);
+        }
+        
+
+        
     });
 </script>
