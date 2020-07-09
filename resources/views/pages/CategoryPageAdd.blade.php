@@ -569,20 +569,33 @@
                 error.insertAfter(element.parent());
             },
 
-            submitHandler : function(element) {
-                /*
-                var param = {};
-                param["message"] = "Are you sure want to save this data ?";
-                param["title"] = "Save People Enter and Maintenance";
-                drawDialogConfirm(element,param,'submit_form');
-                $('#dialog_simple').dialog('open');*/
-                //element.submit();
-                
-                if(!table_subcategory.data().count()){
+            submitHandler : function(element) { 
+                console.log("SUBMIT");
+                var dataSubCategory = $("#table-sub-category-list tbody tr"); 
+                var totalRow = 0;
+                var totalRowFilled = 0;
+                for (var i = 0; i < dataSubCategory.length; i++) {
+                    var element = $(dataSubCategory[i]);
+                    if(element.length > 0){ 
+                        var id = element.find(".sub_category_id").val(); 
+                        if(id != ""){
+                            totalRowFilled++;
+                        }
+                        totalRow++; 
+                    }
+                    
+                }
+                console.log("-------------");
+                console.log(totalRowFilled);
+                console.log(totalRow);
+                // if(!table_subcategory.data().count()){
+                if(totalRow == 0 || totalRowFilled !==  totalRow){
                     $(".msg-err").html("Sub Categories must be filled");
                     $(".alert").show();
+                    return false;
                 }else{
-                    element.submit();
+                    // console.log("LOLOS");
+                   return true;
                 }
 
 
