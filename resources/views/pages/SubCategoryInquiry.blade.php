@@ -176,110 +176,108 @@
             <script src="assets/js/plugin/datatables/dataTables.bootstrap.min.js"></script>
             <script src="assets/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
             <script src="assets/js/lookup.js"></script>
-
-            <script type="text/javascript">
+<script type="text/javascript">
 
                 // DO NOT REMOVE : GLOBAL FUNCTIONS!
 
-                $(document).ready(function() {
-
-                      obj["name"] =  $('.names').val();
+    $(document).ready(function() {
+        var obj = {};
+        var param = {};
+        obj["name"] =  $('.names').val();
         obj["question"] =  $('.text').val();
         obj["random"] =  $('.listRandom').val();
 
         var subCategoryName = "";
         var table_normatest = $('#dt_basic').DataTable({
-                    "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f>r>"+
-                    "t"+
-                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
-                    "oLanguage": {
-                        "sSearch": '<span class="input-group-addon"><i class="fa fa-search"></i></span>'
-                    },  
-                    "autoWidth" : true,
-                    "columns":[
-                                {
-                                    "data": "sub_category_id",
-                                    "render": function (data, type, row) {
-                                        return "<a href='workspace#editsubcategory/" + data + "'>Edit</a> | <a href='workspace#viewQuestion/" + data + "'>View Question</a>";
-                                    }
-                                },
-                                {"data":"sub_category_name"},
-                                {"data":"total_example"},
-                                {"data":"total_que_active"},
-                                {"data":"total_duration"},
-                                {
-                                    "data": "is_random_que",
-                                    "render": function (data, type, row) {
-                                        if(data == 1){
-                                            return 'YES'
-                                        }else{
-                                            return 'NO'
-                                        }
-                                    }
-                                },
-                                {"data":"last_update_date"},
-                                {"data":"last_updated_by"}
-                            ],
-                    "ajax": {
-                        "type": "GET",
-                       "data": function( d ) {
-                                      
-                                  d._token= $('input[name="_token"]').val();
-                                  d.paramFilters=obj;
-                                },
-                        "dataType": "JSON",
-                        "url": "sub-category" // ajax source
-                    },
-                    "order": [
-                        [1, "asc"]
-                    ]// set first column as a default sort by asc
-                });
-
-
-                         param["message"] = "Searches might be slow without any parameter. Do you want to continue ?";
-                        param["title"] = "Find All";
-
-                        drawDialogConfirm(table_normatest,param,"find_all");
-
-                        $("#findBtn").click(function(){
-                         
-                                obj["name"] =  $('.names').val();
-                                obj["question"] =  $('.text').val();
-                                obj["random"] =  $('.listRandom').val();
-
-                            if(!obj["name"].length && !obj["question"].length && !obj["random"].length){
-                                $('#dialog_simple').dialog('open');
-                            }else{
-                                table_normatest.ajax.reload();
-                                pageSetUp();
-                            }
-                        });
-                   
-
-
-                    $("#names").autocomplete({
-                        source : function(request, response) {
-                            $.ajax({
-                                type: "POST",
-                                url : "getCategories",
-                                dataType : "json",
-                                data : {
-                                    _token : $('input[name="_token"]').val(),
-                                    categoryName : request.term
-                                },
-                                success : function(data) {
-                                    response($.map(data.data_rows, function(item) {
-                                        return {
-                                            label : item.catagoryName,
-                                            value : item.catagoryName
-                                        }
-                                    }));
-                                }
-                            });
-                        },
-                        minLength : 2,
-                        select : function(event, ui) {
-                            console.log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f>r>"+
+            "t"+
+            "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            "oLanguage": {
+                "sSearch": '<span class="input-group-addon"><i class="fa fa-search"></i></span>'
+            },  
+            "autoWidth" : true,
+            "columns":[
+                {
+                    "data": "sub_category_id",
+                    "render": function (data, type, row) {
+                        return "<a href='workspace#editsubcategory/" + data + "'>Edit</a> | <a href='workspace#viewQuestion/" + data + "'>View Question</a>";
+                    }
+                },
+                {"data":"sub_category_name"},
+                {"data":"total_example"},
+                {"data":"total_que_active"},
+                {"data":"total_duration"},
+                {
+                    "data": "is_random_que",
+                    "render": function (data, type, row) {
+                        if(data == 1){
+                            return 'YES'
+                        }else{
+                            return 'NO'
                         }
-                    });
+                    }
+                },
+                {"data":"last_update_date"},
+                {"data":"last_updated_by"}
+            ],
+            "ajax": {
+                "type": "GET",
+               "data": function( d ) { 
+                  d._token= $('input[name="_token"]').val();
+                  d.paramFilters=obj;
+                },
+                "dataType": "JSON",
+                "url": "sub-category" // ajax source
+            },
+            "order": [
+                [1, "asc"]
+            ]// set first column as a default sort by asc
+        });
+
+
+        param["message"] = "Searches might be slow without any parameter. Do you want to continue ?";
+        param["title"] = "Find All";
+
+        drawDialogConfirm(table_normatest,param,"find_all");
+
+        $("#findBtn").click(function(e){
+            console.log("find");
+            e.preventDefault();
+            obj["name"] =  $('.names').val();
+            obj["question"] =  $('.text').val();
+            obj["random"] =  $('.listRandom').val();
+
+            if(!obj["name"].length && !obj["question"].length && !obj["random"].length){
+                $('#dialog_simple').dialog('open');
+            }else{
+                table_normatest.ajax.reload();
+                pageSetUp();
+            }
+        }); 
+
+        $("#names").autocomplete({
+            source : function(request, response) {
+                $.ajax({
+                    type: "POST",
+                    url : "getCategories",
+                    dataType : "json",
+                    data : {
+                        _token : $('input[name="_token"]').val(),
+                        categoryName : request.term
+                    },
+                    success : function(data) {
+                        response($.map(data.data_rows, function(item) {
+                            return {
+                                label : item.catagoryName,
+                                value : item.catagoryName
+                            }
+                        }));
+                    }
                 });
+            },
+            minLength : 2,
+            select : function(event, ui) {
+                console.log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
+            }
+        });
+    });

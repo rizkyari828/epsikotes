@@ -21,17 +21,21 @@ class SubCategoryController extends Controller
     }
 
     function getSubCategory(Request $request){
-        $name = $request->input('name');
-        $question = $request->input('question');
-        $random = $request->input('random');
+        $paramFilters = \Request::input('paramFilters');
+        $name = $paramFilters['name'];
+        $question = $paramFilters['question'];
+        $random = $paramFilters['random'];
         // $name = 'INDUCTIVE';
         $version = $this->findCurrentVersion($name);
         $dateNow = date('Y-m-d');
 
-        $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
-        ->where('sub_category_name', 'like', '%' . $name . '%')
+        $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID') 
         ->where('que_sub_category_versions.DATE_FROM','<=',$dateNow)
         ->where('que_sub_category_versions.DATE_TO','>=',$dateNow);
+
+        if($name != ""){
+            $datas->where('sub_category_name', 'like', '%' . $name . '%');
+        }
         if($random != ""){
             $datas->where('que_sub_category_versions.RANDOM_QUESTION', $random);
         }
@@ -41,8 +45,8 @@ class SubCategoryController extends Controller
         }
         $datas->orderBy('creation_date','DESC');
         $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION']);
-        
-        $result = [];
+        $result = array();
+        $result['data'] = array();
         foreach ($datas as $key=>$value){
             $duration = 0;
             //GET DURATION DATA
