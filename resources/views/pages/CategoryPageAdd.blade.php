@@ -140,7 +140,7 @@
                                                     <tr role="row" class="heading">
                                                         <th width="1%">
                                                             <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" />
+                                                                <input type="checkbox" class="check-all" data-set="#sample_2 .checkboxes" />
                                                                 <span></span>
                                                             </label>
                                                         </th>
@@ -331,6 +331,25 @@
             });
      
             counter++;
+
+            $(".group-checkable").click(function () {
+                console.log("CLICK");
+                if ($(this).is(":checked")) {
+                    var isAllChecked = 0;
+
+                    $(".group-checkable").each(function() {
+                        if (!this.checked)
+                            isAllChecked = 1;
+                    });
+                    console.log(isAllChecked);
+                    if (isAllChecked == 0) {
+                        $(".check-all").prop("checked", true);
+                    }     
+                }
+                else {
+                    $(".check-all").prop("checked", false);
+                }
+            });
 
         });
 
@@ -570,5 +589,39 @@
             }
         });
 
+        // $(".check-all").click(function(){
+        //     $('.group-checkable').not(this).prop('checked', this.checked);
+        // });
+
+        $(".check-all").change(function() {
+            if (this.checked) {
+                $(".group-checkable").each(function() {
+                    this.checked=true;
+                });
+            } else {
+                $(".group-checkable").each(function() {
+                    this.checked=false;
+                });
+            }
+        });
+
+        $(".group-checkable").click(function () {
+            console.log("CLICK");
+            if ($(this).is(":checked")) {
+                var isAllChecked = 0;
+
+                $(".group-checkable").each(function() {
+                    if (!this.checked)
+                        isAllChecked = 1;
+                });
+                console.log(isAllChecked);
+                if (isAllChecked == 0) {
+                    $(".check-all").prop("checked", true);
+                }     
+            }
+            else {
+                $(".check-all").prop("checked", false);
+            }
+        });
     </script>
 
