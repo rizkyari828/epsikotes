@@ -30,8 +30,8 @@ class SubCategoryController extends Controller
 
         $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
         ->where('sub_category_name', 'like', '%' . $name . '%')
-        ->where('psi.que_sub_category_versions.DATE_FROM','<=',$dateNow)
-        ->where('psi.que_sub_category_versions.DATE_TO','>=',$dateNow);
+        ->where('que_sub_category_versions.DATE_FROM','<=',$dateNow)
+        ->where('que_sub_category_versions.DATE_TO','>=',$dateNow);
         if($random != ""){
             $datas->where('que_sub_category_versions.RANDOM_QUESTION', $random);
         }
