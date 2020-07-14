@@ -26,8 +26,8 @@ class Questions extends Model
 
     public function getQuestionByVersionId2($versionId){
 
-        $question = DB::table('psi.que_questions')
-            ->where('psi.que_questions.VERSION_ID', $versionId)
+        $question = DB::table('que_questions')
+            ->where('que_questions.VERSION_ID', $versionId)
             ->get();
 
         return $question;
