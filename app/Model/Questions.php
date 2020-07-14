@@ -35,7 +35,7 @@ class Questions extends Model
 
     public function getAnsChoicesByQuestionId($questionId){
 
-        $ans = DB::table('psi.que_ans_choices')
+        $ans = DB::table('que_ans_choices')
         ->where('QUESTION_ID', $questionId)
         ->get();
         return $ans;
