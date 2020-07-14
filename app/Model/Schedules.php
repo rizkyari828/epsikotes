@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\DB;
 class Schedules extends Model
 {
 
+    protected $table = "psy_schedules";
+
+    public $timestamps = false;
+
     public function getScheduled($categoryName)
     {
 

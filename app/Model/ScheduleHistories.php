@@ -10,7 +10,8 @@ class ScheduleHistories extends Model
 {
     protected $table = 'psy_schedule_histories';
     protected $primaryKey = 'SCHEDULE_HISTORY_ID';
-	
+    public $timestamps = false;
+
 	public function Schedules()
     {
         return $this->belongsTo('App\Model\Schedules','SCHEDULE_ID');
