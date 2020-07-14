@@ -82,7 +82,7 @@
                                     <section class="col col-2">
                                             <label class="select">
                                                     <select name="randomCategory">
-                                                        <option value="0" selected="">- Select -</option>
+                                                        <option value="">- Select -</option>
                                                         <option value="1">Yes</option>
                                                         <option value="2">No</option>
                                                     </select><i></i>
@@ -280,7 +280,7 @@
             obj["categoryId"] =  $('input[name="category_id"]').val();
             obj["isRandomCategory"] =  $('select[name="randomCategory"]').val();
 
-            console.log(obj["isRandomCategory"]);
+            console.log(obj);
 
             if(!obj["jobMappingId"].length && !obj["jobId"].length && !obj["categoryId"].length && (obj["isRandomCategory"] == 0)){
                 $('#dialog_simple').dialog('open');
@@ -291,7 +291,7 @@
 
         });
 
-        $("#sub_category_name").autocomplete({
+        $("#category_name").autocomplete({
             source : function(request, response) {
                 $.ajax({
                     type: "POST",
@@ -305,15 +305,33 @@
                         response($.map(data.data_rows, function(item) {
                             return {
                                 label : item.catagoryName,
-                                value : item.catagoryName
+                                value : item.catagoryName, 
+                                categoryId : item.categoryId
                             }
                         }));
                     }
                 });
             },
             minLength : 2,
-            select : function(event, ui) {
+            select : function(event, ui) { 
+                $(this).parent('.input').find('#category_id').val(ui.item.categoryId);
                 console.log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
+            }
+        });
+
+        $('input[name="name"]').on("blur",function(){
+            if($(this).val() == ''){
+                $('input[name="job_mapping_id"]').val('');
+            }
+        });
+        $('input[name="category_name"]').on("blur",function(){
+            if($(this).val() == ''){
+                $('input[name="category_id"]').val('');
+            }
+        });
+        $('input[name="job_name"]').on("blur",function(){
+            if($(this).val() == ''){
+                $('input[name="job_id"]').val('');
             }
         });
 
@@ -331,7 +349,8 @@
                         response($.map(data.data_rows, function(item) {
                             return {
                                 label : item.jobMappingName,
-                                value : item.jobMappingName
+                                value : item.jobMappingName, 
+                                jobMappingId : item.jobMappingId
                             }
                         }));
                     }
@@ -339,6 +358,7 @@
             },
             minLength : 2,
             select : function(event, ui) {
+                $(this).parent('.input').find('#job_mapping_id').val(ui.item.jobMappingId);
                 console.log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
             }
         });
@@ -357,7 +377,8 @@
                         response($.map(data.data_rows, function(item) {
                             return {
                                 label : item.jobName,
-                                value : item.jobName
+                                value : item.jobName, 
+                                jobId : item.jobId
                             }
                         }));
                     }
@@ -365,6 +386,8 @@
             },
             minLength : 2,
             select : function(event, ui) {
+
+                $(this).parent('.input').find('#job_id').val(ui.item.jobId);
                 console.log(ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
             }
         });

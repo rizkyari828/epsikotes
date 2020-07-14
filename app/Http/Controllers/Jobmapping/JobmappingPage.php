@@ -60,14 +60,13 @@ class JobmappingPage extends Controller
 
         $this->middleware('auth');
 
-        $jobMappingName = \Request::input('jobMappingName');
-        $JobMapping = new Jobmapping();
-        $paramFilter['jobMappingName'] = $jobMappingName;
+        $paramFilters = \Request::input('paramFilters');
+        $JobMapping = new Jobmapping(); 
         $records = array();
 
 
-        foreach ($JobMapping->getAllJobMappingActive($paramFilter) as $indexJobMapping => $rowJobMapping ){
-
+        foreach ($JobMapping->getAllJobMappingActive($paramFilters) as $indexJobMapping => $rowJobMapping ){
+           
             $records['data'][] = array('<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /><span></span></label>','<a href="jobMappingView/'.$rowJobMapping->JOB_MAPPING_ID.'">detail</a>',$rowJobMapping->NAME,$rowJobMapping->random_category = 1 ? 'Yes' : 'No',$rowJobMapping->last_update_date,$rowJobMapping->last_updated_by );
         }
 
