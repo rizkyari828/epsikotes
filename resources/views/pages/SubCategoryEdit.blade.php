@@ -373,6 +373,7 @@ $formQue2 = array();
 $ansMultipleChoice2 = array();
 $ansMultipleGroup2 = array();
 $ansTextSeries2 = array();
+
 foreach ($getQuestions as $key => $value) {
     $formQue2[$key][0] = $value->TYPE_SUB_CATEGORY;
     $formQue2[$key][1] = $value->IS_ACTIVED;
@@ -418,6 +419,9 @@ foreach ($getQuestions as $key => $value) {
         }
     }
 }
+// echo "<pre>";
+// print_r($formQue2);
+
 ?>
 
 
@@ -540,6 +544,11 @@ foreach ($getQuestions as $key => $value) {
             "</tr>";
         disableAll();
         setVal();
+
+        console.log(formQue.length);
+        if(formQue.length == 1){
+            $("#next").attr("disabled","disabled");
+        }
         // SUB CATEGORY EVENT
         $("#listSubCat").change(function () {
             var selected = $('#listTypeOfAnswer').val();
@@ -612,13 +621,19 @@ foreach ($getQuestions as $key => $value) {
         if (indexQue < 1)
             document.getElementById("prev").disabled = true;
 
-        $("#next").click(function () {
+        $("#next").click(function () { 
             var validate = validateQuestion();
             if (validate) {
                 getValFormQuestion();
                 resetFormQuestion();
                 var countQue = formQue.length;
                 indexQue++;
+                console.log(countQue);
+                console.log(indexQue);
+
+                 if (indexQue == (countQue - 1)) {
+                   $("#next").attr("disabled","disabled");
+                }
                 // $("#queNumber h4").html(indexQue+1);
                 $("#queNumber h4").html(formQue[indexQue][13]);
                 $("#wizards").hide("slow");
@@ -629,7 +644,10 @@ foreach ($getQuestions as $key => $value) {
                 }
             } else {
                 alert('Ada data yg belum di isi');
+                 
             }
+
+
         });
         $("#prev").click(function () {
             var validate = validateQuestion();
@@ -950,7 +968,7 @@ foreach ($getQuestions as $key => $value) {
         }
 
         function setVal() {
-            console.log(formQue[indexQue]);
+            // console.log(formQue[indexQue]);
             document.getElementById("listSubCat").value = formQue[indexQue][0];
             document.getElementById("isActive").checked = formQue[indexQue][1];
             document.getElementById("Duration").value = formQue[indexQue][2];

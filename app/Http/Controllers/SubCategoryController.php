@@ -29,9 +29,9 @@ class SubCategoryController extends Controller
         $version = $this->findCurrentVersion($name);
         $dateNow = date('Y-m-d');
 
-        $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID') 
-        ->where('que_sub_category_versions.DATE_FROM','<=',$dateNow)
-        ->where('que_sub_category_versions.DATE_TO','>=',$dateNow);
+        $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID');
+        // ->where('que_sub_category_versions.DATE_FROM','<=',$dateNow)
+        // ->where('que_sub_category_versions.DATE_TO','>=',$dateNow);
 
         if($name != ""){
             $datas->where('sub_category_name', 'like', '%' . $name . '%');
@@ -428,9 +428,9 @@ class SubCategoryController extends Controller
         $catFrom = Carbon::tomorrow()->format('d-m-Y');
         $catTo = '31-12-4712';
         $arrDate = array('from' => $catFrom, 'to' => $catTo);
-        $subCat =  DB::table('psi.que_sub_categories')
-        ->join('psi.que_sub_category_versions','que_sub_categories.sub_category_id','=','que_sub_category_versions.sub_category_id') 
-        ->whereRaw('date(sysdate()) between que_sub_category_versions.date_from and que_sub_category_versions.date_to')  
+        $subCat =  DB::table('que_sub_categories')
+        ->join('que_sub_category_versions','que_sub_categories.sub_category_id','=','que_sub_category_versions.sub_category_id') 
+        // ->whereRaw('date(sysdate()) between que_sub_category_versions.date_from and que_sub_category_versions.date_to')  
         ->get();
         $Narrations = new Narrations();
         $getNar = $Narrations->getAllNarations();
