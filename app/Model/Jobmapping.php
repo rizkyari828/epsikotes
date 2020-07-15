@@ -61,11 +61,32 @@ class Jobmapping extends Model
      public function getAllJobMappingActive($paramFilter){
         $jobMapping = DB::table('psi.psy_job_mappings')
         ->join('psi.psy_job_mapping_versions','psy_job_mappings.job_mapping_id','=','psy_job_mapping_versions.job_mapping_id')
-        ->whereRaw('upper(psy_job_mappings.name) like upper(\'%'.$paramFilter['jobMappingName'].'%\')')  ->groupBy('psy_job_mappings.JOB_MAPPING_ID')
-        ->select('psy_job_mappings.NAME','psy_job_mapping_versions.random_category','psy_job_mapping_versions.VERSION_ID','psy_job_mapping_versions.VERSION_NUMBER','psy_job_mapping_versions.DESCRIPTION','psy_job_mapping_versions.DATE_FROM','psy_job_mapping_versions.DATE_TO','psy_job_mappings.last_updated_by','psy_job_mappings.last_update_date','psy_job_mappings.JOB_MAPPING_ID')
+        ->join('psi.psy_job_profiles','psy_job_mapping_versions.VERSION_ID','=','psy_job_profiles.VERSION_ID')
+        ->join('psi.psy_job_category_list','psy_job_mapping_versions.VERSION_ID','=','psy_job_category_list.VERSION_ID');
+        if(!empty($paramFilter['jobMappingId'])){
+            $jobMapping->where('psy_job_mappings.JOB_MAPPING_ID','=',$paramFilter['jobMappingId']) ;
+        }
+
+        
+        if(!empty($paramFilter['isRandomCategory'])){
+            $jobMapping->where('psy_job_mapping_versions.RANDOM_CATEGORY','=',$paramFilter['isRandomCategory']) ;
+        }
+
+        if(!empty($paramFilter['jobId'])){
+            $jobMapping->where('psy_job_profiles.JOB_ID','=',$paramFilter['jobId']) ;
+        }
+
+
+        if(!empty($paramFilter['categoryId'])){
+            $jobMapping->where('psy_job_category_list.CATEGORY_ID','=',$paramFilter['categoryId']) ;
+        }
+
+
+        $jobMapping->groupBy('psy_job_mappings.JOB_MAPPING_ID');
+        $data = $jobMapping->select('psy_job_mappings.NAME','psy_job_mapping_versions.random_category','psy_job_mapping_versions.VERSION_ID','psy_job_mapping_versions.VERSION_NUMBER','psy_job_mapping_versions.DESCRIPTION','psy_job_mapping_versions.DATE_FROM','psy_job_mapping_versions.DATE_TO','psy_job_mappings.last_updated_by','psy_job_mappings.last_update_date','psy_job_mappings.JOB_MAPPING_ID')
       
         ->get();
-        return $jobMapping;
+        return $data;
     }
 
     public function insertJobMapping($jobMappingList){

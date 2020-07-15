@@ -68,7 +68,7 @@
                                     <label class="col-md-4 control-label">Effective Start Date *</label>
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <input type="text" name="mydate" placeholder="Select a date" class="form-control" value="{{$arrDate['from']}}" id="effectiveStartDate" disabled>
+                                            <input type="text" name="mydate" placeholder="Select a date" class="form-control" value="{{$arrDate['from']}}" id="effectiveStartDate" >
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         </div>
                                         <label style="color: red; display: none;" id="errorSubCatStartDate">Effective Start Date Must be Filled</label>
@@ -341,7 +341,9 @@
         <script src="assets/js/plugin/ckeditor/ckeditor.js"></script>
         <script src="assets/js/misc.js"></script>
         <script type="text/javascript">
-            $('#effectiveStartDate').datepicker({
+            $('#effectiveStartDate').datepicker({ 
+                defaultDate: "+0d", 
+                minDate:0,
                 dateFormat : 'dd-M-yy',
                 prevText : '<i class="fa fa-chevron-left"></i>',
                 nextText : '<i class="fa fa-chevron-right"></i>'
