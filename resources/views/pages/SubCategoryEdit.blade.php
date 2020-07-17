@@ -1005,7 +1005,7 @@ foreach ($getQuestions as $key => $value) {
                 var l3 = document.getElementsByName("multChoiceCorrect[]");
                 for (var z = 0; z < l.length; z++) {
                     l[z].value = ansMultipleChoice[arrIndex[z]][1];
-                    l2[z].value = ansMultipleChoice[arrIndex[z]][2];
+                    // l2[z].value = ansMultipleChoice[arrIndex[z]][2];
                     l3[z].checked = ansMultipleChoice[arrIndex[z]][3];
                 }
             } else if (formQue[indexQue][9] == 'TEXT_SERIES') {
