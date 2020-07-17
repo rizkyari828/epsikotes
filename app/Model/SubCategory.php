@@ -36,9 +36,7 @@ class SubCategory extends Model
         $dateNow = date('Y-m-d');
         $data = DB::table('psi.que_sub_category_versions')
         ->join('psi.que_sub_categories', 'psi.que_sub_categories.SUB_CATEGORY_ID', '=', 'psi.que_sub_category_versions.SUB_CATEGORY_ID')
-        ->where('psi.que_sub_categories.SUB_CATEGORY_ID',$id)
-        ->where('psi.que_sub_category_versions.DATE_FROM','<=',$dateNow)
-        ->where('psi.que_sub_category_versions.DATE_TO','>=',$dateNow)
+        ->where('psi.que_sub_categories.SUB_CATEGORY_ID',$id) 
         ->first();
 
         return $data;

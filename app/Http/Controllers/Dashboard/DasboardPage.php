@@ -62,7 +62,7 @@ class DasboardPage extends Controller
 
 
 
-        return view('pages.Dashboard',$param);
+        return view('pages.NewDashboard',$param);
     }
 
     public function getRecomendationByJob(){
