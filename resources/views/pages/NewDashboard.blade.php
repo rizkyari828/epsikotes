@@ -77,7 +77,7 @@
               <div class="card-body"> 
                 <form class="form-inline" role="form"> 
                   <fieldset>
-                    <div class="form-group col-xl-2">
+                    <div class="form-group col-xl-2 no-padding">
                         <label><span>Plan Date</span></label>
                     </div>
                     <div class="row">
@@ -174,7 +174,7 @@
               <div class="card-body"> 
                 <form class="form-inline" role="form"> 
                   <fieldset>
-                      <div class="form-group col-xl-2">
+                      <div class="form-group col-xl-2  no-padding">
                           <label><span>Plan Date</span></label>
                       </div>
                       <div class="row">
