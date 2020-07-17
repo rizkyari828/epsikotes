@@ -13,6 +13,9 @@
     .form-inline{
       display: block !important;
     }
+    .dataTables_scroll{
+      margin-top: 10px;
+    }
   </style>
   <div id="wrapper"> 
     <div id="content-wrapper"> 
@@ -104,6 +107,7 @@
                 <p class="card-title">
                   Above Requirement
                 </p> 
+
                 <div class="table-responsive">
                   <table class="table table-bordered" id="table-result-above"  cellspacing="0" width="100%">
                     <thead>
@@ -200,6 +204,16 @@
                 <p class="card-title">
                   Above Requirement
                 </p> 
+                <div class="row col-xl-12" >
+                  <label class="col-xl-2 no-padding">
+                    Show Column: 
+                  </label> 
+                  <div class="col-xl-10" id="container-vis-tar">
+                       
+                  </div>
+                 
+                </div> 
+                <br>
                 <div class="table-responsive">
                   <table class="table table-bordered table-result-network-above" id="table-result-network-above"  cellspacing="0" width="100%">
                     <thead>
@@ -219,6 +233,15 @@
                 <p class="card-title">
                   Meet Requirement
                 </p> 
+                <div class="row col-xl-12" >
+                  <label class="col-xl-2 no-padding">
+                    Show Column: 
+                  </label> 
+                  <div class="col-xl-10" id="container-vis-tmr"> 
+                  </div>
+                 
+                </div> 
+                <br>
                 <div class="table-responsive">
                   <table class="table table-bordered table-result-network-meet" id="table-result-network-meet"  cellspacing="0" width="100%">
                     <thead>
@@ -238,6 +261,15 @@
                 <p class="card-title">
                   Below Requirement
                 </p> 
+                <div class="row col-xl-12" >
+                  <label class="col-xl-2 no-padding">
+                    Show Column: 
+                  </label> 
+                  <div class="col-xl-10" id="container-vis-tbr"> 
+                  </div>
+                 
+                </div> 
+                <br>
                 <div class="table-responsive">
                   <table class="table table-bordered table-result-network-below" id="table-result-network-below"  cellspacing="0" width="100%">
                     <thead>
@@ -259,7 +291,38 @@
     <!-- /.content-wrapper -->
 
   </div> 
-  <script > 
+  <script>
+
+    function generateFilterVisTAR(obj){
+       var html ='<div class="form-check form-check-inline">'+
+        '<input class="form-check-input toggle-vis-TAR" type="checkbox" id="inlineCheckbox1" value="option1" checked data-column="'+obj.index+'">'+
+         '<label class="form-check-label" for="inlineCheckbox1">'+obj.name+'</label>'+
+        '</div> ';
+
+        if(obj.index > 0){
+          $('#container-vis-tar').append(html);
+        }
+    } 
+    function generateFilterVisTMR(obj){
+       var html ='<div class="form-check form-check-inline">'+
+        '<input class="form-check-input toggle-vis-tmr" type="checkbox" id="inlineCheckbox1" value="option1" checked data-column="'+obj.index+'">'+
+         '<label class="form-check-label" for="inlineCheckbox1">'+obj.name+'</label>'+
+        '</div> ';
+
+        if(obj.index > 0){
+          $('#container-vis-tmr').append(html);
+        }
+    } 
+    function generateFilterVisTBR(obj){
+       var html ='<div class="form-check form-check-inline">'+
+        '<input class="form-check-input toggle-vis-tbr" type="checkbox" id="inlineCheckbox1" value="option1" checked data-column="'+obj.index+'">'+
+         '<label class="form-check-label" for="inlineCheckbox1">'+obj.name+'</label>'+
+        '</div> ';
+
+        if(obj.index > 0){
+          $('#container-vis-tbr').append(html);
+        }
+    } 
     $('input[name="network"]').on("blur",function(){
         if($(this).val() == ''){
             $('input[name="network_id"]').val('');
@@ -353,6 +416,7 @@
             "dataType": "JSON",
             "url": "getResultByJob" // ajax source
         },
+
         "language": {
             "emptyTable": "No data available in table"
         },
@@ -365,6 +429,8 @@
             [1, "asc"]
         ]// set first column as a default sort by asc
     });
+
+    
 
     var objByJobMeet = {};
 
@@ -479,10 +545,12 @@
         strAboveRequirement,jqxhrAboveRequirement = $.post( "getResultByNetwork",{_token : $('input[name="_token"]').val(),paramFilters:obj})
             .done(function(response) {
                 dataAboveRequirement = JSON.parse(response);
-
+                $('#container-vis-tar').html("");
                 // Iterate each column and print table headers for Datatables
                 $.each(dataAboveRequirement.columns, function (k, colObj) {
                     strAboveRequirement = '<th>' + colObj.name + '</th>';
+                    colObj.index = k; 
+                    generateFilterVisTAR(colObj);
                     $(strAboveRequirement).appendTo(tableNameAboveRequirement+'>thead>tr');
                 });
 
@@ -493,15 +561,25 @@
                 }
                 // Debug? console.log(data.columns[0]);
 
-                $(tableNameAboveRequirement).dataTable({
+                var TAR = $(tableNameAboveRequirement).dataTable({
                     "scrollX": true,
                     "data": dataAboveRequirement.data,
                     "columns": dataAboveRequirement.columns,
                     "fnInitComplete": function () {
                         // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
-                        console.log('Datatable rendering complete');
+                        console.log('Datatable rendering complete 1');
                     }
+                }); 
+                $('.toggle-vis-TAR').on( 'change', function (e) {  
+                    e.preventDefault(); 
+                    // Get the column API object
+                    var column = TAR.api().columns( $(this).attr('data-column') );
+                    
+                    // Toggle the visibility
+                    column.visible(!column.visible()[0]); 
                 });
+
+                
             }).fail(function(jqXHR, exception) {
                 var msg = '';
                 if (jqXHR.status === 0) {
@@ -522,6 +600,8 @@
                 console.log(msg);
             });
 
+
+
     var objMeeet = {};
     objMeeet["resultBySystem"] = 'MEET_REQUIREMENT';
     objMeeet["cabangId"] =  $('input[name="cabang_id"]').val();
@@ -537,6 +617,8 @@
 
                 // Iterate each column and print table headers for Datatables
                 $.each(dataMeetRequirement.columns, function (k, colObj) {
+                    colObj.index = k;  
+                    generateFilterVisTMR(colObj);
                     strMeetRequirement = '<th>' + colObj.name + '</th>';
                     $(strMeetRequirement).appendTo(tableNameMeetRequirement+'>thead>tr');
                 });
@@ -548,7 +630,7 @@
                 }
                 // Debug? console.log(data.columns[0]);
 
-                $(tableNameMeetRequirement).dataTable({
+                var TMR = $(tableNameMeetRequirement).dataTable({
                     "scrollX": true,
                     "data": dataMeetRequirement.data,
                     "columns": dataMeetRequirement.columns,
@@ -556,6 +638,15 @@
                         // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
                         console.log('Datatable rendering complete');
                     }
+                });
+
+                 $('.toggle-vis-tmr').on( 'change', function (e) {  
+                    e.preventDefault(); 
+                    // Get the column API object
+                    var column = TMR.api().columns( $(this).attr('data-column') );
+                    
+                    // Toggle the visibility
+                    column.visible(!column.visible()[0]); 
                 });
             })
             .fail(function(jqXHR, exception) {
@@ -593,6 +684,8 @@
 
                 // Iterate each column and print table headers for Datatables
                 $.each(dataBelowRequirement.columns, function (k, colObj) {
+                   colObj.index = k;  
+                    generateFilterVisTBR(colObj);
                     strBelowRequirement = '<th>' + colObj.name + '</th>';
                     $(strBelowRequirement).appendTo(tableNameBelowRequirement+'>thead>tr');
                 });
@@ -604,7 +697,7 @@
                 }
                 // Debug? console.log(data.columns[0]);
 
-                $(tableNameBelowRequirement).dataTable({
+                var TBR = $(tableNameBelowRequirement).dataTable({
                     "scrollX": true,
                     "data": dataBelowRequirement.data,
                     "columns": dataBelowRequirement.columns,
@@ -612,6 +705,16 @@
                         // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
                         console.log('Datatable rendering complete');
                     }
+                });
+
+
+                 $('.toggle-vis-tbr').on( 'change', function (e) {  
+                    e.preventDefault(); 
+                    // Get the column API object
+                    var column = TBR.api().columns( $(this).attr('data-column') );
+                    
+                    // Toggle the visibility
+                    column.visible(!column.visible()[0]); 
                 });
             })
             .fail(function(jqXHR, exception) {
@@ -677,6 +780,8 @@
                             console.log('Datatable rendering complete');
                         }
                     });
+
+
                 }).fail(function(jqXHR, exception) {
                     var msg = '';
                     if (jqXHR.status === 0) {
@@ -1049,7 +1154,6 @@
 
 
       }, 1000); 
-
 
 
     }); 
