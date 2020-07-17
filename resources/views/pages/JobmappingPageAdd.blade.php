@@ -116,6 +116,17 @@
                                             </div>
                                     </section>
                                 </div>
+                                <div class="row"> 
+                                    <section class="col col-12">
+                                        <label class="label col col-10">Is Random Category *</label>
+                                        <div class="col col-2"> 
+                                                <input type="checkbox" name="IS_RANDOM_CATEGORY" id="IS_RANDOM_CATEGORY"  <?php 
+                                                    if($valeInput['RANDOM_CATEGORY'] == 1){ echo "checked"; }?>
+                                                    >
+                                           
+                                        </div>
+                                    </section>
+                                </div>
                             </fieldset>
 
                             <header >

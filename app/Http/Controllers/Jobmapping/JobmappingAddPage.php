@@ -40,10 +40,12 @@ class JobmappingAddPage extends Controller
             $valeInput['FINAL_GREATING_ID'] = '';
             $valeInput['VERSION_NUMBER'] = '<option value=New>New</option>';
             $valeInput['DESCRIPTION'] = '';
+            $valeInput['RANDOM_CATEGORY'] = '';
             $valeInput['DATE_FROM'] = '';
             $valeInput['DATE_TO'] = '';
             $valeInput['CATEGORY_LIST'] = '';
             $valeInput['JOB_PROFILE'] = '';
+            $valeInput['RANDOM_CATEGORY'] = '';
             $page = 'NEW';
             $paramFilter['jobMappingId'] = "";
         }else{
@@ -158,7 +160,7 @@ class JobmappingAddPage extends Controller
         $paramInsertJobMappingVersions['DESCRIPTION'] = $param['description'];
         $paramInsertJobMappingVersions['GENERAL_INSTRUCTION'] = $param['general_instruction'];
         $paramInsertJobMappingVersions['FINAL_GREATING'] = $param['final_greating_id'];
-        $paramInsertJobMappingVersions['RANDOM_CATEGORY'] = 1;
+        $paramInsertJobMappingVersions['RANDOM_CATEGORY'] = $param['IS_RANDOM_CATEGORY'];
         $paramInsertJobMappingVersions['CREATED_BY'] = $request->session()->get('user.username');
         $paramInsertJobMappingVersions['CREATION_DATE'] = date("Y-m-d h:i:s");
         $paramInsertJobMappingVersions['LAST_UPDATED_BY'] = $request->session()->get('user.username');
@@ -221,6 +223,7 @@ class JobmappingAddPage extends Controller
             $valeInput['GENERAL_INSTRUCTION_ID'] = $rowJobmapping->narration_id;
             $valeInput['FINAL_GREATING'] = $rowJobmapping->final_greating_name;
             $valeInput['FINAL_GREATING_ID'] = $rowJobmapping->final_greating_id;
+            $valeInput['RANDOM_CATEGORY'] = $rowJobmapping->random_category;
             $valeInput['VERSION_ID'] = $rowJobmapping->VERSION_ID;
             $valeInput['VERSION_NUMBER'] = $rowJobmapping->VERSION_NUMBER;
             $valeInput['DESCRIPTION'] = $rowJobmapping->DESCRIPTION;
@@ -287,6 +290,7 @@ class JobmappingAddPage extends Controller
             $valeInput['FINAL_GREATING'] = '';
             $valeInput['FINAL_GREATING_ID'] = '';
             $valeInput['VERSION_ID'] = $rowJobmapping->VERSION_ID;
+            $valeInput['RANDOM_CATEGORY'] = $rowJobmapping->RANDOM_CATEGORY;
             $valeInput['VERSION_NUMBER'] = $rowJobmapping->VERSION_NUMBER;
             $valeInput['DESCRIPTION'] = $rowJobmapping->DESCRIPTION;
             $valeInput['DATE_FROM'] = $rowJobmapping->DATE_FROM;
