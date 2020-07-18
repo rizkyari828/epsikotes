@@ -445,7 +445,7 @@
             url: '/rest/sub-category/' + sub_category_id,
             success: function (response) {
                 displayVersions(response.versions);
-                selectVersion(response.versions[0]);
+                selectVersion(response.versions[0], true);
                 then();
             },
             error: function (reason) {
@@ -459,7 +459,9 @@
             type: "GET",
             url: '/rest/sub-category-version/' + version_id,
             success: function (response) {
-                selectVersion(response);
+                selectVersion(response, false);
+                questions = response.questions;
+                selectQuestionByIndex(0);
             },
             error: function (reason) {
                 window.console.log(reason);
@@ -535,7 +537,7 @@
                 'copy_from': copyFrom
             },
             success: function (response) {
-                selectVersion(response);
+                selectVersion(response, true);
             },
             error: function (reason) {
                 window.console.log(reason);
@@ -543,9 +545,9 @@
         })
     }
 
-    function selectVersion(version) {
+    function selectVersion(version, shouldFetchVersionDetail) {
         let $versions = $('#versions');
-        if ($versions.val().toString() !== version.VERSION_ID.toString()) {
+        if ($versions.val() != null && $versions.val().toString() !== version.VERSION_ID.toString()) {
             $versions.val(version.VERSION_ID).change();
         }
         $('#version_description').val(version.DESCRIPTION);
@@ -561,17 +563,9 @@
         }
         $('#version_date_form').val(version.DATE_FROM);
         $('#version_date_to').val(version.DATE_TO);
-        $.ajax({
-            type: "GET",
-            url: "/rest/sub-category-version/" + version.VERSION_ID,
-            success: function (response) {
-                questions = response.questions;
-                selectQuestionByIndex(0);
-            },
-            error: function (reason) {
-                window.console.log(reason);
-            }
-        })
+        if (shouldFetchVersionDetail) {
+            fetchSubCategoryVersionDetail(version.VERSION_ID);
+        }
     }
 
     function displayVersions(versions) {
