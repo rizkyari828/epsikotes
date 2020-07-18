@@ -617,7 +617,7 @@ foreach ($getQuestions as $key => $value) {
                 table.append(tblBody_3);
             }
         });
-        $("#queNumber h4").html(indexQue + 1);
+        $("#queNumber h4").html(formQue[indexQue][13]);
         if (indexQue < 1)
             document.getElementById("prev").disabled = true;
 
@@ -631,8 +631,8 @@ foreach ($getQuestions as $key => $value) {
                 console.log(countQue);
                 console.log(indexQue);
 
-                 if (indexQue == (countQue - 1)) {
-                   $("#next").attr("disabled","disabled");
+                if (indexQue == (countQue - 1)) {
+                   $("#next").prop("disabled",true);
                 }
                 // $("#queNumber h4").html(indexQue+1);
                 $("#queNumber h4").html(formQue[indexQue][13]);
@@ -657,6 +657,12 @@ foreach ($getQuestions as $key => $value) {
                 var countQue = formQue.length;
                 indexQue--;
                 // $("#queNumber h4").html(indexQue+1);
+                 console.log(countQue);
+                console.log(indexQue);
+
+                if (indexQue == (countQue - 2)) {
+                   $("#next").prop("disabled",false);
+                }
                 $("#queNumber h4").html(formQue[indexQue][13]);
                 $("#wizards").hide("slow");
                 $("#wizards").show("slow");
