@@ -115,12 +115,15 @@ $("#narrationback").click(function(e) {
             ignore: [],
             rules : {
                 NARRATION_NAME : {
-                    required : true,
+                    required :  ($("#narr_id").val().length <= 0),
                     remote: {
                         url: "getExistingNameNarration",
                         type: "post",
                         data: {
                           _token : $('input[name="_token"]').val()
+                        },
+                        depends: function() {
+                            return ($("#narr_id").val().length <= 0);
                         }
                     }              
                 },
