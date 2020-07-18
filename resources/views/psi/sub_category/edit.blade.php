@@ -392,6 +392,7 @@
 
     function onReady() {
         // Here are the point of readiness.
+        disablePrevButton();
     }
 
     function fetchSubCategoryNames(then) {
@@ -478,6 +479,7 @@
 
     function selectQuestionByIndex(question_index) {
         current_question_index = question_index;
+        setupPrevNextButtonState();
         $('#question_index').html(current_question_index + 1 + " / " + questions.length);
         selectQuestion(questions[current_question_index]);
     }
@@ -558,5 +560,34 @@
         $('#question_question_character').val(parseFloat(question.QUESTION_CHARACTER).toFixed());
         $('#question_type_answer').val(question.TYPE_ANSWER).change();
         $('#question_random_answer').prop('checked', question.RANDOM_ANSWER === 1 || question.RANDOM_ANSWER === "1");
+    }
+
+    function setupPrevNextButtonState() {
+        if (current_question_index === 0) {
+            disablePrevButton();
+        } else {
+            enablePrevButton();
+        }
+        if (current_question_index === questions.length - 1) {
+            disableNextButton();
+        } else {
+            enableNextButton();
+        }
+    }
+
+    function disablePrevButton() {
+        $('#question_button_prev').attr('disabled', 'disabled');
+    }
+
+    function disableNextButton() {
+        $('#question_button_next').attr('disabled', 'disabled');
+    }
+
+    function enablePrevButton() {
+        $('#question_button_prev').removeAttr('disabled');
+    }
+
+    function enableNextButton() {
+        $('#question_button_next').removeAttr('disabled');
     }
 </script>
