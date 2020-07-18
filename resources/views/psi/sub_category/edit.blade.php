@@ -397,8 +397,9 @@
             .on('change', function () {
                 if (this.value === "New") {
                     createNewVersion(previousVersion);
-                    // enableQuestionForm();
+                    enableQuestionForm();
                 } else {
+                    fetchSubCategoryVersionDetail(this.value);
                     disableQuestionForm();
                 }
             })
@@ -446,6 +447,19 @@
                 displayVersions(response.versions);
                 selectVersion(response.versions[0]);
                 then();
+            },
+            error: function (reason) {
+                window.console.log(reason);
+            },
+        });
+    }
+
+    function fetchSubCategoryVersionDetail(version_id) {
+        $.ajax({
+            type: "GET",
+            url: '/rest/sub-category-version/' + version_id,
+            success: function (response) {
+                selectVersion(response);
             },
             error: function (reason) {
                 window.console.log(reason);
@@ -530,7 +544,10 @@
     }
 
     function selectVersion(version) {
-        $('#versions').val(version.VERSION_ID).change();
+        let $versions = $('#versions');
+        if ($versions.val().toString() !== version.VERSION_ID.toString()) {
+            $versions.val(version.VERSION_ID).change();
+        }
         $('#version_description').val(version.DESCRIPTION);
         $('#version_work_instruction').val(version.WORK_INSTRUCTION);
         if (version.RANDOM_QUESTION === 1) {
