@@ -454,7 +454,7 @@
                 'NARRATION_ID': narrations.filter(function (item) { return item.NARRATION_NAME === $('#question_narration_name').val() })[0].NARRATION_ID,
                 'QUESTION_TEXT': $("#question_question_text").val(),
                 'RANDOM_CHARACTER': $('#question_random_character').is(':checked') ? 1 : 0,
-                'QUESTION_CHARACTER': $('question_question_character').val(),
+                'QUESTION_CHARACTER': $('#question_question_character').val(),
                 'TYPE_ANSWER': $('#question_type_answer').val(),
                 'RANDOM_ANSWER': $('#question_random_answer').is(':checked') ? 1 : 0,
             },
@@ -535,9 +535,9 @@
         current_question_sequence = question.QUESTION_SEQUENCE;
         $('#question_question_id').val(question.QUESTION_ID);
         $('#question_type_sub_category').val(question.TYPE_SUB_CATEGORY).change();
-        $('#question_is_actived').prop('checked', question.IS_ACTIVED === 1)
-        $('#question_duration_per_que').val(question.DURATION_PER_QUE);
-        $('#question_example').prop('checked', question.EXAMPLE === 1);
+        $('#question_is_actived').prop('checked', question.IS_ACTIVED === 1 || question.IS_ACTIVED === "1")
+        $('#question_duration_per_que').val(parseFloat(question.DURATION_PER_QUE).toFixed());
+        $('#question_example').prop('checked', question.EXAMPLE === 1 || question.EXAMPLE === "1");
         $('#question_hint_text_checkbox').prop('checked', question.HINT_TEXT != null);
         $('#question_hint_text').val(question.HINT_TEXT);
         $('#question_hint_image_checkbox').prop('checkbox', question.HINT_IMAGE != null);
@@ -554,9 +554,9 @@
         $('#question_question_text').val(question.QUESTION_TEXT);
         $('#question_question_image_checkbox').prop('checked', question.QUESTION_IMAGE != null);
 
-        $('#question_random_character').prop('checked', question.RANDOM_CHARACTER === 1);
-        $('#question_question_character').val(question.QUETSION_CHARACTER);
+        $('#question_random_character').prop('checked', question.RANDOM_CHARACTER === 1 || question.RANDOM_CHARACTER === "1");
+        $('#question_question_character').val(parseFloat(question.QUESTION_CHARACTER).toFixed());
         $('#question_type_answer').val(question.TYPE_ANSWER).change();
-        $('#question_random_answer').prop('checked', question.RANDOM_ANSWER === 1);
+        $('#question_random_answer').prop('checked', question.RANDOM_ANSWER === 1 || question.RANDOM_ANSWER === "1");
     }
 </script>
