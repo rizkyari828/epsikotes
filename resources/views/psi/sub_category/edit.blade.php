@@ -388,6 +388,20 @@
                 selectPrevQuestion();
             });
         });
+
+        let previousVersion;
+        $('#versions')
+            .on('focus', function () {
+                previousVersion = this.value;
+            })
+            .on('change', function () {
+                if (this.value === "New") {
+                    createNewVersion(previousVersion);
+                    // enableQuestionForm();
+                } else {
+                    disableQuestionForm();
+                }
+            })
     });
 
     function onReady() {
@@ -496,6 +510,23 @@
             $('#sub_category_name_datalist')
                 .append('<option value="' + item.SUB_CATEGORY_NAME + '">' + item.SUB_CATEGORY_NAME + '</option>')
         });
+    }
+
+    function createNewVersion(copyFrom) {
+        $.ajax({
+            type: "POST",
+            url: "/rest/sub-category-version",
+            data: {
+                '_token': "{{ csrf_token() }}",
+                'copy_from': copyFrom
+            },
+            success: function (response) {
+                selectVersion(response);
+            },
+            error: function (reason) {
+                window.console.log(reason);
+            }
+        })
     }
 
     function selectVersion(version) {
