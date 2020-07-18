@@ -140,7 +140,7 @@
                             </div>
                         </fieldset>
                         <fieldset>
-                            <header>Question List</header>
+                            <legend>Question List</legend>
                             <div id="wizards">
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Type Of Sub Category</label>
