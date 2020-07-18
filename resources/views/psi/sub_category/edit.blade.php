@@ -120,8 +120,8 @@
                                                 Prev Question
                                             </button>
                                         </div>
-                                        <div class="col-md-1" id="queNumber">
-                                            <h4></h4>
+                                        <div class="col-md-3" id="queNumber">
+                                            <h4 id="question_index"></h4>
                                         </div>
                                         <div class="col-md-3">
                                             <button class="btn btn-warning" type="button" id="question_button_next">
@@ -177,12 +177,11 @@
                                     <div class="inline-group">
                                         <label class="col-md-2 control-label">Hint</label>
                                         <div class="col-md-1">
-                                            <input type="checkbox" id="question_hint_text_checkbox" disabled="true">
+                                            <input type="checkbox" id="question_hint_text_checkbox">
                                         </div>
                                         <label class="col-md-1 control-label">Text</label>
                                         <div class="col-md-6">
-                                            <textarea class="form-control" rows="4" id="question_hint_text"
-                                                      disabled="true"></textarea>
+                                            <textarea class="form-control" rows="4" id="question_hint_text"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -190,12 +189,11 @@
                                     <div class="inline-group">
                                         <label class="col-md-2 control-label"></label>
                                         <div class="col-md-1">
-                                            <input type="checkbox" id="question_hint_image_checkbox" disabled="true">
+                                            <input type="checkbox" id="question_hint_image_checkbox">
                                         </div>
                                         <label class="col-md-1 control-label">Image</label>
                                         <div class="col-md-6">
-                                            <input type="file" id="question_hint_image" disabled="true"
-                                                   style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;">
+                                            <input type="file" id="question_hint_image" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;">
                                         </div>
                                     </div>
                                 </div>
@@ -222,8 +220,7 @@
                                         </div>
                                         <label class="col-md-1 control-label">Text</label>
                                         <div class="col-md-6">
-                                            <textarea class="form-control" rows="4" id="question_question_text"
-                                                      disabled="true"></textarea>
+                                            <textarea class="form-control" rows="4" id="question_question_text"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -235,8 +232,7 @@
                                         </div>
                                         <label class="col-md-1 control-label">Image</label>
                                         <div class="col-md-6">
-                                            <input type="file" id="question_question_image" disabled="true"
-                                                   style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;">
+                                            <input type="file" id="question_question_image" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;">
                                         </div>
                                     </div>
                                 </div>
@@ -386,6 +382,12 @@
                 selectNextQuestion();
             });
         });
+
+        $('#question_button_prev').on('click', function () {
+            saveCurrentQuestion(() => {
+                selectPrevQuestion();
+            });
+        });
     });
 
     function onReady() {
@@ -457,7 +459,7 @@
                 'RANDOM_ANSWER': $('#question_random_answer').is(':checked') ? 1 : 0,
             },
             success: function (response) {
-                window.console.log(response);
+                questions[current_question_index] = response
                 then();
             },
             error: function (reason) {
@@ -466,12 +468,17 @@
         });
     }
 
+    function selectPrevQuestion() {
+        selectQuestionByIndex(current_question_index - 1);
+    }
+
     function selectNextQuestion() {
         selectQuestionByIndex(current_question_index + 1);
     }
 
     function selectQuestionByIndex(question_index) {
         current_question_index = question_index;
+        $('#question_index').html(current_question_index + 1 + " / " + questions.length);
         selectQuestion(questions[current_question_index]);
     }
 
