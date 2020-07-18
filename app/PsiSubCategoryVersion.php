@@ -20,4 +20,9 @@ class PsiSubCategoryVersion extends Model
         return $this->belongsTo(PsiSubCategory::class, 'SUB_CATEGORY_ID', 'SUB_CATEGORY_ID');
     }
 
+    public function questions()
+    {
+        return $this->hasMany(PsiQuestion::class, 'VERSION_ID', 'VERSION_ID')->orderBy('QUESTION_SEQUENCE', 'ASC');
+    }
+
 }

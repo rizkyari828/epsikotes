@@ -64,12 +64,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <?php
-                                        $checked = '';
-                                        if ($data->RANDOM_QUESTION == 1) {
-                                            $checked = 'checked';
-                                        }
-                                        ?>
                                         <label class="col-md-2 control-label">Random Questions</label>
                                         <div class="col-md-8">
                                             <input type="checkbox" name="subCateRandom" data-toggle="toggle" id="version_random_question"
@@ -145,7 +139,7 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Type Of Sub Category</label>
                                     <div class="col-md-8">
-                                        <select class="form-control" id="listSubCat">
+                                        <select class="form-control" id="question_type_sub_category">
                                             <option value="-">- Select -</option>
                                             <option value="ANALOGY">ANALOGY</option>
                                             <option value="SERIES_COMPLETION">SERIES COMPLETION</option>
@@ -159,13 +153,13 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Is Actives</label>
                                     <div class="col-md-8">
-                                        <input type="checkbox" id="isActive">
+                                        <input type="checkbox" id="question_is_actived">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Duration Per Question</label>
                                     <div class="col-lg-2">
-                                        <input class="form-control" placeholder="0" id="Duration" type="number">
+                                        <input class="form-control" placeholder="0" id="question_duration_per_que" type="number">
                                         <label style="color: red; display: none;" id="errorDuration">Duration must be
                                             filled</label>
                                     </div>
@@ -173,7 +167,7 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Is Example</label>
                                     <div class="col-md-8">
-                                        <input type="checkbox" id="isExample">
+                                        <input type="checkbox" id="question_example">
                                         <label style="color: red; display: none;" id="errorIsExample">Hint or Text must
                                             be filled</label>
                                     </div>
@@ -182,11 +176,11 @@
                                     <div class="inline-group">
                                         <label class="col-md-2 control-label">Hint</label>
                                         <div class="col-md-1">
-                                            <input type="checkbox" id="chkTxtHint" disabled="true">
+                                            <input type="checkbox" id="question_hint_text_checkbox" disabled="true">
                                         </div>
                                         <label class="col-md-1 control-label">Text</label>
                                         <div class="col-md-6">
-                                            <textarea class="form-control" rows="4" id="txtareaHint"
+                                            <textarea class="form-control" rows="4" id="question_hint_text"
                                                       disabled="true"></textarea>
                                         </div>
                                     </div>
@@ -195,11 +189,11 @@
                                     <div class="inline-group">
                                         <label class="col-md-2 control-label"></label>
                                         <div class="col-md-1">
-                                            <input type="checkbox" id="chkImgHint" disabled="true">
+                                            <input type="checkbox" id="question_hint_image_checkbox" disabled="true">
                                         </div>
                                         <label class="col-md-1 control-label">Image</label>
                                         <div class="col-md-6">
-                                            <input type="file" id="imgHint" disabled="true"
+                                            <input type="file" id="question_hint_image" disabled="true"
                                                    style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;">
                                         </div>
                                     </div>
@@ -211,8 +205,8 @@
                                             <div class="col-sm-12">
                                                 <div class="input-icon-left">
                                                     <input class="form-control" placeholder="Narration Name"
-                                                           id="narName" type="text" list="narations">
-                                                    <datalist id="narations">
+                                                           id="question_narration_name" type="text" list="question_narrations_datalist">
+                                                    <datalist id="question_narrations_datalist">
 {{--                                                        @foreach($narations as $key => $val)--}}
 {{--                                                            <option--}}
 {{--                                                                value="{{$val->NARRATION_NAME}}">{{$val->NARRATION_NAME}}</option>--}}
@@ -228,11 +222,11 @@
                                     <div class="inline-group">
                                         <label class="col-md-2 control-label">Question *</label>
                                         <div class="col-md-1">
-                                            <input type="checkbox" id="chkQueTxt">
+                                            <input type="checkbox" id="question_question_text_checkbox">
                                         </div>
                                         <label class="col-md-1 control-label">Text</label>
                                         <div class="col-md-6">
-                                            <textarea class="form-control" rows="4" id="txtAreaQue"
+                                            <textarea class="form-control" rows="4" id="question_question_text"
                                                       disabled="true"></textarea>
                                         </div>
                                     </div>
@@ -241,11 +235,11 @@
                                     <div class="inline-group">
                                         <label class="col-md-2 control-label"></label>
                                         <div class="col-md-1">
-                                            <input type="checkbox" id="chkQueImg">
+                                            <input type="checkbox" id="question_question_image_checkbox">
                                         </div>
                                         <label class="col-md-1 control-label">Image</label>
                                         <div class="col-md-6">
-                                            <input type="file" id="imgQue" disabled="true"
+                                            <input type="file" id="question_question_image" disabled="true"
                                                    style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;">
                                         </div>
                                     </div>
@@ -261,19 +255,19 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Random Character</label>
                                     <div class="col-md-8">
-                                        <input type="checkbox" id="randomCha">
+                                        <input type="checkbox" id="question_random_character">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Question Character</label>
                                     <div class="col-lg-2">
-                                        <input class="form-control" placeholder="0" id="queCharacter" type="number">
+                                        <input class="form-control" placeholder="0" id="question_question_character" type="number">
                                     </div>
                                 </div>
                                 <div class="form-group" id="typeOfAnswer">
                                     <label class="col-md-2 control-label">Type Of Answer *</label>
                                     <div class="col-md-8">
-                                        <select class="form-control" id="listTypeOfAnswer">
+                                        <select class="form-control" id="question_type_answer">
                                             <option value="-">- Select -</option>
                                             <option value="MULTIPLE_CHOICE">Multiple Choice</option>
                                             <option value="TEXT_SERIES">Text Series</option>
@@ -287,7 +281,7 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Random Answer *</label>
                                     <div class="col-md-8">
-                                        <input type="checkbox" id="randomAnswer">
+                                        <input type="checkbox" id="question_random_answer">
                                     </div>
                                 </div>
 
@@ -372,6 +366,12 @@
 </div>
 
 <script>
+    let questions = [];
+
+    let current_question_sequence = 0;
+
+    let narrations = [];
+
     $(document).ready(function () {
         CKEDITOR.replace('ckeditor', {height: '200px', startupFocus: true});
         let sub_category_id = "{{ $data->SUB_CATEGORY_ID }}";
@@ -379,16 +379,20 @@
             type: "GET",
             url: "/rest/sub-category",
             success: function (response) {
-                window.console.log(response)
-                response.forEach(function (item, _) {
-                    $('#sub_category_name_datalist')
-                        .append('<option value="' + item.SUB_CATEGORY_NAME + '">' + item.SUB_CATEGORY_NAME + '</option>')
-                })
+                displayCategoryNames(response);
             },
             error: function (reason) {
                 window.console.log(reason);
             },
         });
+        $.ajax({
+            type: "GET",
+            url: "/rest/narration",
+            success: function (response) {
+                narrations = response;
+                displayNarrations(narrations);
+            }
+        })
         $.ajax({
             type: "GET",
             url: '/rest/sub-category/' + sub_category_id,
@@ -403,11 +407,25 @@
         });
     });
 
+    function displayNarrations(narrations) {
+        narrations.forEach(function (item, _) {
+            $('#question_narrations_datalist')
+                .append('<option value="' + item.NARRATION_NAME + '">' + item.NARRATION_NAME + '</option>')
+        });
+    }
+
+    function displayCategoryNames(categories) {
+        categories.forEach(function (item, _) {
+            $('#sub_category_name_datalist')
+                .append('<option value="' + item.SUB_CATEGORY_NAME + '">' + item.SUB_CATEGORY_NAME + '</option>')
+        });
+    }
+
     function selectVersion(version) {
         $('#versions').val(version.VERSION_ID).change();
         $('#version_description').val(version.DESCRIPTION);
         $('#version_work_instruction').val(version.WORK_INSTRUCTION);
-        if (version.RANDOM_QUESTION) {
+        if (version.RANDOM_QUESTION === 1) {
             $('#version_random_question')
                 .prop('checked', true)
                 .bootstrapToggle('on');
@@ -418,6 +436,17 @@
         }
         $('#version_date_form').val(version.DATE_FROM);
         $('#version_date_to').val(version.DATE_TO);
+        $.ajax({
+            type: "GET",
+            url: "/rest/sub-category-version/" + version.VERSION_ID,
+            success: function (response) {
+                questions = response.questions;
+                selectQuestion(questions[0]);
+            },
+            error: function (reason) {
+                window.console.log(reason);
+            }
+        })
     }
 
     function displayVersions(versions) {
@@ -425,5 +454,30 @@
             $('#versions')
                 .append('<option value="' + version.VERSION_ID + '">' + version.VERSION_NUMBER + '</option>');
         });
+    }
+
+    function selectQuestion(question) {
+        current_question_sequence = question.QUESTION_SEQUENCE;
+        $('#question_type_sub_category').val(question.TYPE_SUB_CATEGORY).change();
+        $('#question_is_actived').prop('checked', question.IS_ACTIVED === 1)
+        $('#question_duration_per_que').val(question.DURATION_PER_QUE);
+        $('#question_example').prop('checked', question.EXAMPLE === 1);
+        $('#question_hint_text_checkbox').prop('checked', question.HINT_TEXT != null);
+        $('#question_hint_text').val(question.HINT_TEXT);
+        $('#question_hint_image_checkbox').prop('checkbox', question.HINT_IMAGE != null);
+
+        let selected_narrations = narrations.filter(function (item) {
+            return item.NARRATION_ID === question.NARRATION_ID;
+        })[0]
+        $('#question_narration_name').val(selected_narrations.NARRATION_NAME);
+
+        $('#question_question_text_checkbox').prop('checked', question.QUESTION_TEXT != null);
+        $('#question_question_text').val(question.QUESTION_TEXT);
+        $('#question_question_image_checkbox').prop('checked', question.QUESTION_IMAGE != null);
+
+        $('#question_random_character').prop('checked', question.RANDOM_CHARACTER === 1);
+        $('#question_question_character').val(question.QUETSION_CHARACTER);
+        $('#question_type_answer').val(question.TYPE_ANSWER).change();
+        $('#question_random_answer').prop('checked', question.RANDOM_ANSWER === 1);
     }
 </script>
