@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\PsiQuestion;
 use App\PsiSubCategoryVersion;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -33,6 +34,7 @@ class RestSubCategoryVersionController extends Controller
             $copy_from_data = $copy_from->toArray();
             unset($copy_from_data['VERSION_ID']);
             $copy_from_data['VERSION_NUMBER'] = PsiSubCategoryVersion::query()->where('SUB_CATEGORY_ID', $copy_from->SUB_CATEGORY_ID)->max('VERSION_NUMBER') + 1;
+            $copy_from_data['DATE_FROM'] = Carbon::tomorrow()->toDateString();
             $item->fill($copy_from_data);
             $item->save();
 
