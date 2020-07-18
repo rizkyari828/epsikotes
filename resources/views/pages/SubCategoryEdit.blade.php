@@ -617,7 +617,7 @@ foreach ($getQuestions as $key => $value) {
                 table.append(tblBody_3);
             }
         });
-        $("#queNumber h4").html(formQue[indexQue][13]);
+        $("#queNumber h4").html(indexQue+1);
         if (indexQue < 1)
             document.getElementById("prev").disabled = true;
 
@@ -631,11 +631,11 @@ foreach ($getQuestions as $key => $value) {
                 console.log(countQue);
                 console.log(indexQue);
 
-                if (indexQue == (countQue - 1)) {
+                if (indexQue == (countQue - 1) && $("#Version").val() != "New") {
                    $("#next").prop("disabled",true);
                 }
                 // $("#queNumber h4").html(indexQue+1);
-                $("#queNumber h4").html(formQue[indexQue][13]);
+                $("#queNumber h4").html(indexQue+1);
                 $("#wizards").hide("slow");
                 $("#wizards").show("slow");
                 document.getElementById("prev").disabled = false;
@@ -660,10 +660,10 @@ foreach ($getQuestions as $key => $value) {
                  console.log(countQue);
                 console.log(indexQue);
 
-                if (indexQue == (countQue - 2)) {
+                if (indexQue == (countQue - 2) && $("#Version").val() != "New") {
                    $("#next").prop("disabled",false);
                 }
-                $("#queNumber h4").html(formQue[indexQue][13]);
+                $("#queNumber h4").html(indexQue+1);
                 $("#wizards").hide("slow");
                 $("#wizards").show("slow");
                 if (indexQue < countQue) {
@@ -1126,7 +1126,13 @@ foreach ($getQuestions as $key => $value) {
         });
 
         $("#Version").change(function () {
+            console.log(indexQue);
             var version = document.getElementById('Version').value;
+
+            var countQue = formQue.length;
+            if (indexQue == (countQue - 1) && $("#Version").val() == "New") {
+               $("#next").prop("disabled",false);
+            }   
 
             if (version != 'New') {
                 disableAll();
