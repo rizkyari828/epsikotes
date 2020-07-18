@@ -115,7 +115,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-md-offset-2">
                                         <div class="col-md-3">
-                                            <button class="btn btn-warning" type="button" id="prev">
+                                            <button class="btn btn-warning" type="button" id="question_button_prev">
                                                 <i class="fa fa-chevron-left"></i>
                                                 Prev Question
                                             </button>
@@ -124,7 +124,7 @@
                                             <h4></h4>
                                         </div>
                                         <div class="col-md-3">
-                                            <button class="btn btn-warning" type="button" id="next">
+                                            <button class="btn btn-warning" type="button" id="question_button_next">
                                                 Next Question
                                                 <i class="fa fa-chevron-right"></i>
                                             </button>
@@ -136,6 +136,7 @@
                         <fieldset>
                             <legend>Question List</legend>
                             <div id="wizards">
+                                <input type="text" id="question_question_id" hidden>
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Type Of Sub Category</label>
                                     <div class="col-md-8">
@@ -206,12 +207,7 @@
                                                 <div class="input-icon-left">
                                                     <input class="form-control" placeholder="Narration Name"
                                                            id="question_narration_name" type="text" list="question_narrations_datalist">
-                                                    <datalist id="question_narrations_datalist">
-{{--                                                        @foreach($narations as $key => $val)--}}
-{{--                                                            <option--}}
-{{--                                                                value="{{$val->NARRATION_NAME}}">{{$val->NARRATION_NAME}}</option>--}}
-{{--                                                        @endforeach--}}
-                                                    </datalist>
+                                                    <datalist id="question_narrations_datalist"></datalist>
                                                 </div>
                                             </div>
                                         </div>
@@ -370,42 +366,114 @@
 
     let current_question_sequence = 0;
 
+    let current_question_index = 0;
+
     let narrations = [];
 
     $(document).ready(function () {
         CKEDITOR.replace('ckeditor', {height: '200px', startupFocus: true});
         let sub_category_id = "{{ $data->SUB_CATEGORY_ID }}";
+        fetchSubCategoryNames(() => {
+            fetchNarrations(() => {
+                fetchSubCategoryDetail(sub_category_id, () => {
+                    onReady();
+                })
+            })
+        });
+
+        $('#question_button_next').on('click', function () {
+            saveCurrentQuestion(() => {
+                selectNextQuestion();
+            });
+        });
+    });
+
+    function onReady() {
+        // Here are the point of readiness.
+    }
+
+    function fetchSubCategoryNames(then) {
         $.ajax({
             type: "GET",
             url: "/rest/sub-category",
             success: function (response) {
                 displayCategoryNames(response);
+                then();
             },
             error: function (reason) {
                 window.console.log(reason);
             },
         });
+    }
+
+    function fetchNarrations(then) {
         $.ajax({
             type: "GET",
             url: "/rest/narration",
             success: function (response) {
                 narrations = response;
                 displayNarrations(narrations);
-            }
-        })
+                then();
+            },
+            error: function (reason) {
+                window.console.log(reason);
+            },
+        });
+    }
+
+    function fetchSubCategoryDetail(sub_category_id, then) {
         $.ajax({
             type: "GET",
             url: '/rest/sub-category/' + sub_category_id,
             success: function (response) {
                 displayVersions(response.versions);
                 selectVersion(response.versions[0]);
-                window.console.log(response);
+                then();
             },
             error: function (reason) {
                 window.console.log(reason);
             },
         });
-    });
+    }
+
+    function saveCurrentQuestion(then) {
+        let current_question = questions[current_question_index];
+        $.ajax({
+            type: "PUT",
+            url: "/rest/question/" + current_question.QUESTION_ID,
+            dataType: "json",
+            data: {
+                '_token': "{{ csrf_token() }}",
+                'TYPE_SUB_CATEGORY': $('#question_type_sub_category').val(),
+                'IS_ACTIVED': $('#question_is_actived').is(":checked") ? 1 : 0,
+                'DURATION_PER_QUE': $('#question_duration_per_que').val(),
+                'EXAMPLE': $('#question_example').is(':checked') ? 1 : 0,
+                'HINT_TEXT': $('#question_hint_text').val(),
+                'NARRATION_ID': narrations.filter(function (item) { return item.NARRATION_NAME === $('#question_narration_name').val() })[0].NARRATION_ID,
+                'QUESTION_TEXT': $("#question_question_text").val(),
+                'RANDOM_CHARACTER': $('#question_random_character').is(':checked') ? 1 : 0,
+                'QUESTION_CHARACTER': $('question_question_character').val(),
+                'TYPE_ANSWER': $('#question_type_answer').val(),
+                'RANDOM_ANSWER': $('#question_random_answer').is(':checked') ? 1 : 0,
+            },
+            success: function (response) {
+                window.console.log(response);
+                then();
+            },
+            error: function (reason) {
+                window.console.log(reason);
+            }
+        });
+    }
+
+    function selectNextQuestion() {
+        selectQuestionByIndex(current_question_index + 1);
+    }
+
+    function selectQuestionByIndex(question_index) {
+        current_question_index = question_index;
+        selectQuestion(questions[current_question_index]);
+    }
 
     function displayNarrations(narrations) {
         narrations.forEach(function (item, _) {
@@ -441,7 +509,7 @@
             url: "/rest/sub-category-version/" + version.VERSION_ID,
             success: function (response) {
                 questions = response.questions;
-                selectQuestion(questions[0]);
+                selectQuestionByIndex(0);
             },
             error: function (reason) {
                 window.console.log(reason);
@@ -458,6 +526,7 @@
 
     function selectQuestion(question) {
         current_question_sequence = question.QUESTION_SEQUENCE;
+        $('#question_question_id').val(question.QUESTION_ID);
         $('#question_type_sub_category').val(question.TYPE_SUB_CATEGORY).change();
         $('#question_is_actived').prop('checked', question.IS_ACTIVED === 1)
         $('#question_duration_per_que').val(question.DURATION_PER_QUE);
@@ -468,8 +537,11 @@
 
         let selected_narrations = narrations.filter(function (item) {
             return item.NARRATION_ID === question.NARRATION_ID;
-        })[0]
-        $('#question_narration_name').val(selected_narrations.NARRATION_NAME);
+        })[0];
+
+        if (selected_narrations !== undefined) {
+            $('#question_narration_name').val(selected_narrations.NARRATION_NAME);
+        }
 
         $('#question_question_text_checkbox').prop('checked', question.QUESTION_TEXT != null);
         $('#question_question_text').val(question.QUESTION_TEXT);

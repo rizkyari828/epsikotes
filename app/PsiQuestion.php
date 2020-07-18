@@ -13,6 +13,8 @@ class PsiQuestion extends Model
 
     public $timestamps = false;
 
+    protected $guarded = [];
+
     public function subCategoryVersion()
     {
         return $this->belongsTo(PsiSubCategoryVersion::class, 'VERSION_ID', 'VERSION_ID');
