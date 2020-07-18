@@ -408,11 +408,13 @@
         $('#version_description').val(version.DESCRIPTION);
         $('#version_work_instruction').val(version.WORK_INSTRUCTION);
         if (version.RANDOM_QUESTION) {
-            $('#version_random_question').prop('checked', true);
-            $('#version_random_question').bootstrapToggle('on');
+            $('#version_random_question')
+                .prop('checked', true)
+                .bootstrapToggle('on');
         } else {
-            $('#version_random_question').prop('checked', false);
-            $('#version_random_question').bootstrapToggle('off');
+            $('#version_random_question')
+                .prop('checked', false)
+                .bootstrapToggle('off');
         }
         $('#version_date_form').val(version.DATE_FROM);
         $('#version_date_to').val(version.DATE_TO);
