@@ -194,13 +194,13 @@
             "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
             "oLanguage": {
                 "sSearch": '<span class="input-group-addon"><i class="fa fa-search"></i></span>'
-            },  
+            },
             "autoWidth" : true,
             "columns":[
                 {
                     "data": "sub_category_id",
                     "render": function (data, type, row) {
-                        return "<a href='workspace#editsubcategory/" + data + "'>Edit</a> | <a href='workspace#viewQuestion/" + data + "'>View Question</a>";
+                        return "<a href='workspace#psi/sub-category/" + data + "/edit'>Edit</a> | <a href='workspace#viewQuestion/" + data + "'>View Question</a>";
                     }
                 },
                 {"data":"sub_category_name"},
@@ -222,7 +222,7 @@
             ],
             "ajax": {
                 "type": "GET",
-               "data": function( d ) { 
+               "data": function( d ) {
                   d._token= $('input[name="_token"]').val();
                   d.paramFilters=obj;
                 },
@@ -253,7 +253,7 @@
                 table_normatest.ajax.reload();
                 pageSetUp();
             }
-        }); 
+        });
 
         $("#names").autocomplete({
             source : function(request, response) {

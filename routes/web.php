@@ -18,7 +18,6 @@ Route::get('/', function () {
 */
 Route::get('/testAPI', 'Dashboard\DasboardPage@index');
 
-Route::get('/testExcel', 'TestExcel@index');
 
 
 
@@ -146,6 +145,23 @@ Route::get('editsubcategory/{id}','SubCategoryController@editSubCategory');
 
 
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/applicantList', 'ApplicantListController@index');
+
+Route::prefix('psi')->group(function () {
+
+    Route::resource('sub-category', 'PsiSubCategoryController', ['as' => 'psi', 'parameters' => ['sub-category' => 'psi-sub-category']]);
+
+});
+
+Route::prefix('rest')->group(function () {
+
+    Route::resource('sub-category', 'RestSubCategoryController', ['as' => 'rest', 'parameters' => ['sub-category' => 'psi-sub-category']]);
+
+    Route::resource('sub-category-version', 'RestSubCategoryVersionController', ['as' => 'rest', 'parameters' => ['sub-category-version' => 'psi-sub-category-version']]);
+
+    Route::resource('question', 'RestQuestionController', ['as' => 'rest', 'parameters' => ['question' => 'psi-question']]);
+
+    Route::resource('narration', 'RestNarrationController', ['as' => 'rest', 'parameters' => ['narration' => 'psi-narration']]);
+
+});
