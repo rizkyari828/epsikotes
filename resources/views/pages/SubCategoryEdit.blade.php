@@ -459,7 +459,7 @@ foreach ($getQuestions as $key => $value) {
             "<td>" +
             "<div class='form-group'>" +
             "<div class='col-md-8'>" +
-            "<input class='form-control' placeholder='Choice Text' name='multChoiceTxt[]' type='text'>" +
+            "<input class='form-control multChoiceTxt' placeholder='Choice Text' name='multChoiceTxt[]' type='text'>" +
             "</div>" +
             "</div>" +
             "</td>" +
@@ -542,8 +542,8 @@ foreach ($getQuestions as $key => $value) {
             "</div>" +
             "</td>" +
             "</tr>";
-        disableAll();
         setVal();
+        disableAll();
 
         console.log(formQue.length);
         if(formQue.length == 1){
@@ -617,7 +617,7 @@ foreach ($getQuestions as $key => $value) {
                 table.append(tblBody_3);
             }
         });
-        $("#queNumber h4").html(indexQue + 1);
+        $("#queNumber h4").html(indexQue+1);
         if (indexQue < 1)
             document.getElementById("prev").disabled = true;
 
@@ -628,14 +628,14 @@ foreach ($getQuestions as $key => $value) {
                 resetFormQuestion();
                 var countQue = formQue.length;
                 indexQue++;
-                console.log(countQue);
-                console.log(indexQue);
+                // console.log(countQue);
+                // console.log(indexQue);
 
-                 if (indexQue == (countQue - 1)) {
-                   $("#next").attr("disabled","disabled");
+                if (indexQue == (countQue - 1) && $("#Version").val() != "New") {
+                   $("#next").prop("disabled",true);
                 }
                 // $("#queNumber h4").html(indexQue+1);
-                $("#queNumber h4").html(formQue[indexQue][13]);
+                $("#queNumber h4").html(indexQue+1);
                 $("#wizards").hide("slow");
                 $("#wizards").show("slow");
                 document.getElementById("prev").disabled = false;
@@ -657,7 +657,12 @@ foreach ($getQuestions as $key => $value) {
                 var countQue = formQue.length;
                 indexQue--;
                 // $("#queNumber h4").html(indexQue+1);
-                $("#queNumber h4").html(formQue[indexQue][13]);
+                
+
+                if (indexQue == (countQue - 2) && $("#Version").val() != "New") {
+                   $("#next").prop("disabled",false);
+                }
+                $("#queNumber h4").html(indexQue+1);
                 $("#wizards").hide("slow");
                 $("#wizards").show("slow");
                 if (indexQue < countQue) {
@@ -968,6 +973,7 @@ foreach ($getQuestions as $key => $value) {
         }
 
         function setVal() {
+            console.log("SET VALUE");
             // console.log(formQue[indexQue]);
             document.getElementById("listSubCat").value = formQue[indexQue][0];
             document.getElementById("isActive").checked = formQue[indexQue][1];
@@ -1120,7 +1126,13 @@ foreach ($getQuestions as $key => $value) {
         });
 
         $("#Version").change(function () {
+            console.log(indexQue);
             var version = document.getElementById('Version').value;
+
+            var countQue = formQue.length;
+            if (indexQue == (countQue - 1) && $("#Version").val() == "New") {
+               $("#next").prop("disabled",false);
+            }   
 
             if (version != 'New') {
                 disableAll();
@@ -1130,7 +1142,7 @@ foreach ($getQuestions as $key => $value) {
         });
 
         function disableAll() {
-
+            console.log("DISABLED ALL");
             document.getElementById('names').disabled = true;
             document.getElementById('subCateDesc').disabled = true;
             document.getElementById('workInst').disabled = true;
@@ -1152,8 +1164,8 @@ foreach ($getQuestions as $key => $value) {
             document.getElementById("chkImgHint").disabled = true;
             document.getElementById("chkQueImg").disabled = true;
             document.getElementById("chkQueTxt").disabled = true;
-
-            document.getElementsByName("multChoiceTxt[]").disabled = true;
+             $('.multChoiceTxt').attr('disabled', 'disabled');
+            // document.getElementsByName("multChoiceTxt[]").disabled = true;
             document.getElementsByName("multChoiceImg[]").disabled = true;
             document.getElementsByName("multChoiceCorrect[]").disabled = true;
             document.getElementsByName("txtSeriesChoices[]").disabled = true;
@@ -1169,6 +1181,7 @@ foreach ($getQuestions as $key => $value) {
         }
 
         function enableAll() {
+            console.log("enableAll");
             document.getElementById('names').disabled = false;
             document.getElementById('subCateDesc').disabled = false;
             document.getElementById('workInst').disabled = false;
@@ -1190,8 +1203,8 @@ foreach ($getQuestions as $key => $value) {
             document.getElementById("chkImgHint").disabled = false;
             document.getElementById("chkQueImg").disabled = false;
             document.getElementById("chkQueTxt").disabled = false;
-
-            document.getElementsByName("multChoiceTxt[]").disabled = false;
+            $('.multChoiceTxt').removeAttr('disabled');
+            // document.getElementsByName("multChoiceTxt[]").disabled = false;
             document.getElementsByName("multChoiceImg[]").disabled = false;
             document.getElementsByName("multChoiceCorrect[]").disabled = false;
             document.getElementsByName("txtSeriesChoices[]").disabled = false;

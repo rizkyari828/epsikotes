@@ -100,7 +100,8 @@ $("#narrationback").click(function(e) {
     var narration = <?php echo json_encode($narr); ?>;
     var errorClass = 'invalid';
     var errorElement = 'em';
-    var $narrationForm = $("#narration-form").validate({
+    if($("#narr_id").val().length == 0){
+          var $narrationForm = $("#narration-form").validate({
             errorClass      : errorClass,
             errorElement    : errorElement,
             highlight: function(element) {
@@ -155,34 +156,55 @@ $("#narrationback").click(function(e) {
                 //element.submit();
             }
         });
-    /*$("#btnSubmit").click(function(e) {
-      // Call submit() method on <form id='myform'>
-        var text = CKEDITOR.instances.NARRATION_TEXT.getData();
-        var name = document.getElementById('NARRATION_NAME').value;
-        var id = document.getElementById('narr_id').value;
-        var validate = true;
-        if(id == ""){
-            for (var i = 0; i < narration.length; i++) {
-                if(name == narration[i]){
-                    validate = false;
+    }else{
+          var $narrationForm = $("#narration-form").validate({
+            errorClass      : errorClass,
+            errorElement    : errorElement,
+            highlight: function(element) {
+                $(element).parent().removeClass('state-success').addClass("state-error");
+                $(element).removeClass('valid');
+            },
+            unhighlight: function(element) {
+                $(element).parent().removeClass("state-error").addClass('state-success');
+                $(element).addClass('valid');
+            },
+            // Rules for form validation
+            ignore: [],
+            rules : {
+                NARRATION_NAME : {
+                    required : true              
+                },
+                NARRATION_TEXT : {
+                    required: function() {CKEDITOR.instances.NARRATION_TEXT.updateElement();}
                 }
-            }
-        }
-        if(validate){
-            if(name == ""){
-                alert('Narration Name cannot be empty');
-            }else if(text == ""){
-                alert('Narration Text cannot be empty');
-            }else{
-                if(name != name.toUpperCase()){
-                    alert('Narration Name must be unique');
-                }else{
-                    if(confirm("Do you really want to submit?"))
-                        document.getElementById('narration-form').submit(); 
+
+            },
+
+            // Messages for form validation
+            messages : {
+                NARRATION_NAME : {
+                    required : 'Narration Name must be filled' 
+                },
+                NARRATION_TEXT : {
+                    required: 'Narration Text must be filled'
                 }
+            },
+
+            // Do not change code below
+            errorPlacement : function(error, element) {
+                error.insertAfter(element.parent());
+            },
+
+            submitHandler : function(element) {
+                var param = {};
+                param["message"] = "Are you sure want to save this data ?";
+                param["title"] = "Narration Setup";
+                drawDialogConfirm(element,param,'submit_form');
+                $('#dialog_simple').dialog('open');
+                //element.submit();
             }
-        }else{
-            alert('Narration Name must be unique');
-        }
-    });*/
+        });
+    }
+  
+   
 </script>
