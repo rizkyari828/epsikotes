@@ -18,24 +18,18 @@ class Norma extends Model
 
         $dateSysdate = date("Y-m-d");
 
-        $categories = /*DB::table('psi.que_sub_categories')
-        ->join('psi.que_sub_category_versions','que_sub_categories.sub_category_id','=','que_sub_category_versions.sub_category_id')
-       // ->whereBetween(date("Y-m-d"), ['que_sub_category_versions.date_from','que_sub_category_versions.date_to'])
-        ->whereRaw('date(sysdate()) between que_sub_category_versions.date_from and que_sub_category_versions.date_to')
-        ->whereRaw('upper(que_sub_categories.sub_category_name) like upper(\'%'.$categoryName.'%\')')
-        ->select('que_sub_categories.sub_category_name','que_sub_categories.sub_category_id','que_sub_categories.last_updated_by','que_sub_categories.last_update_date')
-        ->get();*/
-        $categories = DB::table('psi.psy_norma')
-        ->join('psi.psy_norma_versions','psy_norma_versions.norma_id','=','psy_norma.norma_id')
-        ->join('psi.que_categories','que_categories.category_id','=','psy_norma.category_id');
+        
+        $categories = DB::table('psy_norma')
+        ->join('psy_norma_versions','psy_norma_versions.norma_id','=','psy_norma.norma_id')
+        ->join('que_categories','que_categories.category_id','=','psy_norma.category_id');
      //   ->whereRaw('upper(que_categories.category_name) like upper(\'%'.$categoryName.'%\')')
         if($paramFilter['countNorma'] >= 1){
            if($paramFilter['isCurrent']){
                 $categories->where('psy_norma_versions.date_from','<=',$dateSysdate)->where('psy_norma_versions.date_to','>=',$dateSysdate);
             }else if($paramFilter['isFuture']){
-                $categories->where('psy_norma_versions.date_from','>',$dateSysdate);
+                // $categories->where('psy_norma_versions.date_from','>',$dateSysdate);
             }else{
-                $categories->where('psy_norma_versions.date_to','<',$dateSysdate);
+                // $categories->where('psy_norma_versions.date_to','<',$dateSysdate);
 
             }
         }
@@ -91,9 +85,9 @@ class Norma extends Model
 
         $dateSysdate = date("Y-m-d");
 
-        $categories = DB::table('psi.psy_norma')
-        ->join('psi.psy_norma_versions','psy_norma_versions.norma_id','=','psy_norma.norma_id')
-        ->join('psi.que_categories','que_categories.category_id','=','psy_norma.category_id');
+        $categories = DB::table('psy_norma')
+        ->join('psy_norma_versions','psy_norma_versions.norma_id','=','psy_norma.norma_id')
+        ->join('que_categories','que_categories.category_id','=','psy_norma.category_id');
        
         $categories
         ->where('psy_norma_versions.norma_id','=',$paramFilter['normaId'])
@@ -108,7 +102,7 @@ class Norma extends Model
     }
 
     public function getNormaScore($paramFilter){
-         $normaScore = DB::table('psi.psy_norma_score')
+         $normaScore = DB::table('psy_norma_score')
          ->where('psy_norma_score.version_id','=',$paramFilter['versionId'])
          ->get();
 
@@ -117,7 +111,7 @@ class Norma extends Model
 
     public function getNormaAspect($paramFilter){
 
-         $normaAspect = DB::table('psi.psy_norma_aspect')
+         $normaAspect = DB::table('psy_norma_aspect')
          ->where('psy_norma_aspect.version_id','=',$paramFilter['versionId'])
          ->get();
 
@@ -126,31 +120,31 @@ class Norma extends Model
     }
 
     public function insertNorma($normaList){
-       return DB::table('psi.psy_norma')->insertGetId($normaList);
+       return DB::table('psy_norma')->insertGetId($normaList);
     }
 
     public function insertNormaVersions($normaVersion){
-        return DB::table('psi.psy_norma_versions')->insertGetId($normaVersion);
+        return DB::table('psy_norma_versions')->insertGetId($normaVersion);
     }
 
     public function insertNormaScore($normsScore){
-         DB::table('psi.psy_norma_score')->insert($normsScore);
+         DB::table('psy_norma_score')->insert($normsScore);
 
     }
 
     public function insertNormaAspect($normaAspect){
-         DB::table('psi.psy_norma_aspect')->insert($normaAspect);
+         DB::table('psy_norma_aspect')->insert($normaAspect);
 
     }
     public function deleteNormaScore($versionId){
-        DB::table('psi.psy_norma_score')->where('version_id',$versionId)->delete();
+        DB::table('psy_norma_score')->where('version_id',$versionId)->delete();
     }
     public function deleteNormaAspect($versionId){
-        DB::table('psi.psy_norma_aspect')->where('version_id',$versionId)->delete();
+        DB::table('psy_norma_aspect')->where('version_id',$versionId)->delete();
     }
     public function getFutureNorma($normaId){
         $dateSysdate = date("Y-m-d");
-        $isFuture = DB::table('psi.psy_norma_versions')
+        $isFuture = DB::table('psy_norma_versions')
         ->where('norma_id','=',$normaId)
         ->where('date_from','>',$dateSysdate)
         ->select(DB::raw('CASE WHEN norma_id is not null THEN 1 ELSE 0 END as IS_FUTURE'))
@@ -160,7 +154,7 @@ class Norma extends Model
 
      public function getPastNorma($normaId){
         $dateSysdate = date("Y-m-d");
-        $isFuture = DB::table('psi.psy_norma_versions')
+        $isFuture = DB::table('psy_norma_versions')
         ->where('norma_id','=',$normaId)
         ->where('date_to','<',$dateSysdate)
         ->select(DB::raw('CASE WHEN norma_id is not null THEN 1 ELSE 0 END as IS_FUTURE'))
@@ -171,7 +165,7 @@ class Norma extends Model
 
     public function getCurrentNorma($normaId){
         $dateSysdate = date("Y-m-d");
-        $isFuture = DB::table('psi.psy_norma_versions')
+        $isFuture = DB::table('psy_norma_versions')
         ->where('norma_id','=',$normaId)
         ->where('psy_norma_versions.date_from','<=',$dateSysdate)
         ->where('psy_norma_versions.date_to','>=',$dateSysdate)
@@ -182,7 +176,7 @@ class Norma extends Model
 
     public function getMaxVersion($normaId){
         $dateSysdate = date("Y-m-d");
-        $isFuture = DB::table('psi.psy_norma_versions')
+        $isFuture = DB::table('psy_norma_versions')
         ->where('norma_id','=',$normaId)
         ->select(DB::raw('MAX(VERSION_NUMBER) as version_number'))
         ->get();
@@ -191,7 +185,7 @@ class Norma extends Model
 
     public function getFutureVersion($versionNumber,$normaId){
         $dateSysdate = date("Y-m-d");
-        $isFuture = DB::table('psi.psy_norma_versions')
+        $isFuture = DB::table('psy_norma_versions')
         ->where('norma_id','=',$normaId)
         ->where('version_number','=',$versionNumber)
         ->where('date_from','>',$dateSysdate)
@@ -202,7 +196,7 @@ class Norma extends Model
 
      public function getPastVersion($versionNumber,$normaId){
         $dateSysdate = date("Y-m-d");
-        $isFuture = DB::table('psi.psy_norma_versions')
+        $isFuture = DB::table('psy_norma_versions')
         ->where('norma_id','=',$normaId)
         ->where('version_number','=',$versionNumber)
         ->where('date_to','<',$dateSysdate)
@@ -213,7 +207,7 @@ class Norma extends Model
 
     public function getCurrentVersion($versionNumber,$normaId){
         $dateSysdate = date("Y-m-d");
-        $isFuture = DB::table('psi.psy_norma_versions')
+        $isFuture = DB::table('psy_norma_versions')
         ->where('norma_id','=',$normaId)
         ->where('version_number','=',$versionNumber)
         ->where('psy_norma_versions.date_from','<=',$dateSysdate)
@@ -226,7 +220,7 @@ class Norma extends Model
 
     public function getVersionNumber($paramFilter){
         $dateSysdate = date("Y-m-d");
-        $versionNumbers = DB::table('psi.psy_norma_versions')
+        $versionNumbers = DB::table('psy_norma_versions')
         ->where('norma_id','=',$paramFilter['normaId'])
         ->select(DB::raw('CASE WHEN date_from > "'.$dateSysdate.'" THEN "FUTURE" WHEN date_to < "'.$dateSysdate.'" THEN "PAST" ELSE "CURRENT"  END as STATE,  VERSION_ID, VERSION_NUMBER, NORMA_ID'))
         ->get();
@@ -235,11 +229,11 @@ class Norma extends Model
     }
 
     public function updateVersionActive($paramFilter){
-        DB::table('psi.psy_norma_versions') 
+        DB::table('psy_norma_versions') 
         ->where('norma_id','=',$paramFilter['normaId'])
         ->where('version_number','=',$paramFilter['versionNumber'])
         ->update($paramFilter['value']);
 
-    }
+    } 
 
 }

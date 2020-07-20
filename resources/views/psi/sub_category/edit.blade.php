@@ -76,7 +76,6 @@
                                         <label class="col-md-4 control-label">Version</label>
                                         <div class="col-md-4">
                                             <select class="form-control" id="versions">
-                                                <option value="New">New</option>
                                             </select>
                                         </div>
                                     </div>
@@ -397,7 +396,6 @@
             .on('change', function () {
                 if (this.value === "New") {
                     createNewVersion(previousVersion);
-                    enableQuestionForm();
                 } else {
                     fetchSubCategoryVersionDetail(this.value);
                     disableQuestionForm();
@@ -547,8 +545,11 @@
 
     function selectVersion(version, shouldFetchVersionDetail) {
         let $versions = $('#versions');
-        if ($versions.val() != null && $versions.val().toString() !== version.VERSION_ID.toString()) {
+        if ($versions.val() != null && $versions.val().toString() !== version.VERSION_ID.toString() && $versions.val() !== "New") {
             $versions.val(version.VERSION_ID).change();
+        }
+        if ($versions.val() === "New") {
+            enableQuestionForm();
         }
         $('#version_description').val(version.DESCRIPTION);
         $('#version_work_instruction').val(version.WORK_INSTRUCTION);
@@ -569,10 +570,12 @@
     }
 
     function displayVersions(versions) {
+        let versionsNode = $('#versions')
         versions.forEach(function (version, _) {
-            $('#versions')
+            versionsNode
                 .append('<option value="' + version.VERSION_ID + '">' + version.VERSION_NUMBER + '</option>');
         });
+        versionsNode.append('<option value="New">New</option>');
     }
 
     function selectQuestion(question) {

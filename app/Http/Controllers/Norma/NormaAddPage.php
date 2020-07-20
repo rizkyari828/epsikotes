@@ -48,7 +48,10 @@ class NormaAddPage extends Controller
             $paramFilter['isFuture'] = $isFuture->isEmpty() ? 0 : 1;
             $paramFilter['isPast'] = $isPast->isEmpty() ? 0 : 1;
             $paramFilter['isCurrent'] = $isCurrent->isEmpty() ? 0 : 1;
+
+
             $normasetup = $this->getNormaSetup($normaId);
+
             $normascore = $this->getNormaScoreList($normasetup['VERSION_ID'],$normaId);
             $normaaspect = $this->getNormaAspecList($normasetup['VERSION_ID'],$normaId);
 
@@ -58,13 +61,13 @@ class NormaAddPage extends Controller
            // array_push($valeInput,$normascore);
             $valeInput += $normaaspect;
             if($paramFilter['isCurrent']){
-                $isDisableCurrent = 'readonly';
-                $isDisable = 'readonly';
+                $isDisableCurrent = 'disabled';
+                $isDisable = 'disabled';
             }else if($paramFilter['isPast']){
-                $isDisablePast = 'readonly';
-                $isDisable = 'readonly';
+                $isDisablePast = 'disabled';
+                $isDisable = 'disabled';
             }else if($paramFilter['isFuture']){
-                $isDisable = 'readonly';
+                $isDisable = 'disabled';
             }
 
 
@@ -162,9 +165,7 @@ class NormaAddPage extends Controller
             $paramInsert['LAST_UPDATED_BY'] = $request->session()->get('user.username');
             $paramInsert['LAST_UPDATE_DATE'] = date("Y-m-d h:i:s");
 
-            $idNorma = $norma->insertNorma($paramInsert);
-
-
+            $idNorma = $norma->insertNorma($paramInsert); 
 
             $paramInsertNormaVersion['NORMA_ID'] = $idNorma;
             $paramInsertNormaVersion['VERSION_NUMBER'] = 1;
@@ -205,8 +206,7 @@ class NormaAddPage extends Controller
             $paramFilter['isPast'] = $isPast->isEmpty() ? 0 : 1;
             $paramFilter['isCurrent'] = $isCurrent->isEmpty() ? 0 : 1;
 
-            if(($param['version_number'] == 'New') &&  $paramFilter['isCurrent']){
-
+            if(($param['version_number'] == 'New') &&  $paramFilter['isCurrent']){ 
 
                 $paramFilter['normaId'] = $param['NORMA_ID'];
                 $paramFilter['versionNumber'] = $maxVersionNumber[0]->version_number;
@@ -246,10 +246,41 @@ class NormaAddPage extends Controller
 
                     $norma->insertNormaAspect($paramInsertNormaAspect);
                 }
+            }else{
+                $paramFilter['normaId'] = $param['NORMA_ID'];
+                $paramFilter['versionNumber'] = $param['version_number']; 
+
+                $dataNorma = $norma->getNormaVersion($paramFilter);
+                $paramFilter['value']['DATE_TO'] =  $param['date_to'];
+                $paramFilter['value']['DATE_FROM'] =  $param['date_from'];
+                $paramFilter['value']['DESCRIPTION'] =  $param['description'];
+                $paramFilter['value']['LAST_UPDATED_BY'] =  $request->session()->get('user.username');
+                $paramFilter['value']['LAST_UPDATE_DATE'] =  date("Y-m-d h:i:s");
+
+                $norma->updateVersionActive($paramFilter); 
+                 // echo $dataNorma[0]->VERSION_ID;
+                 // die()
+                $norma->deleteNormaScore($dataNorma[0]->VERSION_ID);
+                foreach ($param['raw_score'] as $key => $value) {
+                    $paramInsertNormaRawScore['VERSION_ID'] = $dataNorma[0]->VERSION_ID;
+                    $paramInsertNormaRawScore['RAW_SCORE'] = $param['raw_score'][$key];
+                    $paramInsertNormaRawScore['STANDARD_SCORE'] = $param['standard_score'][$key];
+                    $paramInsertNormaRawScore['PSYCHOGRAM_ASPECT'] = $param['PSYCHOGRAM_ASPECT_RAW'][$key];
+
+                    $norma->insertNormaScore($paramInsertNormaRawScore);
+                }
+                $norma->deleteNormaAspect($dataNorma[0]->VERSION_ID);
+                foreach ($param['PSYCHOGRAM_ASPECT'] as $key => $value) {
+                    $paramInsertNormaAspect['VERSION_ID'] = $dataNorma[0]->VERSION_ID;
+                    $paramInsertNormaAspect['PSYCHOGRAM_ASPECT'] = $param['PSYCHOGRAM_ASPECT'][$key];
+                    $paramInsertNormaAspect['DEFINITION'] = (!empty($param['DEFINITION'][$key]))?$param['DEFINITION'][$key]:""; 
+                    $norma->insertNormaAspect($paramInsertNormaAspect);
+                }
+
             }
 
         }
-            return redirect('/workspace#normasetup');
+        return redirect('/workspace#normasetup');
         
     }
 
@@ -292,11 +323,11 @@ class NormaAddPage extends Controller
                 }
             }else{
                
-                if($paramFilter['isFuture'] && ($maxVersionNumber[0]->version_number == $rowNorma->VERSION_NUMBER)){
+                if($paramFilter['isFuture'] && ($maxVersionNumber[0]->version_number == $rowNorma->VERSION_NUMBER)){ 
 
-                    $versionNumber .= '<option value="'.($maxVersionNumber[0]->version_number-1).'" selected>'.($maxVersionNumber[0]->version_number-1).'</option>';
+                    $versionNumber .= '<option value="'.$rowNorma->VERSION_NUMBER.'" selected>'.$rowNorma->VERSION_NUMBER.'</option>';
 
-                    $versionNumber .= '<option value="'.$rowNorma->VERSION_NUMBER.'">'.$rowNorma->VERSION_NUMBER.'</option>';
+                    $versionNumber .= '<option value=New>New</option>';
                 }else if($paramFilter['isCurrent'] && ($maxVersionNumber[0]->version_number == $rowNorma->VERSION_NUMBER)){
                     $versionNumber .= '<option value="'.$rowNorma->VERSION_NUMBER.'" selected>'.$rowNorma->VERSION_NUMBER.'</option>';
                     $versionNumber .= '<option value=New>New</option>';
