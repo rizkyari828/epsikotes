@@ -22,8 +22,8 @@ class Categories extends Model
         ->whereRaw('upper(que_sub_categories.sub_category_name) like upper(\'%'.$categoryName.'%\')')
         ->select('que_sub_categories.sub_category_name','que_sub_categories.sub_category_id','que_sub_categories.last_updated_by','que_sub_categories.last_update_date')
         ->get();*/
-        $categories = DB::table('psi.que_categories')
-        ->join('psi.que_category_versions','que_category_versions.category_id','=','que_categories.category_id')
+        $categories = DB::table('que_categories')
+        ->join('que_category_versions','que_category_versions.category_id','=','que_categories.category_id')
         ->whereRaw('upper(que_categories.category_name) like upper(\'%'.$categoryName.'%\')')
         ->whereRaw('date(sysdate()) between que_category_versions.date_from and que_category_versions.date_to')
         ->select('que_categories.category_name','que_categories.category_id','que_categories.last_updated_by','que_categories.last_update_date')

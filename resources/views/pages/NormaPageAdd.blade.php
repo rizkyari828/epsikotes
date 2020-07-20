@@ -35,7 +35,7 @@
 
                     </div>
                     <!-- end widget edit box -->
-
+                    <input type="hidden" name="isDisable" id='isDisable' value="{{$isDisable}}">
                     <!-- widget content -->
                     <div class="widget-body no-padding">
 
@@ -59,7 +59,7 @@
                                         <label class="label col col-2">Version</label>
                                             <div class="col col-3">
                                                 <label class="select">
-                                                    <select name="version_number" class="version_number">
+                                                    <select name="version_number" class="version_number"  >
                                                         <option value="0" selected="">- Select -</option>
                                                         {!! $valeInput['VERSION_NUMBER'] !!}
                                                     </select><i></i>
@@ -81,12 +81,12 @@
                                         <label class="label col col-2">Effective Date</label>
                                             <div class="col col-4">
                                                 <label class="input"> <i class="icon-append fa fa-calendar"></i>
-                                                    <input type="text" name="date_from" value="{{$valeInput['DATE_FROM']}}" id="startdate" placeholder="From" {{$isDisableCurrent}}>
+                                                    <input type="text" name="date_from" value="{{$valeInput['DATE_FROM']}}" id="startdate" placeholder="From" {{$isDisable}}>
                                                 </label>
                                             </div>
                                             <div class="col col-4">
                                                 <label class="input"> <i class="icon-append fa fa-calendar"></i>
-                                                    <input type="text" name="date_to" value="{{$valeInput['DATE_TO']}}" id="enddate" placeholder="To" {{$isDisablePast}}>
+                                                    <input type="text" name="date_to" value="{{$valeInput['DATE_TO']}}" id="enddate" placeholder="To" {{$isDisable}} >
                                                 </label>
                                             </div>
                                     </section>
@@ -124,14 +124,14 @@
                                             <div class="row">
                                                 <section class="col col-11">
                                                     <label class="button bg-color-green"> 
-                                                        <button id="add-row-normatest" class="btn bg-color-green txt-color-white"> Add Row
+                                                        <button id="add-row-normatest" class="btn bg-color-green txt-color-white score-add-row"> Add Row
                                                         <i class="fa fa-plus"></i>
                                                     </label>
                                                  </section> 
 
                                                  <section class="col col-11">
                                                     <label class="button bg-color-red"> 
-                                                        <button id="delete-row-normatest" class="btn bg-color-red txt-color-white"> Delete Row
+                                                        <button id="delete-row-normatest" class="btn bg-color-red txt-color-white score-delete-row"> Delete Row
                                                         <i class="fa fa-minus"></i>
                                                     </label>
                                                  </section> 
@@ -169,14 +169,14 @@
                                             <div class="row">
                                                 <section class="col col-11">
                                                     <label class="button bg-color-green"> 
-                                                        <button id="add-row-aspect-definition" class="btn bg-color-green txt-color-white"> Add Row
+                                                        <button id="add-row-aspect-definition" class="btn bg-color-green txt-color-white aspect-add-row"> Add Row
                                                         <i class="fa fa-plus"></i>
                                                     </label>
                                                  </section> 
 
                                                  <section class="col col-11">
                                                     <label class="button bg-color-red"> 
-                                                        <button id="delete-row-aspect-definition" class="btn bg-color-red txt-color-white"> Delete Row
+                                                        <button id="delete-row-aspect-definition" class="btn bg-color-red txt-color-white aspect-delete-row"> Delete Row
                                                         <i class="fa fa-minus"></i>
                                                     </label>
                                                  </section> 
@@ -217,11 +217,23 @@
     <!-- END ROW -->
 
     <script type="text/javascript">
+        console.log($("#isDisable").val());
 
+        var isDisable = $("#isDisable").val();
         var errorClass = 'invalid';
         var errorElement = 'em';
 
-
+        if(isDisable.length > 0){
+            $(".score-add-row").prop("disabled", true);
+            $(".score-delete-row").prop("disabled", true);
+            $(".aspect-add-row").prop("disabled", true);
+            $(".aspect-delete-row").prop("disabled", true);
+        }else{
+            $(".score-add-row").prop("disabled", false);
+            $(".score-delete-row").prop("disabled", false);
+            $(".aspect-add-row").prop("disabled", false);
+            $(".aspect-delete-row").prop("disabled", false);
+        }
         $("#normasetup").click(function(e) {
             e.preventDefault();
             loadURL("normasetup", $('#content'));
@@ -283,6 +295,7 @@
                 prevText : '<i class="fa fa-chevron-left"></i>',
                 nextText : '<i class="fa fa-chevron-right"></i>',
                 dateFormat: 'yy-mm-dd',
+                beforeShow: function(i) { if ($(i).attr('readonly')) { return false; } },
                 onSelect : function(selectedDate) {
                     var day = new Date(selectedDate);
                     var nextDay = new Date(day);
@@ -297,7 +310,8 @@
                 dateFormat: 'yy-mm-dd',
                 onSelect : function(selectedDate) {
                     $('#finishdate').datepicker('option', 'minDate', selectedDate);
-                }
+                },
+                beforeShow: function(i) { if ($(i).attr('readonly')) { return false; } }
             });
 
         $("#sub_category_name").autocomplete({
@@ -407,7 +421,13 @@
                  $('select[name="PSYCHOGRAM_ASPECT_RAW[]"]').prop("disabled", false);
                  $('select[name="PSYCHOGRAM_ASPECT[]"]').prop("disabled", false);
                  $('input[name="date_from"]').prop("disabled", false);
+                 $('input[name="date_to"]').prop("disabled", false);
                  $('textarea[name="DEFINITION[]"]').prop("disabled", false);
+                 $('textarea[name="description"]').prop("disabled", false);
+                 $(".score-add-row").prop("disabled", false);
+            $(".score-delete-row").prop("disabled", false);
+            $(".aspect-add-row").prop("disabled", false);
+            $(".aspect-delete-row").prop("disabled", false);
 
             }
 
