@@ -319,11 +319,11 @@
                                         <div class="form-group col-xs-6 col-md-4">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <button id="btnAddAnswer" class="btn btn-primary">
+                                                    <button id="btn_add_question" class="btn btn-primary">
                                                         <i class="fa fa-plus"></i>
                                                         Add Answer
                                                     </button>
-                                                    <button id="btnDeleteAnswer" class="btn btn-danger">
+                                                    <button id="btn_delete_all_question" class="btn btn-danger">
                                                         <i class="fa fa-trash-o"></i>
                                                         Delete All Answers
                                                     </button>
