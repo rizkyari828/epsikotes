@@ -288,7 +288,7 @@
                                             <div class="table-responsive">
                                                 <label style="color: red; display: none;" id="errorAnswer">Answer Must
                                                     be Filled</label>
-                                                <table class="table table-bordered" id="questionAnswerTbl">
+                                                <table class="table table-bordered" id="answer_table">
                                                     <thead id="questionAnswerHead">
                                                     <tr>
                                                         <th class=".col-lg-9">Correct Answer</th>
@@ -365,6 +365,95 @@
 
     let narrations = [];
 
+    let answer_body_multiple_choice = "<tr>" +
+        "<td>" +
+        "<div class='form-group'>" +
+        "<div class='col-md-8'>" +
+        "<input class='form-control multChoiceTxt' placeholder='Choice Text' name='multChoiceTxt[]' type='text'>" +
+        "</div>" +
+        "</div>" +
+        "</td>" +
+        "<td>" +
+        "<div class='form-group'>" +
+        "<div class='col-md-4'>" +
+        "<input type='file' id='exampleInputFile1' name='multChoiceImg[]' style='border: solid 1px #ccc; padding: 5px 10px;'>" +
+        "</div>" +
+        "</div>" +
+        "</td>" +
+        "<td align='center'>" +
+        "<div class='form-group'>" +
+        "<div class='col-md-12' >" +
+        "<input type='checkbox' class='btn btn-default' id='' name='multChoiceCorrect[]'>" +
+        "</div>" +
+        "</div>" +
+        "</td>" +
+        "<td>" +
+        "<div class='form-group'>" +
+        "<div class='col-md-1'>" +
+        "<button class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></button>" +
+        "</div>" +
+        "</div>" +
+        "</td>" +
+        "</tr>";
+    let answer_header_multiple_choice = "<thead><tr>" +
+        "<th class='col-lg-6'>Choice Text</th>" +
+        "<th class='col-lg-2'>Choice Image</th>" +
+        "<th class='col-lg-2'>Correct Answer</th> " +
+        "<th class='col-lg-1'>Action</th> " +
+        "</tr></thead>";
+
+    let answer_header_text_series = "<thead>" +
+        "<tr>" +
+        "<th class='.col-lg-9'>Correct Answer</th>" +
+        "<th class='.col-lg-2'>Action</th>" +
+        "</tr>" +
+        "</thead>";
+    let answer_body_text_series = "<tr>" +
+        "<td>" +
+        "<div class='form-group'>" +
+        "<div class='col-md-12'>" +
+        "<input class='form-control' name='txtSeriesChoices[]' placeholder='Correct Answer' id='txtSeries' type='text'>" +
+        "</div>" +
+        "</div>" +
+        "</td>" +
+        "<td>" +
+        "<div class='form-group'>" +
+        "<div class='col-md-2'>" +
+        "<a class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></a>" +
+        "</div>" +
+        "</div>" +
+        "</td>" +
+        "</tr>";
+
+    let answer_header_multiple_group = "<thead><tr>" +
+        "<th class='.col-lg-7'>Image Question Sequence</th>" +
+        "<th class='.col-lg-4'>Group</th>" +
+        "<th class='.col-lg-1'>Action</th> " +
+        "</tr></thead>";
+    let answer_body_multiple_group = "<tr>" +
+        "<td>" +
+        "<div class='form-group'>" +
+        "<div class='col-md-12'>" +
+        "<input class='form-control' name='ansMultGroupImgSeq[]' placeholder='Image Sequence' type='text'>" +
+        "</div>" +
+        "</div>" +
+        "</td>" +
+        "<td>" +
+        "<div class='form-group'>" +
+        "<div class='col-md-12'>" +
+        "<input class='form-control' name='ansMultGroupImg[]' placeholder='Group Image' type='text'>" +
+        "</div>" +
+        "</div>" +
+        "</td>" +
+        "<td>" +
+        "<div class='form-group'>" +
+        "<div class='col-md-1'>" +
+        "<a class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></a>" +
+        "</div>" +
+        "</div>" +
+        "</td>" +
+        "</tr>";
+
     $(document).ready(function () {
         CKEDITOR.replace('ckeditor', {height: '200px', startupFocus: true});
         let sub_category_id = "{{ $data->SUB_CATEGORY_ID }}";
@@ -406,6 +495,47 @@
     function onReady() {
         // Here are the point of readiness.
         disableQuestionForm();
+    }
+
+    function setupAnswersTable() {
+        $('#question_type_answer').on('change', function () {
+            let question_type_answer = this.value;
+            if (question_type_answer === "MULTIPLE_CHOICE") {
+                setupHeaderAnswersForMultipleChoice();
+            }
+            if (question_type_answer === "TEXT_SERIES") {
+                setupHeaderAnswersForTextSeries();
+            }
+            if (question_type_answer === "MULTIPLE_GROUP") {
+                setupHeaderAnswersForMultipleGroup();
+            }
+            if (question_type_answer === "MEMORY") {
+                setupHeaderAnswersForMemory();
+            }
+        })
+    }
+
+    function replaceHeaderAnswer(htmlText) {
+        let answer_table = $("#answer_table")
+        answer_table.find("thead").remove();
+        answer_table.find("tr").remove();
+        answer_table.append(htmlText);
+    }
+
+    function setupHeaderAnswersForMultipleChoice() {
+        replaceHeaderAnswer(answer_header_multiple_choice);
+    }
+
+    function setupHeaderAnswersForTextSeries() {
+        replaceHeaderAnswer(answer_header_text_series);
+    }
+
+    function setupHeaderAnswersForMultipleGroup() {
+        replaceHeaderAnswer(answer_header_multiple_group);
+    }
+
+    function setupHeaderAnswersForMemory() {
+        replaceHeaderAnswer("");
     }
 
     function fetchSubCategoryNames(then) {
@@ -605,6 +735,7 @@
         $('#question_question_character').val(parseFloat(question.QUESTION_CHARACTER).toFixed());
         $('#question_type_answer').val(question.TYPE_ANSWER).change();
         $('#question_random_answer').prop('checked', question.RANDOM_ANSWER === 1 || question.RANDOM_ANSWER === "1");
+        setupAnswersTable();
     }
 
     function setupPrevNextButtonState() {
