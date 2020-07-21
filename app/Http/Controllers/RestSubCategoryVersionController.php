@@ -61,7 +61,7 @@ class RestSubCategoryVersionController extends Controller
      */
     public function show(PsiSubCategoryVersion $psiSubCategoryVersion)
     {
-        return response()->json($psiSubCategoryVersion->load('questions')->toArray());
+        return response()->json($psiSubCategoryVersion->load('questions', 'questions.answerChoices', 'questions.answerGroups', 'questions.answerTextSeries')->toArray());
     }
 
     /**

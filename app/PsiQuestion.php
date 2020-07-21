@@ -20,4 +20,19 @@ class PsiQuestion extends Model
         return $this->belongsTo(PsiSubCategoryVersion::class, 'VERSION_ID', 'VERSION_ID');
     }
 
+    public function answerChoices()
+    {
+        return $this->hasMany(PsiAnswerChoice::class, 'QUESTION_ID', 'QUESTION_ID');
+    }
+
+    public function answerGroups()
+    {
+        return $this->hasMany(PsiAnswerGroup::class, 'QUESTION_ID', 'QUESTION_ID');
+    }
+
+    public function answerTextSeries()
+    {
+        return $this->hasMany(PsiAnswerTextSeries::class, 'QUESTION_ID', 'QUESTION_ID');
+    }
+
 }

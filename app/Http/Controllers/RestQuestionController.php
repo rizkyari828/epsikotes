@@ -40,7 +40,7 @@ class RestQuestionController extends Controller
      */
     public function show(PsiQuestion $psiQuestion)
     {
-        return response()->json($psiQuestion);
+        return response()->json($psiQuestion->load(['answerChoices', 'answerGroups', 'answerTextSeries', 'subCategoryVersion'])->toArray());
     }
 
     /**
@@ -54,7 +54,7 @@ class RestQuestionController extends Controller
     {
         $psiQuestion->fill($request->all());
         $psiQuestion->save();
-        return response()->json($psiQuestion);
+        return $this->show($psiQuestion);
     }
 
     /**
