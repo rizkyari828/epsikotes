@@ -573,10 +573,55 @@
 
     function setupContentAnswerForTextSeries() {
         let answers = questions[current_question_index].answer_groups
+        answers.forEach(function (answer, index) {
+            answerTableBody()
+                .append("<tr>" +
+                    "<td>" +
+                    "<div class='form-group'>" +
+                    "<div class='col-md-12'>" +
+                    "<input class='form-control' name='txtSeriesChoices[]' placeholder='Correct Answer' id='txtSeries' type='text' value='" + answer.CORRECT_TEXT + "'>" +
+                    "</div>" +
+                    "</div>" +
+                    "</td>" +
+                    "<td>" +
+                    "<div class='form-group'>" +
+                    "<div class='col-md-2'>" +
+                    "<a class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></a>" +
+                    "</div>" +
+                    "</div>" +
+                    "</td>" +
+                    "</tr>");
+        });
     }
 
     function setupContentAnswerForMultipleGroup() {
         let answers = questions[current_question_index].answer_text_series
+        answers.forEach(function (answer, index) {
+            answerTableBody()
+                .append("<tr>" +
+                    "<td>" +
+                    "<div class='form-group'>" +
+                    "<div class='col-md-12'>" +
+                    "<input class='form-control' name='ansMultGroupImgSeq[]' placeholder='Image Sequence' type='text'>" +
+                    "</div>" +
+                    "</div>" +
+                    "</td>" +
+                    "<td>" +
+                    "<div class='form-group'>" +
+                    "<div class='col-md-12'>" +
+                    "<input class='form-control' name='ansMultGroupImg[]' placeholder='Group Image' type='text'>" +
+                    "</div>" +
+                    "</div>" +
+                    "</td>" +
+                    "<td>" +
+                    "<div class='form-group'>" +
+                    "<div class='col-md-1'>" +
+                    "<a class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></a>" +
+                    "</div>" +
+                    "</div>" +
+                    "</td>" +
+                    "</tr>");
+        });
     }
 
     function setupContentAnswerForMemory() {
