@@ -300,22 +300,6 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody id="answer_body">
-                                                    <!-- <tr>
-                                                        <td>
-                                                            <div class="form-group">
-                                                                <div class="col-md-12">
-                                                                    <input class="form-control" placeholder="Correct Answer" type="text">
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="form-group">
-                                                                <div class="col-md-2">
-                                                                    <a class="btn btn-warning"><i class="fa fa-trash-o"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr> -->
                                                     </tbody>
                                                 </table>
                                             </div>
