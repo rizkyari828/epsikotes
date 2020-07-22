@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\PsiAnswerChoice;
+use App\PsiAnswerTextSeries;
 use App\PsiQuestion;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -63,9 +64,10 @@ class RestQuestionController extends Controller
             $psiQuestion->QUESTION_IMG = $question_img->hashName();
         }
         $psiQuestion->save();
+        $answers = $request->get('answers');
         if ($psiQuestion->TYPE_ANSWER == "MULTIPLE_CHOICE" && $request->has('answers')) {
-            $answers = $request->get('answers');
             $ids = [];
+            $sequence = 1;
             foreach ($answers['ANS_CHOICE_ID'] as $id => $answer) {
                 $answer_choice = PsiAnswerChoice::findOrNew($id);
                 $answer_choice->CHOICE_TEXT = isset($answers['CHOICE_TEXT'][$id]) ? $answers['CHOICE_TEXT'][$id] : null;
@@ -76,9 +78,10 @@ class RestQuestionController extends Controller
                 }
                 $answer_choice->CORRECT_ANSWER = isset($answers['CORRECT_ANSWER'][$id]) ? $answers['CORRECT_ANSWER'][$id] : 0;
                 $answer_choice->QUESTION_ID = $psiQuestion->QUESTION_ID;
-                $answer_choice->ANS_SEQUENCE = $id;
+                $answer_choice->ANS_SEQUENCE = $sequence;
                 $answer_choice->save();
                 array_push($ids, $answer_choice->ANS_CHOICE_ID);
+                $sequence += 1;
             }
             $answer_choices = PsiAnswerChoice::query()
                 ->where('QUESTION_ID', $psiQuestion->QUESTION_ID)
@@ -86,6 +89,27 @@ class RestQuestionController extends Controller
             foreach ($answer_choices as $answer_choice) {
                 if (!in_array($answer_choice->ANS_CHOICE_ID, $ids)) {
                     $answer_choice->delete();
+                }
+            }
+        }
+        if ($psiQuestion->TYPE_ANSWER == "TEXT_SERIES" && $request->has('answers')) {
+            $ids = [];
+            $sequence = 1;
+            foreach ($answers['ANS_TEXT_SERIES_ID'] as $id => $answer) {
+                $answer_text_series = PsiAnswerTextSeries::findOrNew($id);
+                $answer_text_series->CORRECT_TEXT = $answers['CORRECT_TEXT'][$id];
+                $answer_text_series->QUESTION_ID = $psiQuestion->QUESTION_ID;
+                $answer_text_series->ANS_SEQUENCE = $sequence;
+                $answer_text_series->save();
+                array_push($ids, $answer_text_series->ANS_TEXT_SERIES_ID);
+                $sequence += 1;
+            }
+            $answer_text_series_array = PsiAnswerTextSeries::query()
+                ->where('QUESTION_ID', $psiQuestion->QUESTION_ID)
+                ->get();
+            foreach ($answer_text_series_array as $answer_text_series) {
+                if (!in_array($answer_text_series->ANS_TEXT_SERIES_ID, $ids)) {
+                    $answer_text_series->delete();
                 }
             }
         }

@@ -366,22 +366,6 @@
         "<th class='.col-lg-2'>Action</th>" +
         "</tr>" +
         "</thead>";
-    let answer_body_text_series = "<tr>" +
-        "<td>" +
-        "<div class='form-group'>" +
-        "<div class='col-md-12'>" +
-        "<input class='form-control' name='txtSeriesChoices[]' placeholder='Correct Answer' id='txtSeries' type='text'>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "<td>" +
-        "<div class='form-group'>" +
-        "<div class='col-md-2'>" +
-        "<a class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></a>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "</tr>";
 
     let answer_header_multiple_group = "<thead><tr>" +
         "<th class='.col-lg-7'>Image Question Sequence</th>" +
@@ -467,7 +451,7 @@
                 appendNewAnswerMultipleChoice()
             }
             if (question_type_answer === "TEXT_SERIES") {
-                //
+                appendNewAnswerTextSeries();
             }
             if (question_type_answer === "MULTIPLE_GROUP") {
                 //
@@ -476,14 +460,16 @@
                 //
             }
         });
-        $('#btn_delete_all_question').on('click', function () {
-            //
-        });
     }
 
     function appendNewAnswerMultipleChoice() {
         answerTableBody()
             .append(generateNewRowForAnswerMultipleChoice());
+    }
+
+    function appendNewAnswerTextSeries() {
+        answerTableBody()
+            .append(generateNewRowForAnswerTextSeries());
     }
 
     function onReady() {
@@ -560,14 +546,15 @@
     }
 
     function setupContentAnswerForTextSeries() {
-        let answers = questions[current_question_index].answer_groups
+        let answers = questions[current_question_index].answer_text_series
         answers.forEach(function (answer, index) {
             answerTableBody()
                 .append("<tr>" +
                     "<td>" +
                     "<div class='form-group'>" +
                     "<div class='col-md-12'>" +
-                    "<input class='form-control' name='txtSeriesChoices[]' placeholder='Correct Answer' id='txtSeries' type='text' value='" + answer.CORRECT_TEXT + "'>" +
+                    "<input hidden placeholder='ID' name='answers[ANS_TEXT_SERIES_ID][" + answer.ANS_TEXT_SERIES_ID + "]' type='text'>" +
+                    "<input class='form-control' name='answers[CORRECT_TEXT][" + answer.ANS_TEXT_SERIES_ID + "]' placeholder='Correct Answer' id='txtSeries' type='text' value='" + answer.CORRECT_TEXT + "'>" +
                     "</div>" +
                     "</div>" +
                     "</td>" +
@@ -583,7 +570,7 @@
     }
 
     function setupContentAnswerForMultipleGroup() {
-        let answers = questions[current_question_index].answer_text_series
+        let answers = questions[current_question_index].answer_groups
         answers.forEach(function (answer, index) {
             answerTableBody()
                 .append("<tr>" +
@@ -901,36 +888,57 @@
     function generateNewRowForAnswerMultipleChoice() {
         let generated_id = "new-" + new Date().getTime();
         return "<tr>" +
-        "<td>" +
-        "<div class='form-group'>" +
-        "<div class='col-md-8'>" +
-        "<input hidden placeholder='ID' name='answers[ANS_CHOICE_ID][" + generated_id + "]' type='text'>" +
-        "<input class='form-control multChoiceTxt' placeholder='Choice Text' name='answers[CHOICE_TEXT][" + generated_id + "]' type='text'>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "<td>" +
-        "<div class='form-group'>" +
-        "<div class='col-md-4'>" +
-        "<input type='file' accept='image/*' id='exampleInputFile1' name='answers[CHOICE_IMG][" + generated_id + "]' style='border: solid 1px #ccc; padding: 5px 10px;'>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "<td align='center'>" +
-        "<div class='form-group'>" +
-        "<div class='col-md-12' >" +
-        "<input type='checkbox' class='btn btn-default' id='' name='answers[CORRECT_ANSWER][" + generated_id + "]' value='1'>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "<td>" +
-        "<div class='form-group'>" +
-        "<div class='col-md-1'>" +
-        "<button class='btnDelete btn btn-warning' type='button'><i class='fa fa-trash-o'></i></button>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "</tr>";
+            "<td>" +
+            "<div class='form-group'>" +
+            "<div class='col-md-8'>" +
+            "<input hidden placeholder='ID' name='answers[ANS_CHOICE_ID][" + generated_id + "]' type='text'>" +
+            "<input class='form-control multChoiceTxt' placeholder='Choice Text' name='answers[CHOICE_TEXT][" + generated_id + "]' type='text'>" +
+            "</div>" +
+            "</div>" +
+            "</td>" +
+            "<td>" +
+            "<div class='form-group'>" +
+            "<div class='col-md-4'>" +
+            "<input type='file' accept='image/*' id='exampleInputFile1' name='answers[CHOICE_IMG][" + generated_id + "]' style='border: solid 1px #ccc; padding: 5px 10px;'>" +
+            "</div>" +
+            "</div>" +
+            "</td>" +
+            "<td align='center'>" +
+            "<div class='form-group'>" +
+            "<div class='col-md-12' >" +
+            "<input type='checkbox' class='btn btn-default' id='' name='answers[CORRECT_ANSWER][" + generated_id + "]' value='1'>" +
+            "</div>" +
+            "</div>" +
+            "</td>" +
+            "<td>" +
+            "<div class='form-group'>" +
+            "<div class='col-md-1'>" +
+            "<button class='btnDelete btn btn-warning' type='button'><i class='fa fa-trash-o'></i></button>" +
+            "</div>" +
+            "</div>" +
+            "</td>" +
+            "</tr>";
+    }
+
+    function generateNewRowForAnswerTextSeries() {
+        let generated_id = "new-" + new Date().getTime();
+        return "<tr>" +
+            "<td>" +
+            "<div class='form-group'>" +
+            "<div class='col-md-12'>" +
+            "<input hidden placeholder='ID' name='answers[ANS_TEXT_SERIES_ID][" + generated_id + "]' type='text'>" +
+            "<input class='form-control' name='answers[CORRECT_TEXT][" + generated_id + "]' placeholder='Correct Answer' id='txtSeries' type='text'>" +
+            "</div>" +
+            "</div>" +
+            "</td>" +
+            "<td>" +
+            "<div class='form-group'>" +
+            "<div class='col-md-2'>" +
+            "<a class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></a>" +
+            "</div>" +
+            "</div>" +
+            "</td>" +
+            "</tr>";
     }
 
     function setupDeleteAnswerRowButton() {
