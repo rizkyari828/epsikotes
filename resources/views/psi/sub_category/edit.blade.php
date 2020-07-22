@@ -323,7 +323,7 @@
                                         <div class="form-group col-xs-6 col-md-4">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <button id="btn_add_question" class="btn btn-primary">
+                                                    <button id="btn_add_question" class="btn btn-primary" type="button">
                                                         <i class="fa fa-plus"></i>
                                                         Add Answer
                                                     </button>
