@@ -195,7 +195,7 @@
                                         </div>
                                         <label class="col-md-1 control-label">Image</label>
                                         <div class="col-md-6">
-                                            <input type="file" id="question_hint_image" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;" name="HINT_IMG">
+                                            <input type="file" accept="image/*" id="question_hint_image" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;" name="HINT_IMG">
                                         </div>
                                     </div>
                                 </div>
@@ -235,7 +235,7 @@
                                         </div>
                                         <label class="col-md-1 control-label">Image</label>
                                         <div class="col-md-6">
-                                            <input type="file" id="question_question_image" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;" name="QUESTION_IMG">
+                                            <input type="file" accept="image/*" id="question_question_image" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;" name="QUESTION_IMG">
                                         </div>
                                     </div>
                                 </div>
@@ -537,7 +537,7 @@
                     "<td>" +
                     "<div class='form-group'>" +
                     "<div class='col-md-4'>" +
-                    "<input type='file' id='exampleInputFile1' name='answers[CHOICE_IMG][" + answer.ANS_CHOICE_ID + "]' style='border: solid 1px #ccc; padding: 5px 10px;'>" +
+                    "<input type='file' accept='image/*' id='exampleInputFile1' name='answers[CHOICE_IMG][" + answer.ANS_CHOICE_ID + "]' style='border: solid 1px #ccc; padding: 5px 10px;'>" +
                     "</div>" +
                     "</div>" +
                     "</td>" +
@@ -912,7 +912,7 @@
         "<td>" +
         "<div class='form-group'>" +
         "<div class='col-md-4'>" +
-        "<input type='file' id='exampleInputFile1' name='answers[CHOICE_IMG][" + generated_id + "]' style='border: solid 1px #ccc; padding: 5px 10px;'>" +
+        "<input type='file' accept='image/*' id='exampleInputFile1' name='answers[CHOICE_IMG][" + generated_id + "]' style='border: solid 1px #ccc; padding: 5px 10px;'>" +
         "</div>" +
         "</div>" +
         "</td>" +
