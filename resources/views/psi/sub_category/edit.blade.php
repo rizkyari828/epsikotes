@@ -372,29 +372,6 @@
         "<th class='.col-lg-4'>Group</th>" +
         "<th class='.col-lg-1'>Action</th> " +
         "</tr></thead>";
-    let answer_body_multiple_group = "<tr>" +
-        "<td>" +
-        "<div class='form-group'>" +
-        "<div class='col-md-12'>" +
-        "<input class='form-control' name='ansMultGroupImgSeq[]' placeholder='Image Sequence' type='text'>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "<td>" +
-        "<div class='form-group'>" +
-        "<div class='col-md-12'>" +
-        "<input class='form-control' name='ansMultGroupImg[]' placeholder='Group Image' type='text'>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "<td>" +
-        "<div class='form-group'>" +
-        "<div class='col-md-1'>" +
-        "<a class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></a>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "</tr>";
 
     $(document).ready(function () {
         $.ajaxSetup({
@@ -454,10 +431,10 @@
                 appendNewAnswerTextSeries();
             }
             if (question_type_answer === "MULTIPLE_GROUP") {
-                //
+                appendNewAnswerRowGroup()
             }
             if (question_type_answer === "MEMORY") {
-                //
+                // do nothing
             }
         });
     }
@@ -470,6 +447,11 @@
     function appendNewAnswerTextSeries() {
         answerTableBody()
             .append(generateNewRowForAnswerTextSeries());
+    }
+
+    function appendNewAnswerRowGroup() {
+        answerTableBody()
+            .append(generateNewRowForAnswerGroup())
     }
 
     function onReady() {
@@ -577,14 +559,15 @@
                     "<td>" +
                     "<div class='form-group'>" +
                     "<div class='col-md-12'>" +
-                    "<input class='form-control' name='ansMultGroupImgSeq[]' placeholder='Image Sequence' type='text'>" +
+                    "<input hidden placeholder='ID' name='answers[QUE_ANS_GROUP_ID][" + answer.QUE_ANS_GROUP_ID + "]' type='text'>" +
+                    "<input class='form-control' name='answers[IMG_SEQUENCE][" + answer.QUE_ANS_GROUP_ID + "]' placeholder='Image Sequence' type='text' value='" + answer.IMG_SEQUENCE + "'>" +
                     "</div>" +
                     "</div>" +
                     "</td>" +
                     "<td>" +
                     "<div class='form-group'>" +
                     "<div class='col-md-12'>" +
-                    "<input class='form-control' name='ansMultGroupImg[]' placeholder='Group Image' type='text'>" +
+                    "<input class='form-control' name='answers[GROUP_IMG][" + answer.QUE_ANS_GROUP_ID + "]' placeholder='Group Image' type='text' value='" + answer.IMG_SEQUENCE + "'>" +
                     "</div>" +
                     "</div>" +
                     "</td>" +
@@ -934,6 +917,34 @@
             "<td>" +
             "<div class='form-group'>" +
             "<div class='col-md-2'>" +
+            "<a class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></a>" +
+            "</div>" +
+            "</div>" +
+            "</td>" +
+            "</tr>";
+    }
+
+    function generateNewRowForAnswerGroup() {
+        let generated_id = "new-" + new Date().getTime();
+        return "<tr>" +
+            "<td>" +
+            "<div class='form-group'>" +
+            "<div class='col-md-12'>" +
+            "<input hidden placeholder='ID' name='answers[QUE_ANS_GROUP_ID][" + generated_id + "]' type='text'>" +
+            "<input class='form-control' name='answers[IMG_SEQUENCE][" + generated_id + "]' placeholder='Image Sequence' type='text'>" +
+            "</div>" +
+            "</div>" +
+            "</td>" +
+            "<td>" +
+            "<div class='form-group'>" +
+            "<div class='col-md-12'>" +
+            "<input class='form-control' name='answers[GROUP_IMG][" + generated_id + "]' placeholder='Group Image' type='text'>" +
+            "</div>" +
+            "</div>" +
+            "</td>" +
+            "<td>" +
+            "<div class='form-group'>" +
+            "<div class='col-md-1'>" +
             "<a class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></a>" +
             "</div>" +
             "</div>" +

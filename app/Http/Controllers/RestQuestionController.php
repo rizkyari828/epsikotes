@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\PsiAnswerChoice;
+use App\PsiAnswerGroup;
 use App\PsiAnswerTextSeries;
 use App\PsiQuestion;
 use Illuminate\Http\JsonResponse;
@@ -110,6 +111,25 @@ class RestQuestionController extends Controller
             foreach ($answer_text_series_array as $answer_text_series) {
                 if (!in_array($answer_text_series->ANS_TEXT_SERIES_ID, $ids)) {
                     $answer_text_series->delete();
+                }
+            }
+        }
+        if ($psiQuestion->TYPE_ANSWER == "MULTIPLE_GROUP" && $request->has('answers')) {
+            $ids = [];
+            foreach ($answers['QUE_ANS_GROUP_ID'] as $id => $answer) {
+                $answer_group = PsiAnswerGroup::findOrNew($id);
+                $answer_group->IMG_SEQUENCE = $answers['IMG_SEQUENCE'][$id] ?: "";
+                $answer_group->GROUP_IMG = $answers['GROUP_IMG'][$id] ?: "";
+                $answer_group->QUESTION_ID = $psiQuestion->QUESTION_ID;
+                $answer_group->save();
+                array_push($ids, $answer_group->QUE_ANS_GROUP_ID);
+            }
+            $answer_groups = PsiAnswerGroup::query()
+                ->where('QUESTION_ID', $psiQuestion->QUESTION_ID)
+                ->get();
+            foreach ($answer_groups as $answer_group) {
+                if (!in_array($answer_group->QUE_ANS_GROUP_ID, $ids)) {
+                    $answer_group->delete();
                 }
             }
         }
