@@ -18,6 +18,8 @@
 <script src="/assets/js/plugin/ckeditor/ckeditor.js"></script>
 <script src="/assets/js/misc.js"></script>
 
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+
 <div class="row">
     <article class="col-sm-12 col-md-12 col-lg-12">
         <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
@@ -134,12 +136,13 @@
                         </fieldset>
                         <fieldset>
                             <legend>Question List</legend>
-                            <div id="wizards">
+                            <form id="question-form" enctype="multipart/form-data" method="post">
+                                <input type="hidden" name="_token" id="csrf_token">
                                 <input type="text" id="question_question_id" hidden>
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Type Of Sub Category</label>
                                     <div class="col-md-8">
-                                        <select class="form-control" id="question_type_sub_category">
+                                        <select class="form-control" id="question_type_sub_category" name="TYPE_SUB_CATEGORY">
                                             <option value="-">- Select -</option>
                                             <option value="ANALOGY">ANALOGY</option>
                                             <option value="SERIES_COMPLETION">SERIES COMPLETION</option>
@@ -153,13 +156,13 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Is Actives</label>
                                     <div class="col-md-8">
-                                        <input type="checkbox" id="question_is_actived">
+                                        <input type="checkbox" id="question_is_actived" name="IS_ACTIVED">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Duration Per Question</label>
                                     <div class="col-lg-2">
-                                        <input class="form-control" placeholder="0" id="question_duration_per_que" type="number">
+                                        <input class="form-control" placeholder="0" id="question_duration_per_que" type="number" name="DURATION_PER_QUE">
                                         <label style="color: red; display: none;" id="errorDuration">Duration must be
                                             filled</label>
                                     </div>
@@ -167,7 +170,7 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Is Example</label>
                                     <div class="col-md-8">
-                                        <input type="checkbox" id="question_example">
+                                        <input type="checkbox" id="question_example" name="EXAMPLE">
                                         <label style="color: red; display: none;" id="errorIsExample">Hint or Text must
                                             be filled</label>
                                     </div>
@@ -180,7 +183,7 @@
                                         </div>
                                         <label class="col-md-1 control-label">Text</label>
                                         <div class="col-md-6">
-                                            <textarea class="form-control" rows="4" id="question_hint_text"></textarea>
+                                            <textarea class="form-control" rows="4" id="question_hint_text" name="HINT_TEXT"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -192,7 +195,7 @@
                                         </div>
                                         <label class="col-md-1 control-label">Image</label>
                                         <div class="col-md-6">
-                                            <input type="file" id="question_hint_image" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;">
+                                            <input type="file" id="question_hint_image" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;" name="HINT_IMG">
                                         </div>
                                     </div>
                                 </div>
@@ -204,6 +207,7 @@
                                                 <div class="input-icon-left">
                                                     <input class="form-control" placeholder="Narration Name"
                                                            id="question_narration_name" type="text" list="question_narrations_datalist">
+                                                    <input type="hidden" name="NARRATION_ID" id="question_narration_id">
                                                     <datalist id="question_narrations_datalist"></datalist>
                                                 </div>
                                             </div>
@@ -219,7 +223,7 @@
                                         </div>
                                         <label class="col-md-1 control-label">Text</label>
                                         <div class="col-md-6">
-                                            <textarea class="form-control" rows="4" id="question_question_text"></textarea>
+                                            <textarea class="form-control" rows="4" id="question_question_text" name="QUESTION_TEXT"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -231,7 +235,7 @@
                                         </div>
                                         <label class="col-md-1 control-label">Image</label>
                                         <div class="col-md-6">
-                                            <input type="file" id="question_question_image" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;">
+                                            <input type="file" id="question_question_image" style="border: solid 1px #ccc; padding: 5px 10px; width: 100%;" name="QUESTION_IMG">
                                         </div>
                                     </div>
                                 </div>
@@ -246,19 +250,19 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Random Character</label>
                                     <div class="col-md-8">
-                                        <input type="checkbox" id="question_random_character">
+                                        <input type="checkbox" id="question_random_character" name="RANDOM_CHARACTER">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Question Character</label>
                                     <div class="col-lg-2">
-                                        <input class="form-control" placeholder="0" id="question_question_character" type="number">
+                                        <input class="form-control" placeholder="0" id="question_question_character" type="number" name="QUESTION_CHARACTER">
                                     </div>
                                 </div>
                                 <div class="form-group" id="typeOfAnswer">
                                     <label class="col-md-2 control-label">Type Of Answer *</label>
                                     <div class="col-md-8">
-                                        <select class="form-control" id="question_type_answer">
+                                        <select class="form-control" id="question_type_answer" name="TYPE_ANSWER">
                                             <option value="-">- Select -</option>
                                             <option value="MULTIPLE_CHOICE">Multiple Choice</option>
                                             <option value="TEXT_SERIES">Text Series</option>
@@ -272,7 +276,7 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Random Answer *</label>
                                     <div class="col-md-8">
-                                        <input type="checkbox" id="question_random_answer">
+                                        <input type="checkbox" id="question_random_answer" name="RANDOM_ANSWER">
                                     </div>
                                 </div>
 
@@ -332,7 +336,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </fieldset>
                         <div class="form-actions">
                             <div class="row">
@@ -455,6 +459,12 @@
         "</tr>";
 
     $(document).ready(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         CKEDITOR.replace('ckeditor', {height: '200px', startupFocus: true});
         let sub_category_id = "{{ $data->SUB_CATEGORY_ID }}";
         fetchSubCategoryNames(() => {
@@ -657,26 +667,18 @@
 
     function saveCurrentQuestion(then) {
         let current_question = questions[current_question_index];
+        $("#question_narration_id").val(narrations.filter(function (item) { return item.NARRATION_NAME === $('#question_narration_name').val() })[0].NARRATION_ID);
+        let question_form = $('#question-form');
+        let formData = new FormData(question_form[0]);
         $.ajax({
             type: "PUT",
             url: "/rest/question/" + current_question.QUESTION_ID,
-            dataType: "json",
-            data: {
-                '_token': "{{ csrf_token() }}",
-                'TYPE_SUB_CATEGORY': $('#question_type_sub_category').val(),
-                'IS_ACTIVED': $('#question_is_actived').is(":checked") ? 1 : 0,
-                'DURATION_PER_QUE': $('#question_duration_per_que').val(),
-                'EXAMPLE': $('#question_example').is(':checked') ? 1 : 0,
-                'HINT_TEXT': $('#question_hint_text').val(),
-                'NARRATION_ID': narrations.filter(function (item) { return item.NARRATION_NAME === $('#question_narration_name').val() })[0].NARRATION_ID,
-                'QUESTION_TEXT': $("#question_question_text").val(),
-                'RANDOM_CHARACTER': $('#question_random_character').is(':checked') ? 1 : 0,
-                'QUESTION_CHARACTER': $('#question_question_character').val(),
-                'TYPE_ANSWER': $('#question_type_answer').val(),
-                'RANDOM_ANSWER': $('#question_random_answer').is(':checked') ? 1 : 0,
-            },
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
             success: function (response) {
-                questions[current_question_index] = response
+                questions[current_question_index] = response;
                 then();
             },
             error: function (reason) {

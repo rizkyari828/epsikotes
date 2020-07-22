@@ -27,9 +27,7 @@ class RestQuestionController extends Controller
     public function store(Request $request)
     {
         $item = new PsiQuestion();
-        $item->fill($request->all());
-        $item->save();
-        return response()->json($item);
+        return $this->update($request, $item);
     }
 
     /**
@@ -53,6 +51,16 @@ class RestQuestionController extends Controller
     public function update(Request $request, PsiQuestion $psiQuestion)
     {
         $psiQuestion->fill($request->all());
+        if ($request->hasFile('HINT_IMG')) {
+            $hint_img = $request->file('HINT_IMG');
+            $hint_img->store($hint_img->getFilename(), 'public');
+            $psiQuestion->HINT_IMG = $hint_img->getFilename();
+        }
+        if ($request->hasFile('QUESTION_IMG')) {
+            $question_img = $request->file('QUESTION_IMG');
+            $question_img->store($question_img->getFilename(), 'public');
+            $psiQuestion->QUESTION_IMG = $question_img->getFilename();
+        }
         $psiQuestion->save();
         return $this->show($psiQuestion);
     }
