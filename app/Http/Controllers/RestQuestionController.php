@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\PsiAnswerChoice;
 use App\PsiQuestion;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -50,7 +51,7 @@ class RestQuestionController extends Controller
      */
     public function update(Request $request, PsiQuestion $psiQuestion)
     {
-        $psiQuestion->fill($request->all());
+        $psiQuestion->fill($request->except(['answers']));
         if ($request->hasFile('HINT_IMG')) {
             $hint_img = $request->file('HINT_IMG');
             $hint_img->store('', 'public');
@@ -62,6 +63,22 @@ class RestQuestionController extends Controller
             $psiQuestion->QUESTION_IMG = $question_img->hashName();
         }
         $psiQuestion->save();
+        if ($psiQuestion->TYPE_ANSWER == "MULTIPLE_CHOICE" && $request->has('answers')) {
+            $answers = $request->get('answers');
+            foreach ($answers['ANS_CHOICE_ID'] as $id => $answer) {
+                $answer_choice = PsiAnswerChoice::findOrNew($id);
+                $answer_choice->CHOICE_TEXT = isset($answers['CHOICE_TEXT'][$id]) ? $answers['CHOICE_TEXT'][$id] : null;
+                if ($request->hasFile('answers.CHOICE_IMG.'.$id)) {
+                    $choice_image = $request->file('answers.CHOICE_IMG.'.$id);
+                    $choice_image->store('', 'public');
+                    $answer_choice->CHOICE_IMG = $choice_image->hashName();
+                }
+                $answer_choice->CORRECT_ANSWER = isset($answers['CORRECT_ANSWER'][$id]) ? $answers['CORRECT_ANSWER'][$id] : 0;
+                $answer_choice->QUESTION_ID = $psiQuestion->QUESTION_ID;
+                $answer_choice->ANS_SEQUENCE = $id;
+                $answer_choice->save();
+            }
+        }
         return $this->show($psiQuestion);
     }
 
