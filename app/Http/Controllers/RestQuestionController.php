@@ -65,6 +65,7 @@ class RestQuestionController extends Controller
         $psiQuestion->save();
         if ($psiQuestion->TYPE_ANSWER == "MULTIPLE_CHOICE" && $request->has('answers')) {
             $answers = $request->get('answers');
+            $ids = [];
             foreach ($answers['ANS_CHOICE_ID'] as $id => $answer) {
                 $answer_choice = PsiAnswerChoice::findOrNew($id);
                 $answer_choice->CHOICE_TEXT = isset($answers['CHOICE_TEXT'][$id]) ? $answers['CHOICE_TEXT'][$id] : null;
@@ -77,6 +78,15 @@ class RestQuestionController extends Controller
                 $answer_choice->QUESTION_ID = $psiQuestion->QUESTION_ID;
                 $answer_choice->ANS_SEQUENCE = $id;
                 $answer_choice->save();
+                array_push($ids, $answer_choice->ANS_CHOICE_ID);
+            }
+            $answer_choices = PsiAnswerChoice::query()
+                ->where('QUESTION_ID', $psiQuestion->QUESTION_ID)
+                ->get();
+            foreach ($answer_choices as $answer_choice) {
+                if (!in_array($answer_choice->ANS_CHOICE_ID, $ids)) {
+                    $answer_choice->delete();
+                }
             }
         }
         return $this->show($psiQuestion);
