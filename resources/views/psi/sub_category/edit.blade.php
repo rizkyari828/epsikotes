@@ -137,7 +137,7 @@
                         <fieldset>
                             <legend>Question List</legend>
                             <form id="question-form" enctype="multipart/form-data" method="post">
-                                <input type="hidden" name="_token" id="csrf_token">
+                                <input type="hidden" name="_method" value="PUT">
                                 <input type="text" id="question_question_id" hidden>
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Type Of Sub Category</label>
@@ -671,7 +671,7 @@
         let question_form = $('#question-form');
         let formData = new FormData(question_form[0]);
         $.ajax({
-            type: "PUT",
+            type: "POST",
             url: "/rest/question/" + current_question.QUESTION_ID,
             data: formData,
             cache: false,

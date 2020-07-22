@@ -53,13 +53,13 @@ class RestQuestionController extends Controller
         $psiQuestion->fill($request->all());
         if ($request->hasFile('HINT_IMG')) {
             $hint_img = $request->file('HINT_IMG');
-            $hint_img->store($hint_img->getFilename(), 'public');
-            $psiQuestion->HINT_IMG = $hint_img->getFilename();
+            $hint_img->store('', 'public');
+            $psiQuestion->HINT_IMG = $hint_img->hashName();
         }
         if ($request->hasFile('QUESTION_IMG')) {
             $question_img = $request->file('QUESTION_IMG');
-            $question_img->store($question_img->getFilename(), 'public');
-            $psiQuestion->QUESTION_IMG = $question_img->getFilename();
+            $question_img->store('', 'public');
+            $psiQuestion->QUESTION_IMG = $question_img->hashName();
         }
         $psiQuestion->save();
         return $this->show($psiQuestion);
