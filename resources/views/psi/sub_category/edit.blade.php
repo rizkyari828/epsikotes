@@ -472,6 +472,7 @@
             })
         setupAnswersTable();
         setupAnswersOptionsTools();
+        setupDeleteAnswerRowButton();
     });
 
     function setupAnswersOptionsTools() {
@@ -565,7 +566,7 @@
                     "<td>" +
                     "<div class='form-group'>" +
                     "<div class='col-md-1'>" +
-                    "<button class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></button>" +
+                    "<button class='btnDelete btn btn-warning' type='button'><i class='fa fa-trash-o'></i></button>" +
                     "</div>" +
                     "</div>" +
                     "</td>" +
@@ -940,10 +941,16 @@
         "<td>" +
         "<div class='form-group'>" +
         "<div class='col-md-1'>" +
-        "<button class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></button>" +
+        "<button class='btnDelete btn btn-warning' type='button'><i class='fa fa-trash-o'></i></button>" +
         "</div>" +
         "</div>" +
         "</td>" +
         "</tr>";
+    }
+
+    function setupDeleteAnswerRowButton() {
+        $("#answer_table").on('click', '.btnDelete', function () {
+            $(this).closest('tr').remove();
+        });
     }
 </script>
