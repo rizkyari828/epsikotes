@@ -369,36 +369,6 @@
 
     let narrations = [];
 
-    let answer_body_multiple_choice = "<tr>" +
-        "<td>" +
-        "<div class='form-group'>" +
-        "<div class='col-md-8'>" +
-        "<input class='form-control multChoiceTxt' placeholder='Choice Text' name='multChoiceTxt[]' type='text'>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "<td>" +
-        "<div class='form-group'>" +
-        "<div class='col-md-4'>" +
-        "<input type='file' id='exampleInputFile1' name='multChoiceImg[]' style='border: solid 1px #ccc; padding: 5px 10px;'>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "<td align='center'>" +
-        "<div class='form-group'>" +
-        "<div class='col-md-12' >" +
-        "<input type='checkbox' class='btn btn-default' id='' name='multChoiceCorrect[]'>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "<td>" +
-        "<div class='form-group'>" +
-        "<div class='col-md-1'>" +
-        "<button class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></button>" +
-        "</div>" +
-        "</div>" +
-        "</td>" +
-        "</tr>";
     let answer_header_multiple_choice = "<thead><tr>" +
         "<th class='col-lg-6'>Choice Text</th>" +
         "<th class='col-lg-2'>Choice Image</th>" +
@@ -501,7 +471,34 @@
                 }
             })
         setupAnswersTable();
+        setupAnswersOptionsTools();
     });
+
+    function setupAnswersOptionsTools() {
+        $('#btn_add_question').on('click', function () {
+            let question_type_answer = $('#question_type_answer').val();
+            if (question_type_answer === "MULTIPLE_CHOICE") {
+                appendNewAnswerMultipleChoice()
+            }
+            if (question_type_answer === "TEXT_SERIES") {
+                //
+            }
+            if (question_type_answer === "MULTIPLE_GROUP") {
+                //
+            }
+            if (question_type_answer === "MEMORY") {
+                //
+            }
+        });
+        $('#btn_delete_all_question').on('click', function () {
+            //
+        });
+    }
+
+    function appendNewAnswerMultipleChoice() {
+        answerTableBody()
+            .append(generateNewRowForAnswerMultipleChoice());
+    }
 
     function onReady() {
         // Here are the point of readiness.
@@ -537,26 +534,31 @@
     function setupContentAnswerForMultipleChoice() {
         let answers = questions[current_question_index].answer_choices
         answers.forEach(function (answer, index) {
+            let correct_answer_checked_status = "";
+            if (answer.CORRECT_ANSWER === 1 || answer.CORRECT_ANSWER === "1") {
+                correct_answer_checked_status = "checked";
+            }
             answerTableBody()
                 .append("<tr>" +
                     "<td>" +
                     "<div class='form-group'>" +
                     "<div class='col-md-8'>" +
-                    "<input class='form-control multChoiceTxt' placeholder='Choice Text' name='multChoiceTxt[]' type='text' value='" + answer.CHOICE_TEXT + "'>" +
+                    "<input hidden placeholder='ID' name='answers[ANS_CHOICE_ID][" + answer.ANS_CHOICE_ID + "]' type='text' value='" + answer.ANS_CHOICE_ID + "'>" +
+                    "<input class='form-control multChoiceTxt' placeholder='Choice Text' name='answers[CHOICE_TEXT][" + answer.ANS_CHOICE_ID + "]' type='text' value='" + answer.CHOICE_TEXT + "'>" +
                     "</div>" +
                     "</div>" +
                     "</td>" +
                     "<td>" +
                     "<div class='form-group'>" +
                     "<div class='col-md-4'>" +
-                    "<input type='file' id='exampleInputFile1' name='multChoiceImg[]' style='border: solid 1px #ccc; padding: 5px 10px;'>" +
+                    "<input type='file' id='exampleInputFile1' name='answers[CHOICE_IMG][" + answer.ANS_CHOICE_ID + "]' style='border: solid 1px #ccc; padding: 5px 10px;'>" +
                     "</div>" +
                     "</div>" +
                     "</td>" +
                     "<td align='center'>" +
                     "<div class='form-group'>" +
                     "<div class='col-md-12' >" +
-                    "<input type='checkbox' class='btn btn-default' id='' name='multChoiceCorrect[]'>" +
+                    "<input type='checkbox' class='btn btn-default' id='' name='answers[CORRECT_ANSWER][" + answer.ANS_CHOICE_ID + "]'" + correct_answer_checked_status + " value='1'>" +
                     "</div>" +
                     "</div>" +
                     "</td>" +
@@ -908,5 +910,40 @@
 
     function answerTableBody() {
         return $("#answer_body")
+    }
+
+    function generateNewRowForAnswerMultipleChoice() {
+        let generated_id = "new-" + new Date().getTime();
+        return "<tr>" +
+        "<td>" +
+        "<div class='form-group'>" +
+        "<div class='col-md-8'>" +
+        "<input hidden placeholder='ID' name='answers[ANS_CHOICE_ID][" + generated_id + "]' type='text'>" +
+        "<input class='form-control multChoiceTxt' placeholder='Choice Text' name='answers[CHOICE_TEXT][" + generated_id + "]' type='text'>" +
+        "</div>" +
+        "</div>" +
+        "</td>" +
+        "<td>" +
+        "<div class='form-group'>" +
+        "<div class='col-md-4'>" +
+        "<input type='file' id='exampleInputFile1' name='answers[CHOICE_IMG][" + generated_id + "]' style='border: solid 1px #ccc; padding: 5px 10px;'>" +
+        "</div>" +
+        "</div>" +
+        "</td>" +
+        "<td align='center'>" +
+        "<div class='form-group'>" +
+        "<div class='col-md-12' >" +
+        "<input type='checkbox' class='btn btn-default' id='' name='answers[CORRECT_ANSWER][" + generated_id + "]' value='1'>" +
+        "</div>" +
+        "</div>" +
+        "</td>" +
+        "<td>" +
+        "<div class='form-group'>" +
+        "<div class='col-md-1'>" +
+        "<button class='btnDelete btn btn-warning'><i class='fa fa-trash-o'></i></button>" +
+        "</div>" +
+        "</div>" +
+        "</td>" +
+        "</tr>";
     }
 </script>
