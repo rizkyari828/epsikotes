@@ -327,7 +327,7 @@
                                                         <i class="fa fa-plus"></i>
                                                         Add Answer
                                                     </button>
-                                                    <button id="btn_delete_all_question" class="btn btn-danger">
+                                                    <button id="btn_delete_all_question" type="button" class="btn btn-danger">
                                                         <i class="fa fa-trash-o"></i>
                                                         Delete All Answers
                                                     </button>
@@ -473,6 +473,7 @@
         setupAnswersTable();
         setupAnswersOptionsTools();
         setupDeleteAnswerRowButton();
+        setupDeleteAllAnswerButton();
     });
 
     function setupAnswersOptionsTools() {
@@ -951,6 +952,22 @@
     function setupDeleteAnswerRowButton() {
         $("#answer_table").on('click', '.btnDelete', function () {
             $(this).closest('tr').remove();
+        });
+    }
+
+    function setupDeleteAllAnswerButton() {
+        $('#btn_delete_all_question').click(function () {
+            let selected = $('#type_answer').val();
+            let table = $("#answer_table");
+            table.find("tbody").remove();
+            table.append("<tbody id='answer_body'></tbody>");
+            if (selected === 'MULTIPLE_CHOICE') {
+                answerTableBody().append(answer_header_multiple_choice);
+            } else if (selected === 'TEXT_SERIES') {
+                answerTableBody().append(answer_header_text_series);
+            } else if (selected === 'MULTIPLE_GROUP') {
+                answerTableBody().append(answer_header_multiple_group);
+            }
         });
     }
 </script>
