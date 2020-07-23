@@ -792,6 +792,7 @@
 
         if (selected_narrations !== undefined) {
             $('#question_narration_name').val(selected_narrations.NARRATION_NAME);
+            $('#question_narration_id').val(selected_narrations.NARRATION_ID);
         }
 
         $('#question_question_text_checkbox').prop('checked', question.QUESTION_TEXT != null);
