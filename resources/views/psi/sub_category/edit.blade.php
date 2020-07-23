@@ -392,7 +392,11 @@
 
         $('#question_button_next').on('click', function () {
             saveCurrentQuestion(() => {
-                selectNextQuestion();
+                if (questions.length - 1 === current_question_index) {
+                    createNewQuestion();
+                } else {
+                    selectNextQuestion();
+                }
             });
         });
 
@@ -807,7 +811,7 @@
             enablePrevButton();
         }
         if (current_question_index === questions.length - 1) {
-            disableNextButton();
+            // disableNextButton();
         } else {
             enableNextButton();
         }
@@ -971,6 +975,30 @@
             } else if (selected === 'MULTIPLE_GROUP') {
                 answerTableBody().append(answer_header_multiple_group);
             }
+        });
+    }
+
+    function createNewQuestion() {
+        let lastQuestion = questions[questions.length - 1];
+        $.ajax({
+            type: "POST",
+            url: "/rest/question",
+            data: {
+                VERSION_ID: lastQuestion.VERSION_ID,
+                QUESTION_SEQUENCE: lastQuestion.QUESTION_SEQUENCE + 1,
+                IS_ACTIVED: 0,
+                DURATION_PER_QUE: 0,
+                EXAMPLE: 0,
+                RANDOM_CHARACTER: 0,
+                RANDOM_ANSWER: 0
+            },
+            success: function (response) {
+                questions.push(response);
+                selectNextQuestion();
+            },
+            error: function (reason) {
+                window.console.log(reason);
+            },
         });
     }
 </script>
