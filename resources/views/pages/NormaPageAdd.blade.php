@@ -189,7 +189,7 @@
                             <footer>
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="hidden" name="NORMA_ID" value="{{$valeInput['NORMA_ID']}}">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary btn-submit">
                                     <i class='fa fa-save'></i>&nbsp;
                                     Submit
                                 </button>
@@ -228,11 +228,13 @@
             $(".score-delete-row").prop("disabled", true);
             $(".aspect-add-row").prop("disabled", true);
             $(".aspect-delete-row").prop("disabled", true);
+            $(".btn-submit").prop("disabled", true);
         }else{
             $(".score-add-row").prop("disabled", false);
             $(".score-delete-row").prop("disabled", false);
             $(".aspect-add-row").prop("disabled", false);
-            $(".aspect-delete-row").prop("disabled", false);
+            $(".aspect-delete-row").prop("disabled", false); 
+            $(".btn-submit").prop("disabled", false);
         }
         $("#normasetup").click(function(e) {
             e.preventDefault();
@@ -425,10 +427,24 @@
                  $('textarea[name="DEFINITION[]"]').prop("disabled", false);
                  $('textarea[name="description"]').prop("disabled", false);
                  $(".score-add-row").prop("disabled", false);
-            $(".score-delete-row").prop("disabled", false);
-            $(".aspect-add-row").prop("disabled", false);
-            $(".aspect-delete-row").prop("disabled", false);
-
+                $(".score-delete-row").prop("disabled", false);
+                $(".aspect-add-row").prop("disabled", false);
+                $(".aspect-delete-row").prop("disabled", false);
+                $(".btn-submit").prop("disabled", false); 
+            }else{
+                $('input[name="standard_score[]"]').prop("disabled", true);
+                 $('input[name="raw_score[]"]').prop("disabled", true);
+                 $('select[name="PSYCHOGRAM_ASPECT_RAW[]"]').prop("disabled", true);
+                 $('select[name="PSYCHOGRAM_ASPECT[]"]').prop("disabled", true);
+                 $('input[name="date_from"]').prop("disabled", true);
+                 $('input[name="date_to"]').prop("disabled", true);
+                 $('textarea[name="DEFINITION[]"]').prop("disabled", true);
+                 $('textarea[name="description"]').prop("disabled", true);
+                 $(".score-add-row").prop("disabled", true);
+                $(".score-delete-row").prop("disabled", true);
+                $(".aspect-add-row").prop("disabled", true);
+                $(".aspect-delete-row").prop("disabled", true);
+                $(".btn-submit").prop("disabled", true); 
             }
 
             $.post( "getNormaVersion", { _token : $('input[name="_token"]').val(), versionNumber : versionNumber, normaId : normaId }, function( data ) {

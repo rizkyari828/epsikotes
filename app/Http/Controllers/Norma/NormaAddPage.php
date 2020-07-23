@@ -67,10 +67,8 @@ class NormaAddPage extends Controller
                 $isDisablePast = 'disabled';
                 $isDisable = 'disabled';
             }else if($paramFilter['isFuture']){
-                $isDisable = 'disabled';
-            }
-
-
+                // $isDisable = 'disabled';
+            } 
         }
 
 
@@ -170,7 +168,7 @@ class NormaAddPage extends Controller
             $paramInsertNormaVersion['NORMA_ID'] = $idNorma;
             $paramInsertNormaVersion['VERSION_NUMBER'] = 1;
             $paramInsertNormaVersion['DATE_FROM'] = date( "Y-m-d", strtotime( $param['date_from'] ) );
-            $paramInsertNormaVersion['DATE_TO'] =  isset($param['date_to']) ? date( "Y-m-d", strtotime( $param['date_to'] ) ) : date( "Y-m-d", strtotime( '4712-12-31' ) ) ;
+            $paramInsertNormaVersion['DATE_TO'] =  !empty($param['date_to']) ? date( "Y-m-d", strtotime( $param['date_to'] ) ) : date( "Y-m-d", strtotime( '4712-12-31' ) ) ;
             $paramInsertNormaVersion['DESCRIPTION'] = $param['description'];
             $paramInsertNormaVersion['CREATED_BY'] = $request->session()->get('user.username');
             $paramInsertNormaVersion['CREATION_DATE'] = date("Y-m-d h:i:s");
@@ -251,8 +249,8 @@ class NormaAddPage extends Controller
                 $paramFilter['versionNumber'] = $param['version_number']; 
 
                 $dataNorma = $norma->getNormaVersion($paramFilter);
-                $paramFilter['value']['DATE_TO'] =  $param['date_to'];
-                $paramFilter['value']['DATE_FROM'] =  $param['date_from'];
+                $paramFilter['value']['DATE_TO'] =  isset($param['date_to']) ? date( "Y-m-d", strtotime( $param['date_to'] ) ) : date( "Y-m-d", strtotime( '4712-12-31' ) );
+                $paramFilter['value']['DATE_FROM'] =   date( "Y-m-d", strtotime( $param['date_from'] ) );
                 $paramFilter['value']['DESCRIPTION'] =  $param['description'];
                 $paramFilter['value']['LAST_UPDATED_BY'] =  $request->session()->get('user.username');
                 $paramFilter['value']['LAST_UPDATE_DATE'] =  date("Y-m-d h:i:s");
