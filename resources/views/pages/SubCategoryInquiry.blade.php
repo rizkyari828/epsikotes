@@ -200,7 +200,9 @@
                 {
                     "data": "sub_category_id",
                     "render": function (data, type, row) {
-                        return "<a href='workspace#psi/sub-category/" + data + "/edit'>Edit</a> | <a href='workspace#viewQuestion/" + data + "'>View Question</a>";
+                        let url = "workspace#psi/sub-category/" + data + "/edit"
+                        return "<a onClick=\"window.location='" + url + "';\">Edit</a> | <a href=\"workspace#viewQuestion/" + data + "\">View Question</a>";
+                        // return "<span onClick=\"window.location='" + url + "';\">Edit</span> | <a href=\"workspace#viewQuestion/" + data + "'>View Question</a>";
                     }
                 },
                 {"data":"sub_category_name"},
