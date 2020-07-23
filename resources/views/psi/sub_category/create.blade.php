@@ -37,7 +37,7 @@
                                     <div class="form-group">
                                         <label class="col-md-2 control-label">Sub Category Name</label>
                                         <div class="col-md-10">
-                                            <input id="names" name="subCateName" class="form-control"
+                                            <input id="sub_category_name" name="subCateName" class="form-control"
                                                    placeholder="Sub Category Name" type="text" list="sub_category_name_datalist"
                                                    autocomplete="off" value="{{$data->SUB_CATEGORY_NAME}}">
                                             <datalist id="sub_category_name_datalist"></datalist>
@@ -45,7 +45,7 @@
                                                 Category Must be Filled</label>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="subCatId" id="subCateId"
+                                    <input type="hidden" name="subCatId" id="sub_category_sub_category_id"
                                            value="{{$data->SUB_CATEGORY_ID}}">
                                     <div class="form-group">
                                         <label class="col-md-2 control-label">Description *</label>
@@ -325,7 +325,7 @@
                         <div class="form-actions">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <button class="btn btn-primary" id="btnSaves">
+                                    <button class="btn btn-primary" id="button_save_sub_category">
                                         <i class="fa fa-save"></i>
                                         Save
                                     </button>
@@ -387,6 +387,12 @@
                 fetchSubCategoryDetail(sub_category_id, () => {
                     onReady();
                 })
+            })
+        });
+
+        $('#button_save_sub_category').on('click', function () {
+            saveCurrentQuestion(() => {
+                saveSubCategory();
             })
         });
 
@@ -997,6 +1003,41 @@
             success: function (response) {
                 questions.push(response);
                 selectNextQuestion();
+            },
+            error: function (reason) {
+                window.console.log(reason);
+            },
+        });
+    }
+
+    function saveSubCategory() {
+        let lastQuestion = questions[questions.length - 1];
+        // save version
+        $.ajax({
+            type: "PUT",
+            url: "/rest/sub-category-version/" + lastQuestion.VERSION_ID,
+            data: {
+                DATE_FROM: $('#version_date_form').val(),
+                DATE_TO: $('#version_date_to').val(),
+                DESCRIPTION: $('#version_description').val(),
+                WORK_INSTRUCTION: $('#version_work_instruction').val(),
+                RANDOM_QUESTION: $('#version_random_question').val(),
+            },
+            success: function (response) {
+                $.ajax({
+                    type: "PUT",
+                    url: "/rest/sub-category/" + $("#sub_category_sub_category_id").val(),
+                    data: {
+                        SUB_CATEGORY_NAME: $("#sub_category_name").val(),
+                    },
+                    success: function (response) {
+                        window.console.log(response);
+                        // window.location.replace("/workspace#subcategory")
+                    },
+                    error: function (reason) {
+                        window.console.log(reason);
+                    },
+                })
             },
             error: function (reason) {
                 window.console.log(reason);
