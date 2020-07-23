@@ -85,7 +85,7 @@
                                         <label class="col-md-4 control-label">Effective Start Date</label>
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <input type="text" name="mydate" placeholder="Select a date"
+                                                <input type="date" name="mydate" placeholder="Select a date"
                                                        class="form-control" value="{{$data->DATE_FROM}}"
                                                        id="version_date_form">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -98,7 +98,7 @@
                                         <label class="col-md-4 control-label">Effective End Date</label>
                                         <div class="col-md-6">
                                             <div class="input-group">
-                                                <input type="text" name="mydate2" placeholder="Select a date"
+                                                <input type="date" name="mydate2" placeholder="Select a date"
                                                        class="form-control" disabled="true" value="{{$data->DATE_TO}}"
                                                        id="version_date_to">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
