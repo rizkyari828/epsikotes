@@ -15,6 +15,8 @@ class PsiSubCategory extends Model
 
     const UPDATED_AT = "LAST_UPDATE_DATE";
 
+    protected $guarded = [];
+
     public function versions()
     {
         return $this->hasMany(PsiSubCategoryVersion::class, 'SUB_CATEGORY_ID', 'SUB_CATEGORY_ID');
