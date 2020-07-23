@@ -674,7 +674,12 @@
 
     function saveCurrentQuestion(then) {
         let current_question = questions[current_question_index];
-        $("#question_narration_id").val(narrations.filter(function (item) { return item.NARRATION_NAME === $('#question_narration_name').val() })[0].NARRATION_ID);
+        let selected_narrations = narrations.filter(function (item) { return item.NARRATION_NAME === $('#question_narration_name').val() });
+        if (selected_narrations.length > 0) {
+            $("#question_narration_id").val(selected_narrations[0].NARRATION_ID);
+        } else {
+            $("#question_narration_id").val(null);
+        }
         let question_form = $('#question-form');
         let formData = new FormData(question_form[0]);
         $.ajax({
