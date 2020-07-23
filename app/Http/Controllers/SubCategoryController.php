@@ -440,7 +440,7 @@ class SubCategoryController extends Controller
         $psiSubCategoryVersion->fill([
             'SUB_CATEGORY_ID' => $psiSubCategory->SUB_CATEGORY_ID,
             'VERSION_NUMBER' => 1,
-            'DATE_FROM' => Carbon::tomorrow()->format('d-m-Y'),
+            'DATE_FROM' => Carbon::now()->format('d-m-Y'),
             'DATE_TO' => '31-12-4712',
             'DESCRIPTION' => '',
             'WORK_INSTRUCTION' => '',

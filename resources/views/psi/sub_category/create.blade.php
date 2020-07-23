@@ -1031,8 +1031,7 @@
                         SUB_CATEGORY_NAME: $("#sub_category_name").val(),
                     },
                     success: function (response) {
-                        window.console.log(response);
-                        // window.location.replace("/workspace#subcategory")
+                        window.location.replace("/workspace#subcategory")
                     },
                     error: function (reason) {
                         window.console.log(reason);
