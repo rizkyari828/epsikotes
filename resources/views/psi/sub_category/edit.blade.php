@@ -325,7 +325,7 @@
                         <div class="form-actions">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <button class="btn btn-primary" id="btnSaves">
+                                    <button class="btn btn-primary" id="button_save_sub_category">
                                         <i class="fa fa-save"></i>
                                         Save
                                     </button>
@@ -387,6 +387,12 @@
                 fetchSubCategoryDetail(sub_category_id, () => {
                     onReady();
                 })
+            })
+        });
+
+        $('#button_save_sub_category').on('click', function () {
+            saveCurrentQuestion(() => {
+                saveSubCategory();
             })
         });
 
@@ -1001,6 +1007,40 @@
             success: function (response) {
                 questions.push(response);
                 selectNextQuestion();
+            },
+            error: function (reason) {
+                window.console.log(reason);
+            },
+        });
+    }
+
+    function saveSubCategory() {
+        let lastQuestion = questions[questions.length - 1];
+        // save version
+        $.ajax({
+            type: "PUT",
+            url: "/rest/sub-category-version/" + lastQuestion.VERSION_ID,
+            data: {
+                DATE_FROM: $('#version_date_form').val(),
+                DATE_TO: $('#version_date_to').val(),
+                DESCRIPTION: $('#version_description').val(),
+                WORK_INSTRUCTION: $('#version_work_instruction').val(),
+                RANDOM_QUESTION: $('#version_random_question').val(),
+            },
+            success: function (response) {
+                $.ajax({
+                    type: "PUT",
+                    url: "/rest/sub-category/" + $("#sub_category_sub_category_id").val(),
+                    data: {
+                        SUB_CATEGORY_NAME: $("#sub_category_name").val(),
+                    },
+                    success: function (response) {
+                        window.location.replace("/workspace#subcategory")
+                    },
+                    error: function (reason) {
+                        window.console.log(reason);
+                    },
+                })
             },
             error: function (reason) {
                 window.console.log(reason);
