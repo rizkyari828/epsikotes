@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\PsiQuestion;
+use App\PsiSubCategory;
+use App\PsiSubCategoryVersion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
@@ -244,7 +247,7 @@ class SubCategoryController extends Controller
         return view('pages.SubCategoryView')
             ->with('getSubCat', $getSubCat)
             ->with('getQuestions', $getQuestions);
-    } 
+    }
 
     public function viewQuestion($id){
         $SubCategories = new SubCategory();
@@ -257,14 +260,14 @@ class SubCategoryController extends Controller
             ->with('subCat', $getSubCat)
             ->with('getQuestions', $getQuestions);
     }
-    public function getViewQuestion($id){ 
+    public function getViewQuestion($id){
         $kategori_id = $id;
-        $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID') ; 
-        $datas->join('que_questions','que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID'); 
+        $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID') ;
+        $datas->join('que_questions','que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID');
         $datas->where('que_sub_categories.SUB_CATEGORY_ID', '=', $kategori_id);
         $datas->orderBy('creation_date','DESC');
         $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION','que_questions.*']);
-        
+
         $result = [];
         foreach ($datas as $key=>$value){
             $duration = 0;
@@ -319,20 +322,20 @@ class SubCategoryController extends Controller
                 'is_example'=> $value['EXAMPLE'],
                 'is_actived'=> $value['IS_ACTIVED'],
                 'type_answer'=> $value['TYPE_ANSWER'],
-                'is_random_que'=> $value['RANDOM_QUESTION'] 
+                'is_random_que'=> $value['RANDOM_QUESTION']
             ];
             $vv = '';
         }
         return $result;
     }
     public function viewAnswer($id){
-       $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID') ; 
-        $datas->join('que_questions','que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID'); 
+       $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID') ;
+        $datas->join('que_questions','que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID');
         $datas->where('que_questions.QUESTION_ID', '=', $id);
         $datas->orderBy('creation_date','DESC');
         $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION','que_questions.*'])->toArray();
 
-      
+
         return view('pages.SubCategoryAnswerListView')
             ->with('subCat', $datas[0]);
             // ->with('getQuestions', $getQuestions);
@@ -342,34 +345,34 @@ class SubCategoryController extends Controller
         $type_answer = $type_answer;
         $result = [];
         if($type_answer == "MULTIPLE_CHOICE"){
-            $datas = DB::table('que_ans_choices')->where('QUESTION_ID', '=', $question_id)->get(); 
-            
-            foreach ($datas as $key=>$value){  
+            $datas = DB::table('que_ans_choices')->where('QUESTION_ID', '=', $question_id)->get();
+
+            foreach ($datas as $key=>$value){
                 $result['data'][] =[
                     'CHOICE_TEXT' => $value->CHOICE_TEXT,
                     'CHOICE_IMG' => $value->CHOICE_IMG,
-                    'CORRECT_ANSWER' => $value->CORRECT_ANSWER 
-                ]; 
+                    'CORRECT_ANSWER' => $value->CORRECT_ANSWER
+                ];
             }
         }elseif($type_answer == "TEXT_SERIES"){
-            $datas = DB::table('que_ans_text_series')->where('QUESTION_ID', '=', $question_id)->get(); 
-            
-            foreach ($datas as $key=>$value){  
-                $result['data'][] =[ 
-                    'CORRECT_TEXT' => $value->CORRECT_TEXT 
-                ]; 
+            $datas = DB::table('que_ans_text_series')->where('QUESTION_ID', '=', $question_id)->get();
+
+            foreach ($datas as $key=>$value){
+                $result['data'][] =[
+                    'CORRECT_TEXT' => $value->CORRECT_TEXT
+                ];
             }
         }elseif($type_answer == "MULTIPLE_GROUP"){
-            $datas = DB::table('que_ans_group')->where('QUESTION_ID', '=', $question_id)->get(); 
-            
-            foreach ($datas as $key=>$value){  
-                $result['data'][] =[ 
-                    'IMG_SEQUENCE' => $value->IMG_SEQUENCE, 
-                    'GROUP_IMG' => $value->GROUP_IMG 
-                ]; 
+            $datas = DB::table('que_ans_group')->where('QUESTION_ID', '=', $question_id)->get();
+
+            foreach ($datas as $key=>$value){
+                $result['data'][] =[
+                    'IMG_SEQUENCE' => $value->IMG_SEQUENCE,
+                    'GROUP_IMG' => $value->GROUP_IMG
+                ];
             }
         }
-        
+
         return $result;
     }
 
@@ -397,7 +400,7 @@ class SubCategoryController extends Controller
         // $ansMultipleChoice2 = array();
         // foreach ($getQuestions as $key => $value) {
         //     if($value->type_answer === 'MULTIPLE_CHOICE'){
-        //         for ($i=0; $i < count($getAnsChoices); $i++) { 
+        //         for ($i=0; $i < count($getAnsChoices); $i++) {
         //             foreach ($getAnsChoices[$i] as $keys => $values) {
         //                 if($values->question_id == $value->question_id){
         //                     $arrAns = [$key,$values->choice_text,$values->choice_img,$values->correct_answer,$value->question_id];
@@ -424,13 +427,49 @@ class SubCategoryController extends Controller
             ->with('narations', $getNar);
     }
 
-    public function addSubCategory(){
+    public function addSubCategory() {
+        $psiSubCategory = new PsiSubCategory();
+        $psiSubCategory->fill([
+            'SUB_CATEGORY_NAME' => '',
+            'CREATED_BY' => 'CMS.ADMIN',
+            'LAST_UPDATED_BY' => 'CMS.ADMIN'
+        ]);
+        $psiSubCategory->save();
+
+        $psiSubCategoryVersion = new PsiSubCategoryVersion();
+        $psiSubCategoryVersion->fill([
+            'SUB_CATEGORY_ID' => $psiSubCategory->SUB_CATEGORY_ID,
+            'VERSION_NUMBER' => 1,
+            'DATE_FROM' => Carbon::now()->format('d-m-Y'),
+            'DATE_TO' => '31-12-4712',
+            'DESCRIPTION' => '',
+            'WORK_INSTRUCTION' => '',
+            'RANDOM_QUESTION' => 0,
+            'CREATED_BY' => 'CMS.ADMIN',
+            'LAST_UPDATED_BY' => 'CMS.ADMIN',
+        ]);
+        $psiSubCategoryVersion->save();
+
+        $psiQuestion = new PsiQuestion();
+        $psiQuestion->fill([
+            'VERSION_ID' => $psiSubCategoryVersion->VERSION_ID,
+            'IS_ACTIVED' => 0,
+            'DURATION_PER_QUE' => 0,
+            'EXAMPLE' => 0,
+            'RANDOM_CHARACTER' => 0,
+            'RANDOM_ANSWER' => 0,
+        ]);
+        $psiQuestion->save();
+
+        return view('psi.sub_category.create', ['data' => $psiSubCategory]);
+
+
         $catFrom = Carbon::tomorrow()->format('d-m-Y');
         $catTo = '31-12-4712';
         $arrDate = array('from' => $catFrom, 'to' => $catTo);
         $subCat =  DB::table('que_sub_categories')
-        ->join('que_sub_category_versions','que_sub_categories.sub_category_id','=','que_sub_category_versions.sub_category_id') 
-        // ->whereRaw('date(sysdate()) between que_sub_category_versions.date_from and que_sub_category_versions.date_to')  
+        ->join('que_sub_category_versions','que_sub_categories.sub_category_id','=','que_sub_category_versions.sub_category_id')
+        // ->whereRaw('date(sysdate()) between que_sub_category_versions.date_from and que_sub_category_versions.date_to')
         ->get();
         $Narrations = new Narrations();
         $getNar = $Narrations->getAllNarations();
@@ -472,7 +511,7 @@ class SubCategoryController extends Controller
         $quesLists = json_decode($request->queLists, true);
         //dd($quesLists);
 
-     
+
         // var_dump($quesLists);
         $ansMultChoices = json_decode($request->ansMultipleChoice, true);
         $ansTextSeries = json_decode($request->ansTextSeries, true);
@@ -484,7 +523,7 @@ class SubCategoryController extends Controller
         $paramInsertSubCategory['created_by'] = $username;
         $paramInsertSubCategory['last_updated_by'] = $username;
         $idSubCategory = $SubCategories->insertSubCategory($paramInsertSubCategory);
-        
+
         if(!$idSubCategory)
             $result = false;
 
@@ -515,10 +554,10 @@ class SubCategoryController extends Controller
         }
 
 
-        
+
         //INSERT QUESTIONS
         $queSequence = 0;
-        for ($i=0; $i < count($quesLists) ; $i++) { 
+        for ($i=0; $i < count($quesLists) ; $i++) {
             $queSequence++;
             if($quesLists[$i][6] === ""){
                 $narraId = 0;
@@ -534,7 +573,7 @@ class SubCategoryController extends Controller
             }else{
                 $queChar = $quesLists[$i][11];
             }
-            
+
             $paramInsertQuestion['version_id'] = $versionIdSubCategory;
             $paramInsertQuestion['question_sequence'] = $queSequence;
             $paramInsertQuestion['type_sub_category'] = $quesLists[$i][0];
@@ -562,13 +601,13 @@ class SubCategoryController extends Controller
             // INSERT ANSWER
             if($quesLists[$i][9] === 'MULTIPLE_CHOICE'){
                 $indexChoices = array();
-                for ($j=0; $j < count($ansMultChoices); $j++) { 
+                for ($j=0; $j < count($ansMultChoices); $j++) {
                     if($ansMultChoices[$j][0] == $i){
                         $indexChoices[] = $j;
                     }
                 }
                 $ansSeq = 0;
-                for ($k=0; $k < count($indexChoices); $k++) { 
+                for ($k=0; $k < count($indexChoices); $k++) {
                     $indx = $indexChoices[$k];
                     $ansSeq++;
                     $paramInsertMultChoice['question_id'] = $QuestionId;
@@ -590,7 +629,7 @@ class SubCategoryController extends Controller
                 }
             }else if($quesLists[$i][9] === 'TEXT_SERIES'){
                 $ansSeq=0;
-                for ($j=0; $j < count($ansTextSeries); $j++) { 
+                for ($j=0; $j < count($ansTextSeries); $j++) {
                     if($ansTextSeries[$j][0] == $i){
                         $ansSeq++;
                         $paramInsertTxtSeries['question_id'] = $QuestionId;
@@ -607,11 +646,11 @@ class SubCategoryController extends Controller
                 }
             }else if($quesLists[$i][9] === 'MULTIPLE_GROUP'){
                 $indexChoices = array();
-                for ($j=0; $j < count($ansMultGroups); $j++) { 
+                for ($j=0; $j < count($ansMultGroups); $j++) {
                     if($ansMultGroups[$j][0] == $i)
                         $indexChoices[] = $j;
                 }
-                for ($k=0; $k < count($indexChoices); $k++) { 
+                for ($k=0; $k < count($indexChoices); $k++) {
                     $indx = $indexChoices[$k];
                     $paramInsertMultGroup['question_id'] = $QuestionId;
                     $paramInsertMultGroup['img_sequence'] = $ansMultGroups[$indx][1];
@@ -651,7 +690,7 @@ class SubCategoryController extends Controller
         $futureVersion = $getVersionNumber->version_number + 1;
 
         $result = true;
-        
+
         if($catRand)
             $catRand = 1;
         else
@@ -664,7 +703,7 @@ class SubCategoryController extends Controller
         $quesLists = json_decode($request->queLists, true);
         //dd($quesLists);
 
-     
+
         var_dump($quesLists);
         $ansMultChoices = json_decode($request->ansMultipleChoice, true);
         $ansTextSeries = json_decode($request->ansTextSeries, true);
@@ -676,7 +715,7 @@ class SubCategoryController extends Controller
         $paramUpdateSubCategoryVersion['date_to'] = $endDate;
         $paramUpdateSubCategoryVersion['last_update_by'] = $username;
         $paramUpdateSubCategoryVersion['last_update_date'] = $catFrom;
-    
+
         $versionIdSubCategory = $SubCategories->updateSubCategoryVersion($paramUpdateSubCategoryVersion);
         if(!$versionIdSubCategory){
             $paramInsertSubCategoryVersion['sub_category_id'] = $idSubCategory;
@@ -704,10 +743,10 @@ class SubCategoryController extends Controller
                 $result = false;
             }
         }
-        
+
         //UPDATE QUESTIONS
         $queSequence = 0;
-        for ($i=0; $i < count($quesLists) ; $i++) { 
+        for ($i=0; $i < count($quesLists) ; $i++) {
             $queSequence++;
             if($quesLists[$i][6] === ""){
                 $narraId = 0;
@@ -748,13 +787,13 @@ class SubCategoryController extends Controller
             // UPDATE ANSWER
             if($quesLists[$i][9] === 'MULTIPLE_CHOICE'){
                 $indexChoices = array();
-                for ($j=0; $j < count($ansMultChoices); $j++) { 
+                for ($j=0; $j < count($ansMultChoices); $j++) {
                     if($ansMultChoices[$j][0] == $i){
                         $indexChoices[] = $j;
                     }
                 }
                 $ansSeq = 0;
-                for ($k=0; $k < count($indexChoices); $k++) { 
+                for ($k=0; $k < count($indexChoices); $k++) {
                     $indx = $indexChoices[$k];
                     $ansSeq++;
                     $paramInsertMultChoice['question_id'] = $QuestionId;
@@ -776,7 +815,7 @@ class SubCategoryController extends Controller
                 }
             }else if($quesLists[$i][9] === 'TEXT_SERIES'){
                 $ansSeq=0;
-                for ($j=0; $j < count($ansTextSeries); $j++) { 
+                for ($j=0; $j < count($ansTextSeries); $j++) {
                     if($ansTextSeries[$j][0] == $i){
                         $ansSeq++;
                         $paramInsertTxtSeries['question_id'] = $QuestionId;
@@ -793,11 +832,11 @@ class SubCategoryController extends Controller
                 }
             }else if($quesLists[$i][9] === 'MULTIPLE_GROUP'){
                 $indexChoices = array();
-                for ($j=0; $j < count($ansMultGroups); $j++) { 
+                for ($j=0; $j < count($ansMultGroups); $j++) {
                     if($ansMultGroups[$j][0] == $i)
                         $indexChoices[] = $j;
                 }
-                for ($k=0; $k < count($indexChoices); $k++) { 
+                for ($k=0; $k < count($indexChoices); $k++) {
                     $indx = $indexChoices[$k];
                     $paramInsertMultGroup['question_id'] = $QuestionId;
                     $paramInsertMultGroup['img_sequence'] = $ansMultGroups[$indx][1];

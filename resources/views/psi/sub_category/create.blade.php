@@ -37,7 +37,7 @@
                                     <div class="form-group">
                                         <label class="col-md-2 control-label">Sub Category Name</label>
                                         <div class="col-md-10">
-                                            <input id="names" name="subCateName" class="form-control"
+                                            <input id="sub_category_name" name="subCateName" class="form-control"
                                                    placeholder="Sub Category Name" type="text" list="sub_category_name_datalist"
                                                    autocomplete="off" value="{{$data->SUB_CATEGORY_NAME}}">
                                             <datalist id="sub_category_name_datalist"></datalist>
@@ -45,7 +45,7 @@
                                                 Category Must be Filled</label>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="subCatId" id="subCateId"
+                                    <input type="hidden" name="subCatId" id="sub_category_sub_category_id"
                                            value="{{$data->SUB_CATEGORY_ID}}">
                                     <div class="form-group">
                                         <label class="col-md-2 control-label">Description *</label>
@@ -779,10 +779,6 @@
 
     function displayVersions(versions) {
         let versionsNode = $('#versions')
-        versions.forEach(function (version, _) {
-            versionsNode
-                .append('<option value="' + version.VERSION_ID + '">' + version.VERSION_NUMBER + '</option>');
-        });
         versionsNode.append('<option value="New">New</option>');
     }
 
