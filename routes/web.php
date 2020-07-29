@@ -65,6 +65,7 @@ Route::post('/getCategories', 'Norma\NormaPage@categories');
 Route::post('/getCategoriesAll', 'Norma\NormaPage@allCategories');
 Route::post('/normasetupProcess', 'Norma\NormaAddPage@processNorma');
 Route::get('/normaview/{normaId}', 'Norma\NormaAddPage@index');
+Route::post('/normadelete/{normaId}', 'Norma\NormaAddPage@delete');
 Route::post('/getNormaVersion', 'Norma\NormaAddPage@getNormaByVersion');
 /*end route Norma Setup*/
 

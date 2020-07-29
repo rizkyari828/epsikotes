@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Categories;
 use App\Model\Lookup;
 use App\Model\Norma;
+use Illuminate\Support\Facades\DB;
 
 
 class NormaAddPage extends Controller
@@ -94,6 +95,29 @@ class NormaAddPage extends Controller
         return view('pages.NormaPageAdd',$param);
     }
 
+    public function delete(Request $request, $normaId)
+    {
+        $norma_version_ids = DB::table('psy_norma_versions')
+            ->where('NORMA_ID', $normaId)
+            ->get('VERSION_ID')
+            ->map(function ($norma) {
+                return $norma->VERSION_ID;
+            });
+        DB::table('psy_norma_score')
+            ->whereIn('VERSION_ID', $norma_version_ids)
+            ->delete();
+        DB::table('psy_norma_aspect')
+            ->whereIn('VERSION_ID', $norma_version_ids)
+            ->delete();
+        DB::table('psy_norma_versions')
+            ->whereIn('VERSION_ID', $norma_version_ids)
+            ->delete();
+        DB::table('psy_norma')
+            ->where('NORMA_ID', $normaId)
+            ->delete();
+        return response()->json(['status' => 'OK']);
+    }
+
     public function getNormaByVersion(){
 
             $normaId = \Request::input('normaId');
@@ -157,15 +181,15 @@ class NormaAddPage extends Controller
 
         /*insert psy_norma*/
         if(($param['version_number'] == 'New') && ($param['NORMA_ID'] == null) ){
-          
-           
+
+
             $paramInsert['CATEGORY_ID'] = $param['category_id'];
             $paramInsert['CREATED_BY'] = $request->session()->get('user.username');
             $paramInsert['CREATION_DATE'] = date("Y-m-d h:i:s");
             $paramInsert['LAST_UPDATED_BY'] = $request->session()->get('user.username');
             $paramInsert['LAST_UPDATE_DATE'] = date("Y-m-d h:i:s");
 
-            $idNorma = $norma->insertNorma($paramInsert); 
+            $idNorma = $norma->insertNorma($paramInsert);
 
             $paramInsertNormaVersion['NORMA_ID'] = $idNorma;
             $paramInsertNormaVersion['VERSION_NUMBER'] = 1;
@@ -206,7 +230,7 @@ class NormaAddPage extends Controller
             $paramFilter['isPast'] = $isPast->isEmpty() ? 0 : 1;
             $paramFilter['isCurrent'] = $isCurrent->isEmpty() ? 0 : 1;
 
-            if(($param['version_number'] == 'New') &&  $paramFilter['isCurrent']){ 
+            if(($param['version_number'] == 'New') &&  $paramFilter['isCurrent']){
 
                 $paramFilter['normaId'] = $param['NORMA_ID'];
                 $paramFilter['versionNumber'] = $maxVersionNumber[0]->version_number;
@@ -215,7 +239,7 @@ class NormaAddPage extends Controller
                 $paramFilter['value']['LAST_UPDATE_DATE'] =  date("Y-m-d h:i:s");
 
                 $norma->updateVersionActive($paramFilter);
-                
+
 
                 $paramInsertNormaVersion['NORMA_ID'] = $param['NORMA_ID'];
                 $paramInsertNormaVersion['VERSION_NUMBER'] = $maxVersionNumber[0]->version_number + 1;
@@ -248,7 +272,7 @@ class NormaAddPage extends Controller
                 }
             }else{
                 $paramFilter['normaId'] = $param['NORMA_ID'];
-                $paramFilter['versionNumber'] = $param['version_number']; 
+                $paramFilter['versionNumber'] = $param['version_number'];
 
                 $dataNorma = $norma->getNormaVersion($paramFilter);
                 $paramFilter['value']['DATE_TO'] =  $param['date_to'];
@@ -257,7 +281,7 @@ class NormaAddPage extends Controller
                 $paramFilter['value']['LAST_UPDATED_BY'] =  $request->session()->get('user.username');
                 $paramFilter['value']['LAST_UPDATE_DATE'] =  date("Y-m-d h:i:s");
 
-                $norma->updateVersionActive($paramFilter); 
+                $norma->updateVersionActive($paramFilter);
                  // echo $dataNorma[0]->VERSION_ID;
                  // die()
                 $norma->deleteNormaScore($dataNorma[0]->VERSION_ID);
@@ -273,7 +297,7 @@ class NormaAddPage extends Controller
                 foreach ($param['PSYCHOGRAM_ASPECT'] as $key => $value) {
                     $paramInsertNormaAspect['VERSION_ID'] = $dataNorma[0]->VERSION_ID;
                     $paramInsertNormaAspect['PSYCHOGRAM_ASPECT'] = $param['PSYCHOGRAM_ASPECT'][$key];
-                    $paramInsertNormaAspect['DEFINITION'] = (!empty($param['DEFINITION'][$key]))?$param['DEFINITION'][$key]:""; 
+                    $paramInsertNormaAspect['DEFINITION'] = (!empty($param['DEFINITION'][$key]))?$param['DEFINITION'][$key]:"";
                     $norma->insertNormaAspect($paramInsertNormaAspect);
                 }
 
@@ -281,7 +305,7 @@ class NormaAddPage extends Controller
 
         }
         return redirect('/workspace#normasetup');
-        
+
     }
 
     public function getNormaSetup($normaId){
@@ -296,7 +320,7 @@ class NormaAddPage extends Controller
         $paramFilter['isPast'] = $isPast->isEmpty() ? 0 : 1;
         $paramFilter['isCurrent'] = $isCurrent->isEmpty() ? 0 : 1;
         $paramFilter['countNorma'] = $norma->getVersionNumber($paramFilter)->count();
-     
+
         $valeInput = array();
         foreach ($norma->getAllNorma($paramFilter) as $indexNorma => $rowNorma ){
             $valeInput['NORMA_ID'] = $rowNorma->NORMA_ID;
@@ -314,7 +338,7 @@ class NormaAddPage extends Controller
         $versionNumber = '';
 
 
-        
+
         foreach ($norma->getVersionNumber($paramFilter) as $indexNorma => $rowNorma ){
             if($paramFilter['countNorma'] == 1 ){
                 $versionNumber .= '<option value="'.$rowNorma->VERSION_NUMBER.'" selected>'.$rowNorma->VERSION_NUMBER.'</option>';
@@ -322,8 +346,8 @@ class NormaAddPage extends Controller
                     $versionNumber .= '<option value=New>New</option>';
                 }
             }else{
-               
-                if($paramFilter['isFuture'] && ($maxVersionNumber[0]->version_number == $rowNorma->VERSION_NUMBER)){ 
+
+                if($paramFilter['isFuture'] && ($maxVersionNumber[0]->version_number == $rowNorma->VERSION_NUMBER)){
 
                     $versionNumber .= '<option value="'.$rowNorma->VERSION_NUMBER.'" selected>'.$rowNorma->VERSION_NUMBER.'</option>';
 
@@ -347,7 +371,7 @@ class NormaAddPage extends Controller
         }
         $valeInput['VERSION_NUMBER'] = $versionNumber;
         $valeInput['VERSION_NUMBER_LIST']= $versionNumberList;
-       
+
         return $valeInput;
     }
 
@@ -357,7 +381,7 @@ class NormaAddPage extends Controller
         $paramFilter['normaId'] = $paramFilter['normaId'];
         $paramFilter['versionNumber'] = $paramFilter['versionNumber'];
         $paramFilter['countNorma'] = $norma->getVersionNumber($paramFilter)->count();
-     
+
         $valeInput = array();
         foreach ($norma->getNormaVersion($paramFilter) as $indexNorma => $rowNorma ){
             $valeInput['NORMA_ID'] = $rowNorma->NORMA_ID;
@@ -373,7 +397,7 @@ class NormaAddPage extends Controller
 
         $versionNumberList = array();
         $versionNumber = '';
-       
+
         return $valeInput;
     }
 
@@ -402,7 +426,7 @@ class NormaAddPage extends Controller
         foreach ($norma->getNormaScore($paramFilter) as $indexNorma => $rowNorma ){
 
             $rowTable .= '<tr>';
-            $rowTable .='<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label></td>';    
+            $rowTable .='<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label></td>';
             $rowTable .='<td><label class="input"><input type="text" value="'.$rowNorma->RAW_SCORE.'" name="raw_score[]" placeholder="Raw Score" '.$isDisable.'> </label></td>';
             $rowTable .='<td><label class="input"><input type="text" value="'.$rowNorma->STANDARD_SCORE.'" name="standard_score[]" placeholder="Standard Score" '.$isDisable.'> </label></td>';
              $rowTable .= '<td><label class="select"><select name="PSYCHOGRAM_ASPECT_RAW[]" '.$isDisable.'>';
@@ -444,7 +468,7 @@ class NormaAddPage extends Controller
         }
 
 
-        
+
 
         $index = 1;
 
@@ -496,7 +520,7 @@ class NormaAddPage extends Controller
         foreach ($norma->getNormaAspect($paramFilter) as $indexNorma => $rowNorma ){
 
             $rowTable .= '<tr>';
-            $rowTable .='<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label></td>';    
+            $rowTable .='<td><label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label></td>';
              $rowTable .= '<td><label class="select"><select name="PSYCHOGRAM_ASPECT[]" '.$isDisable.'>';
                 foreach ($lookup  as $key => $value) {
                     if($value == $rowNorma->PSYCHOGRAM_ASPECT){

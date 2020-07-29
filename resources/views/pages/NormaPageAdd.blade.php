@@ -97,7 +97,7 @@
                                 Norma Test
                             </header>
                             <fieldset>
-                                
+
                                 <div class="row">
                                     <section class="col col-12">
                                         <div class="product-content product-wrap clearfix product-deatil padding">
@@ -123,18 +123,18 @@
 
                                             <div class="row">
                                                 <section class="col col-11">
-                                                    <label class="button bg-color-green"> 
+                                                    <label class="button bg-color-green">
                                                         <button id="add-row-normatest" class="btn bg-color-green txt-color-white score-add-row"> Add Row
                                                         <i class="fa fa-plus"></i>
                                                     </label>
-                                                 </section> 
+                                                 </section>
 
                                                  <section class="col col-11">
-                                                    <label class="button bg-color-red"> 
+                                                    <label class="button bg-color-red">
                                                         <button id="delete-row-normatest" class="btn bg-color-red txt-color-white score-delete-row"> Delete Row
                                                         <i class="fa fa-minus"></i>
                                                     </label>
-                                                 </section> 
+                                                 </section>
                                             </div>
                                         </div>
                                     </section>
@@ -144,7 +144,7 @@
                                 Aspect Definition
                             </header>
                             <fieldset>
-                                
+
                                 <div class="row">
                                     <section class="col col-12">
                                         <div class="product-content product-wrap clearfix product-deatil padding">
@@ -168,22 +168,22 @@
                                             </table>
                                             <div class="row">
                                                 <section class="col col-11">
-                                                    <label class="button bg-color-green"> 
+                                                    <label class="button bg-color-green">
                                                         <button id="add-row-aspect-definition" class="btn bg-color-green txt-color-white aspect-add-row"> Add Row
                                                         <i class="fa fa-plus"></i>
                                                     </label>
-                                                 </section> 
+                                                 </section>
 
                                                  <section class="col col-11">
-                                                    <label class="button bg-color-red"> 
+                                                    <label class="button bg-color-red">
                                                         <button id="delete-row-aspect-definition" class="btn bg-color-red txt-color-white aspect-delete-row"> Delete Row
                                                         <i class="fa fa-minus"></i>
                                                     </label>
-                                                 </section> 
+                                                 </section>
                                              </div>
                                         </div>
                                     </section>
-                                   
+
                                 </div>
                             </fieldset>
                             <footer>
@@ -193,6 +193,12 @@
                                     <i class='fa fa-save'></i>&nbsp;
                                     Submit
                                 </button>
+                                @if($valeInput['NORMA_ID'] != null)
+                                <button type="button" class="btn btn-danger" onclick="removeNorma()">
+                                    <i class='fa fa-trash'></i>&nbsp;
+                                    Delete
+                                </button>
+                                @endif
                                  <a class="btn btn-default" id="normasetup" href="#normasetup">
                                     <i class="fa fa-chevron-left"></i>&nbsp;
                                     Cancel
@@ -348,12 +354,12 @@
                         "<'row'<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>>",
                     "oLanguage": {
                         "sSearch": '<label class="input"><i class="icon-append fa fa-search"></i></label>'
-                    },  
+                    },
                     "autoWidth" : true
                 });
 
         var counter = 1;
-     
+
         $('#add-row-normatest').on( 'click', function (e) {
              e.preventDefault();
 
@@ -363,7 +369,7 @@
                 '<label class="input"><input type="text" name="standard_score[]" placeholder="Standard Score"> </label>',
                 '{!!$aspectNameRawScoreList!!}'
             ] ).draw( false );
-     
+
             counter++;
         });
 
@@ -374,7 +380,7 @@
             .remove()
             .draw();
         });
-        
+
 
         var table_aspect = $('#table-aspect-definition').DataTable({
                     "sDom": "<'row'<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>>"+
@@ -382,12 +388,12 @@
                         "<'row'<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>>",
                     "oLanguage": {
                         "sSearch": '<label class="input"><i class="icon-append fa fa-search"></i></label>'
-                    },  
+                    },
                     "autoWidth" : true
                 });
 
         var counter = 1;
-     
+
         $('#add-row-aspect-definition').on( 'click', function (e) {
              e.preventDefault();
             table_aspect.row.add( [
@@ -395,7 +401,7 @@
                 '{!!$aspectNameSelect!!}',
                 '<label class="textarea"><textarea rows="5" name="DEFINITION[]" placeholder="Definition"></textarea></label>'
             ] ).draw( false );
-     
+
             counter++;
         });
 
@@ -408,7 +414,7 @@
         });
 
        //Start versions
-        
+
         $('.version_number').on('change', function(e) {
             e.preventDefault();
 
@@ -468,11 +474,11 @@
                         val.PSYCHOGRAM_ASPECT,
                         '<label class="textarea"><textarea rows="5" name="DEFINITION[]" placeholder="Definition">'+val.DEFINITION+'</textarea></label>'
                     ] ).draw( false );
-                }); 
+                });
 
             });
 
-            
+
         });
 
         function validateNormaSetupForm() {
@@ -487,6 +493,21 @@
                 }
                 return false;
             }
+        }
+
+        function removeNorma() {
+            $.ajax({
+                type: "POST",
+                url : "normadelete/" + $('input[name="NORMA_ID"]').val(),
+                dataType : "json",
+                data : {
+                    _token : $('input[name="_token"]').val(),
+                },
+                success : function(data) {
+                    window.console.log(data);
+                    window.location.reload();
+                },
+            });
         }
 
         //End
