@@ -33,6 +33,17 @@ class Categories extends Model
 
     }
 
+    public function getallCategory2($categoryName){
+        $categories = DB::table('que_categories')
+            ->join('que_category_versions','que_category_versions.category_id','=','que_categories.category_id')
+            ->whereRaw('upper(que_categories.category_name) like upper(\'%'.$categoryName.'%\')')
+            ->select('que_categories.category_name','que_categories.category_id','que_categories.last_updated_by','que_categories.last_update_date')
+            ->get();
+
+        return $categories;
+
+    }
+
     public function getDetailCategory($paramFilter){
                 $dateSysdate = date("Y-m-d");
 
@@ -77,7 +88,7 @@ class Categories extends Model
                 }
             }
         }
-        
+
         $data = $categories->select('que_categories.CATEGORY_ID','que_categories.CATEGORY_NAME','que_category_versions.VERSION_ID','que_category_versions.VERSION_NUMBER','que_category_versions.DATE_FROM','que_category_versions.DATE_TO','que_category_versions.DESCRIPTION','que_category_versions.RANDOM_SUB_CATEGORY','que_category_versions.GET_ONE_SUB_CATEGORY')
         ->get();
         return $data;
@@ -103,7 +114,7 @@ class Categories extends Model
                 }
             }
         }
-        
+
         $data = $categories->select('que_categories.CATEGORY_ID','que_categories.CATEGORY_NAME','que_category_versions.VERSION_ID','que_category_versions.VERSION_NUMBER','que_category_versions.DATE_FROM','que_category_versions.DATE_TO','que_category_versions.DESCRIPTION','que_category_versions.RANDOM_SUB_CATEGORY','que_category_versions.GET_ONE_SUB_CATEGORY')
         ->get();
         return $data;
@@ -157,7 +168,7 @@ class Categories extends Model
         }
 
         /*
-        $categories = DB::select('select 
+        $categories = DB::select('select
                             DISTINCT
                             que_categories.category_id,
                             que_categories.category_name,
@@ -182,8 +193,8 @@ class Categories extends Model
 
                          ');
                          */
-        $categories = DB::select(' 
-                         select 
+        $categories = DB::select('
+                         select
                             que_categories.category_id,
                             que_categories.category_name,
                             que_category_versions.RANDOM_SUB_CATEGORY,
@@ -196,7 +207,7 @@ class Categories extends Model
                             que_category_versions.last_update_date
                         from   que_categories
                         left join que_category_versions on que_categories.category_id = que_category_versions.category_id
-                        '.$where.'  
+                        '.$where.'
                         order by  que_category_versions.last_update_date desc
                      ');
 
@@ -284,13 +295,13 @@ class Categories extends Model
         return $isFuture;
 
     }
-       
+
 
 
     public function getCurrentCategory($CategoryId){
         $dateSysdate = date("Y-m-d");
         $isFuture = DB::table('psi.que_category_versions')
-        ->where('category_id','=',$CategoryId)        
+        ->where('category_id','=',$CategoryId)
         ->whereRaw('date(sysdate()) between que_category_versions.date_from and que_category_versions.date_to')
         ->select(DB::raw('CASE WHEN category_id is not null THEN 1 ELSE 0 END as IS_FUTURE'))
         ->get();
@@ -300,7 +311,7 @@ class Categories extends Model
     public function getCurrentCategoryForProcess($CategoryId,$versionNumber){
         $dateSysdate = date("Y-m-d");
         $isFuture = DB::table('psi.que_category_versions')
-        ->where('category_id','=',$CategoryId)        
+        ->where('category_id','=',$CategoryId)
         ->where('version_number','=',$versionNumber)
         ->whereRaw('date(sysdate()) between que_category_versions.date_from and que_category_versions.date_to')
         ->select(DB::raw('CASE WHEN category_id is not null THEN 1 ELSE 0 END as IS_FUTURE'))
@@ -375,7 +386,7 @@ class Categories extends Model
     }
 
     public function updateVersionActive($paramFilter){
-        DB::table('psi.que_category_versions') 
+        DB::table('psi.que_category_versions')
         ->where('category_id','=',$paramFilter['categoryId'])
         ->where('version_number','=',$paramFilter['versionNumber'])
         ->update($paramFilter['value']);
