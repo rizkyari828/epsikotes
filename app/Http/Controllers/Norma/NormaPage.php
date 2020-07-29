@@ -19,7 +19,7 @@ class NormaPage extends Controller
      */
     public function index(Request $request)
     {
-        
+
         return view('pages.NormaPageInquiry');
     }
 
@@ -32,7 +32,7 @@ class NormaPage extends Controller
         $records = array();
 
 
-        foreach ($Categories->getCategory($subCategoryName) as $indexCategory => $rowCategory ){
+        foreach ($Categories->getallCategory2($subCategoryName) as $indexCategory => $rowCategory ){
             $records['data_rows'][] = array('catagoryName'=>$rowCategory->category_name,'categoryId' => $rowCategory->category_id  );
 
 
