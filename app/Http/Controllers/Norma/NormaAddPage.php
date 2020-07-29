@@ -67,10 +67,8 @@ class NormaAddPage extends Controller
                 $isDisablePast = 'disabled';
                 $isDisable = 'disabled';
             }else if($paramFilter['isFuture']){
-                $isDisable = 'disabled';
-            }
-
-
+                // $isDisable = 'disabled';
+            } 
         }
 
 

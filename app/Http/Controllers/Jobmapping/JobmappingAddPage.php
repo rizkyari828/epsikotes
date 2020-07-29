@@ -75,10 +75,16 @@ class JobmappingAddPage extends Controller
             $valeInput += $jobmappingcategory;
             $valeInput += $jobprofile;
         }
+       
+        $categoryProfile = $this->buildCategoryProfileScore($isDisablePast, $isDisableCurrent,$isDisable); 
 
-         $categoryProfile = $this->buildCategoryProfileScore($isDisablePast, $isDisableCurrent,$isDisable);
-
-
+        $categoryProfile['INDUCTIVEREASONING'] = (isset($categoryProfile['INDUCTIVEREASONING']))?$categoryProfile['INDUCTIVEREASONING']:"";
+        $categoryProfile['DEDUCTIVEREASONING'] = (isset($categoryProfile['DEDUCTIVEREASONING']))?$categoryProfile['DEDUCTIVEREASONING']:"";
+        $categoryProfile['READINGCOMPREHENSION'] = (isset($categoryProfile['READINGCOMPREHENSION']))?$categoryProfile['READINGCOMPREHENSION']:"";
+        $categoryProfile['ARITHMETICABILITY'] = (isset($categoryProfile['ARITHMETICABILITY']))?$categoryProfile['ARITHMETICABILITY']:"";
+        $categoryProfile['SPATIALABILITY'] = (isset($categoryProfile['SPATIALABILITY']))?$categoryProfile['SPATIALABILITY']:"";
+        $categoryProfile['MEMORY'] = (isset($categoryProfile['MEMORY']))?$categoryProfile['MEMORY']:"";
+       
 
         $param = array('INDUCTIVEREASONING'=>$categoryProfile['INDUCTIVEREASONING'],'DEDUCTIVEREASONING'=>$categoryProfile['DEDUCTIVEREASONING'],'READINGCOMPREHENSION'=>$categoryProfile['READINGCOMPREHENSION'],'ARITHMETICABILITY'=>$categoryProfile['ARITHMETICABILITY'],'SPATIALABILITY'=>$categoryProfile['SPATIALABILITY'],'MEMORY'=>$categoryProfile['MEMORY'],'valeInput'=>$valeInput,'isDisableCurrent'=>$isDisableCurrent,'isDisable'=>$isDisable,'isDisablePast'=>$isDisablePast,'jobMappingId'=>$jobMappingId);
 
@@ -107,7 +113,7 @@ class JobmappingAddPage extends Controller
 
     public function buildCategoryProfileScore($isDisablePast = '',$isDisableCurrent='',$isDisable=''){
 
-         $Categories = new Categories();
+        $Categories = new Categories();
         $records = array();
 
         $jobMappingCategoryScoreList = array();

@@ -396,22 +396,7 @@ class SubCategoryController extends Controller
                 $getAns = $Questions->getAnsTextSeriesByQuestionId($value->QUESTION_ID);
                 array_push($getAnsTextSeries, $getAns);
             }
-        }
-        // $ansMultipleChoice2 = array();
-        // foreach ($getQuestions as $key => $value) {
-        //     if($value->type_answer === 'MULTIPLE_CHOICE'){
-        //         for ($i=0; $i < count($getAnsChoices); $i++) {
-        //             foreach ($getAnsChoices[$i] as $keys => $values) {
-        //                 if($values->question_id == $value->question_id){
-        //                     $arrAns = [$key,$values->choice_text,$values->choice_img,$values->correct_answer,$value->question_id];
-        //                     array_push($ansMultipleChoice2, $arrAns);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        // print_r($getQuestions);
-        // exit();
+        } 
 
         $subCat = SubCategory::all();
         $Narrations = new Narrations();
@@ -461,7 +446,7 @@ class SubCategoryController extends Controller
         ]);
         $psiQuestion->save();
 
-        return view('psi.sub_category.create', ['data' => $psiSubCategory]);
+        // return view('psi.sub_category.create', ['data' => $psiSubCategory]);
 
 
         $catFrom = Carbon::tomorrow()->format('d-m-Y');
