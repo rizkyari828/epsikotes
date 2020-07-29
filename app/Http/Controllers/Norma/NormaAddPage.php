@@ -69,7 +69,7 @@ class NormaAddPage extends Controller
                 $isDisable = 'disabled';
             }else if($paramFilter['isFuture']){
                 // $isDisable = 'disabled';
-            } 
+            }
         }
 
 
@@ -346,10 +346,7 @@ class NormaAddPage extends Controller
             }else{
 
                 if($paramFilter['isFuture'] && ($maxVersionNumber[0]->version_number == $rowNorma->VERSION_NUMBER)){
-
                     $versionNumber .= '<option value="'.$rowNorma->VERSION_NUMBER.'" selected>'.$rowNorma->VERSION_NUMBER.'</option>';
-
-                    $versionNumber .= '<option value=New>New</option>';
                 }else if($paramFilter['isCurrent'] && ($maxVersionNumber[0]->version_number == $rowNorma->VERSION_NUMBER)){
                     $versionNumber .= '<option value="'.$rowNorma->VERSION_NUMBER.'" selected>'.$rowNorma->VERSION_NUMBER.'</option>';
                     $versionNumber .= '<option value=New>New</option>';
