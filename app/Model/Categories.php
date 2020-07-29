@@ -38,6 +38,7 @@ class Categories extends Model
             ->join('que_category_versions','que_category_versions.category_id','=','que_categories.category_id')
             ->whereRaw('upper(que_categories.category_name) like upper(\'%'.$categoryName.'%\')')
             ->select('que_categories.category_name','que_categories.category_id','que_categories.last_updated_by','que_categories.last_update_date')
+            ->distinct()
             ->get();
 
         return $categories;
