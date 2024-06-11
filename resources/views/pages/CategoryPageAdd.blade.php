@@ -85,7 +85,7 @@
                                             </div>
                                             <div class="col col-4">
                                                 <label class="input"> <i class="icon-append fa fa-calendar"></i>
-                                                    <input type="text" name="date_to" value="{{$valeInput['DATE_TO']}}" id="enddate" placeholder="To" {{$isDisableDateTo}}>
+                                                    <input type="text" name="date_to" value="{{$valeInput['DATE_TO']}}" id="enddate" placeholder="To" {{$isDisableBody}}>
                                                 </label>
                                             </div>
                                     </section>
@@ -200,6 +200,12 @@
                                     <i class='fa fa-save'></i>&nbsp;
                                     Submit
                                 </button>
+                                @if($valeInput['CATEGORY_ID'] != null)
+                                <button type="button" class="btn btn-danger" onclick="removeCategory()">
+                                    <i class='fa fa-trash'></i>&nbsp;
+                                    Delete
+                                </button>
+                                @endif
                                  <a class="btn btn-default" id="normasetup" href="#categorysetup">
                                       <i class="fa fa-chevron-left"></i>&nbsp;
                                     Cancel
@@ -225,6 +231,20 @@
 
     <script type="text/javascript">
 
+        function removeCategory() {
+            $.ajax({
+                type: "POST",
+                url : "categorydelete/" + $('input[name="CATEGORY_ID"]').val(),
+                dataType : "json",
+                data : {
+                    _token : $('input[name="_token"]').val(),
+                },
+                success : function(data) {
+                    window.console.log(data);
+                    window.location.reload();
+                },
+            });
+        }
         $('#startdate').datepicker({
                 defaultDate: "+1d",
                 minDate:1,
@@ -578,7 +598,8 @@
                     var element = $(dataSubCategory[i]);
                     if(element.length > 0){ 
                         var id = element.find(".sub_category_id").val(); 
-                        if(id != ""){
+                        console.log(id);
+                        if(id != undefined && id != ""){
                             totalRowFilled++;
                         }
                         totalRow++; 
@@ -594,7 +615,7 @@
                     $(".alert").show();
                     return false;
                 }else{
-                    // console.log("LOLOS");
+                    console.log("LOLOS");
                    return true;
                 }
 

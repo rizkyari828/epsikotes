@@ -67,7 +67,7 @@ class JobmappingPage extends Controller
 
         foreach ($JobMapping->getAllJobMappingActive($paramFilters) as $indexJobMapping => $rowJobMapping ){
            
-            $records['data'][] = array('<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /><span></span></label>','<a href="jobMappingView/'.$rowJobMapping->JOB_MAPPING_ID.'">detail</a>',$rowJobMapping->NAME,$rowJobMapping->random_category = 1 ? 'Yes' : 'No',$rowJobMapping->last_update_date,$rowJobMapping->last_updated_by );
+            $records['data'][] = array('<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"><input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /><span></span></label>','<a href="jobMappingView/'.$rowJobMapping->JOB_MAPPING_ID.'">detail</a>',$rowJobMapping->NAME,$rowJobMapping->random_category == 1 ? 'Yes' : 'No',$rowJobMapping->last_update_date,$rowJobMapping->last_updated_by );
         }
 
         echo json_encode($records);

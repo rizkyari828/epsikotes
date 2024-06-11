@@ -119,6 +119,7 @@ class Jobmapping extends Model
          ->join('psi.que_category_versions','que_category_versions.category_id','=','que_categories.category_id')
          ->where('psy_job_category_list.version_id','=',$paramFilter['versionId'])
          ->select('que_categories.category_id','que_categories.category_name')
+          ->groupBy("que_category_versions.CATEGORY_ID")
          ->get();
 
          return $normaAspect;
@@ -136,11 +137,14 @@ class Jobmapping extends Model
 
     public function getJobProfileScore($paramFilter){
           $jobProfiles = DB::table('psi.psy_job_profile_score')
-             ->join('psi.que_categories','que_categories.category_id','=','psy_job_profile_score.category_id')
-             ->join('psi.que_category_versions','que_category_versions.category_id','=','que_categories.category_id')
-             ->where('psy_job_profile_score.job_profile_id','=',$paramFilter['jobProfileId'])
-             ->whereRaw('date(sysdate()) between que_category_versions.date_from and que_category_versions.date_to')
-             ->select('psy_job_profile_score.profile_score_id','psy_job_profile_score.job_profile_id','psy_job_profile_score.pass_score','que_categories.category_name','psy_job_profile_score.mandatory','que_categories.category_id')
+             ->join('psi.que_categories as q','q.category_id','=','psy_job_profile_score.category_id')
+             ->join('psi.que_category_versions','que_category_versions.category_id','=','q.category_id')
+             ->where('psy_job_profile_score.job_profile_id','=',$paramFilter['jobProfileId'])  
+    //          ->where("que_category_versions.version_id","="," (select MAX(que_category_versions.version_id) as VERSION_ID from que_category_versions  WHERE 
+    // que_category_versions.CATEGORY_ID = q.CATEGORY_ID group by que_category_versions.CATEGORY_ID)")
+             ->select('psy_job_profile_score.profile_score_id','psy_job_profile_score.job_profile_id','psy_job_profile_score.pass_score','q.category_name','psy_job_profile_score.mandatory','q.category_id')
+             ->groupBy("que_category_versions.CATEGORY_ID")
+             ->orderBy("psy_job_profile_score.profile_score_id")
              ->get();
          return $jobProfiles;
     }

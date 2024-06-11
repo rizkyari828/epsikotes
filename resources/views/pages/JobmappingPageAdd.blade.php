@@ -145,7 +145,7 @@
                                                     <tr role="row" class="heading">
                                                         <th width="1%">
                                                             <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" />
+                                                                <input type="checkbox" class="checkAllCategory" data-set="#sample_2 .checkboxes" />
                                                                 <span></span>
                                                             </label>
                                                         </th>
@@ -158,7 +158,7 @@
 
                                                 </tbody>
                                             </table>
-                                             <?php if(!$isDisable && !$isDisablePast && !$isDisableCurrent){?>
+                                             <?php if(!$isDisablePast && !$isDisableCurrent){?>
                                             <div class="row">
                                                 <section class="col col-11">
                                                     <label class="button bg-color-green"> 
@@ -193,7 +193,7 @@
                                                     <tr role="row" class="heading">
                                                         <th width="2%">
                                                             <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                                                <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" />
+                                                                <input type="checkbox" class="group-checkable checkAllJobProfile" data-set="#sample_2 .checkboxes" />
                                                                 <span></span>
                                                             </label>
                                                         </th>
@@ -213,7 +213,7 @@
 
                                                 </tbody>
                                             </table>
-                                            <?php if(!$isDisable && !$isDisablePast && !$isDisableCurrent){?>
+                                            <?php if(!$isDisablePast && !$isDisableCurrent){?>
                                             <div class="row">
                                                 <section class="col col-11">
                                                     <label class="button bg-color-green"> 
@@ -426,8 +426,7 @@
             var totalMandatory = 0; 
             for (var i = 0; i < scoreList.length; i++) {
                 var name = $(scoreList[i]).attr("name").replace(/pass_score/g,'mandatory');;
-                console.log($( "input[name*='"+name+"']:checked" ).length); 
-                console.log(name);
+                
                 var isChecked = $( "input[name*='"+name+"']:checked" ).length;
                 if(isChecked == 1){
 
@@ -444,8 +443,8 @@
             }  
         }
         $('#date_from').datepicker({
-                defaultDate: "+1d",
-                minDate:1,
+                defaultDate: "+0d",
+                minDate:0,
                 dateFormat : 'd-M-y',
                 prevText : '<i class="fa fa-chevron-left"></i>',
                 nextText : '<i class="fa fa-chevron-right"></i>',
@@ -484,7 +483,7 @@
         $('#add-row-categorylist').on( 'click', function (e) {
              e.preventDefault();
             table_categorylist.row.add( [
-                '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" name="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label>',
+                '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable checkSingleCategory" name="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label>',
                 '<label class="input"><input type="input" id="sub_category_name" class="sub_category_name" name="sub_category_name[]" placeholder="Category Name"><input type="hidden" name="category_id[]" class="category_id" id="category_id"> <i class="icon-append fa fa-search"></i></label>'
             ] ).draw( false );
 
@@ -519,12 +518,14 @@
             counter++;
         });
 
-        $('#delete-row-categorylist').on( 'click', function (e) {
-             e.preventDefault();
-            table_categorylist
-            .row( $('input:checkbox:checked').parents('tr') )
-            .remove()
-            .draw();
+        $('#delete-row-categorylist').on( 'click', function (e) { 
+            e.preventDefault();
+            $('.checkSingleCategory:checked').each(function () {
+               table_categorylist
+                .row($(this).parents('tr') )
+                .remove();
+            });
+            table_categorylist.draw();
         });
 
         var table_jobprofile = $('#table-job-profile').DataTable({
@@ -534,15 +535,63 @@
                     "oLanguage": {
                         "sSearch": '<label class="input"><i class="icon-append fa fa-search"></i></label>'
                     },  
+                    "pageLength": 100,
                     "autoWidth" : true
                 });
+        var jobMappingId = $("#jobMappingId").val();
+        var counter_job = 1;
+        console.log(jobMappingId.length);
+        if(jobMappingId > 0 ){
+            var counter_job = $('#table-job-profile > tbody > tr').length+1; 
+        }
 
-        var counter = 1;
-     
+        console.log("Counter Job : "+counter_job);
+        function replaceNameJob(){  
+             var scoreList =$("#"+counter_job).find('.pass_score');
+             for (var i = 0; i < scoreList.length; i++) {
+                var last_score = $(scoreList[i]).attr("name");
+                var current_score = last_score.slice(0,-1)+counter_job+"]";
+                $(scoreList[i]).attr("name",current_score); 
+             } 
+             var mandatoryList =$("#"+counter_job).find('.mandatory');
+             for (var i = 0; i < mandatoryList.length; i++) {
+                var last_mandatory = $(mandatoryList[i]).attr("name");
+                var current_mandatory = last_mandatory.slice(0,-1)+counter_job+"]";
+                $(mandatoryList[i]).attr("name",current_mandatory); 
+             } 
+        }
+
+
+        $('.pass_score').blur(function(e){
+            e.preventDefault(); 
+
+            /*
+            var pengurangUpah = $('#tempUpah').val();
+            var jmlupah = $('#JumlahUpah').val().replace(/\,/g,'');
+            var thisPengurang = parseInt(this.value.replace(/\,/g,''));
+            if(isNaN(thisPengurang)){
+              thisPengurang = 0;
+            }
+            var penambahUpah = thisPengurang - parseInt(pengurangUpah);
+            var totalupah =  parseInt(jmlupah) + penambahUpah;
+            console.log("total upah : "+totalupah);
+            $('#JumlahUpah').val(totalupah);
+            $('#tempUpah').val(0); */
+
+            var sum = 0;
+             $(this).parents('tr').find(".pass_score").each(function(){
+                  sum += +($(this).val().replace(/\,/g,''));
+              });
+            // console.log(sum);
+
+            $(this).parents('tr').find('.total_pass_score').val(sum);
+
+
+        });
         $('#add-row-jobprofile').on( 'click', function (e) {
              e.preventDefault();
             table_jobprofile.row.add( [
-                '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label>',
+                '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable checkSingleJobProfile" data-set="#sample_2 .checkboxes" /> <span></span> </label>',
                 '<label class="input"><input type="text" name="job_name[]" class="job_name" placeholder="Job Name"><input type="hidden" name="job_id[]" class="job_id" id="job_id"> <i class="icon-append fa fa-search"></i></label>',
                 '{!!$INDUCTIVEREASONING!!}',
                 '{!!$DEDUCTIVEREASONING!!}',
@@ -551,7 +600,10 @@
                 '{!!$SPATIALABILITY!!}',
                 '{!!$MEMORY!!}',
                 '<label class="input"><input type="text" readonly name="total_pass_score[]" id="total_pass_score" class="total_pass_score" placeholder=""> </label>',
-            ] ).draw( false );
+            ] ).node().id = counter_job;
+            table_jobprofile.draw( false );
+
+            replaceNameJob();
             $(".job_name").autocomplete({
                 source : function(request, response) {
                     $.ajax({
@@ -580,44 +632,45 @@
                 }
             });
 
-            $('.pass_score').blur(function(e){
-                e.preventDefault();
+              $('.pass_score').blur(function(e){
+            e.preventDefault(); 
 
-                /*
-                var pengurangUpah = $('#tempUpah').val();
-                var jmlupah = $('#JumlahUpah').val().replace(/\,/g,'');
-                var thisPengurang = parseInt(this.value.replace(/\,/g,''));
-                if(isNaN(thisPengurang)){
-                  thisPengurang = 0;
-                }
-                var penambahUpah = thisPengurang - parseInt(pengurangUpah);
-                var totalupah =  parseInt(jmlupah) + penambahUpah;
-                console.log("total upah : "+totalupah);
-                $('#JumlahUpah').val(totalupah);
-                $('#tempUpah').val(0); */
+            /*
+            var pengurangUpah = $('#tempUpah').val();
+            var jmlupah = $('#JumlahUpah').val().replace(/\,/g,'');
+            var thisPengurang = parseInt(this.value.replace(/\,/g,''));
+            if(isNaN(thisPengurang)){
+              thisPengurang = 0;
+            }
+            var penambahUpah = thisPengurang - parseInt(pengurangUpah);
+            var totalupah =  parseInt(jmlupah) + penambahUpah;
+            console.log("total upah : "+totalupah);
+            $('#JumlahUpah').val(totalupah);
+            $('#tempUpah').val(0); */
 
-                var sum = 0;
-                 $(this).parents('tr').find(".pass_score").each(function(){
-                      sum += +($(this).val().replace(/\,/g,''));
-                  });
-                // console.log(sum);
+            var sum = 0;
+             $(this).parents('tr').find(".pass_score").each(function(){
+                  sum += +($(this).val().replace(/\,/g,''));
+              });
+            // console.log(sum);
 
-                $(this).parents('tr').find('.total_pass_score').val(sum);
+            $(this).parents('tr').find('.total_pass_score').val(sum);
 
 
-            });
+        });
 
-            
-
-            counter++;
+            counter_job++;
         });
 
         $('#delete-row-jobprofile').on( 'click', function (e) {
-            e.preventDefault();
-            table_jobprofile
-            .row( $('input:checkbox:checked').parents('tr') )
-            .remove()
-            .draw();
+            e.preventDefault(); 
+
+            $('.checkSingleJobProfile:checked').each(function () {
+               table_jobprofile
+                .row($(this).parents('tr') )
+                .remove();
+            });
+            table_jobprofile.draw();
         });
 
         $("#general_instruction").autocomplete({
@@ -684,7 +737,67 @@
         });
 
         
+        $(".checkAllCategory").change(function() {
+            console.log("CHECK ALL");
+            if (this.checked) {
+                $(".checkSingleCategory").each(function() {
+                    this.checked=true;
+                });
+            } else {
+                $(".checkSingleCategory").each(function() {
+                    this.checked=false;
+                });
+            }
+        });
 
+        $(".checkSingleCategory").click(function () {
+            if ($(this).is(":checked")) {
+                var isAllChecked = 0;
+
+                $(".checkSingleCategory").each(function() {
+                    if (!this.checked)
+                        isAllChecked = 1;
+                });
+
+                if (isAllChecked == 0) {
+                    $(".checkAllCategory").prop("checked", true);
+                }     
+            }
+            else {
+                $(".checkAllCategory").prop("checked", false);
+            }
+        });
+        
+        $(".checkAllJobProfile").change(function() {
+            console.log("CHECK ALL");
+            if (this.checked) {
+                $(".checkSingleJobProfile").each(function() {
+                    this.checked=true;
+                });
+            } else {
+                $(".checkSingleJobProfile").each(function() {
+                    this.checked=false;
+                });
+            }
+        });
+
+        $(".checkSingleJobProfile").click(function () {
+            if ($(this).is(":checked")) {
+                var isAllChecked = 0;
+
+                $(".checkSingleJobProfile").each(function() {
+                    if (!this.checked)
+                        isAllChecked = 1;
+                });
+
+                if (isAllChecked == 0) {
+                    $(".checkAllJobProfile").prop("checked", true);
+                }     
+            }
+            else {
+                $(".checkAllJobProfile").prop("checked", false);
+            }
+        });
     
  
         

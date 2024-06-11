@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Peopleentermaintenance;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\PersonalInformations;
+use DB;
 
 
 class PeopleentermaintenancePage extends Controller
@@ -55,8 +56,16 @@ class PeopleentermaintenancePage extends Controller
 
     }
 
-    public function testBox(){
-                return view('pages.testbox');
+    public function testBox(Request $request){
+        //return view('pages.testbox');
+        $id   =  $request->applId;
+        if ($id <> ""){
+           $msg = "This is a simple message.";
+           return response()->json(array('msg'=> $msg), 200);
+        }
+        else{
+            return view('pages.Hapus');
+        }     
 
     }
 

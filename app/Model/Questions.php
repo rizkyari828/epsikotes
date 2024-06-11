@@ -78,5 +78,13 @@ class Questions extends Model
     public function updateQuestions($QueList){
             DB::table('psi.que_questions')->where('QUESTION_ID',$QueList['QUESTION_ID'])->update($QueList);
     }
+     public function getQuestionOnSubCategory($versionId){
 
+        $question = DB::table('que_questions')
+         ->join('que_narrations', 'que_narrations.NARRATION_ID', '=', 'que_questions.NARRATION_ID','LEFT')
+            ->where('que_questions.VERSION_ID', $versionId)
+            ->get();
+
+        return $question;
+    }
 }

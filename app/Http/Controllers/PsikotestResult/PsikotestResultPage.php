@@ -48,8 +48,8 @@ class PsikotestResultPage extends Controller
         $records2 = ScheduleHistories::select('mst_applicant.candidate_id','mst_applicant.full_name','mst_applicant.applicant_id','mst_applicant.ktp','psy_schedule_histories.test_status','psy_schedule_histories.plan_start_date','psy_schedule_histories.plan_end_date','psy_schedule_histories.actual_start_date','psy_schedule_histories.reschedule_seq','psy_schedule_histories.schedule_history_id')
             ->join("psy_schedules", 'psy_schedules.schedule_id', '=', 'psy_schedule_histories.schedule_id')
             ->join("mst_applicant", 'mst_applicant.candidate_id', '=', 'psy_schedules.candidate_id')
-            ->where('psy_schedule_histories.plan_start_date','<=',$dateNow)
-            ->where('psy_schedule_histories.plan_end_date','>=',$dateNow)
+            // ->where('psy_schedule_histories.plan_start_date','<=',$dateNow)
+            // ->where('psy_schedule_histories.plan_end_date','>=',$dateNow)
             ->distinct()->get();
 
         $records = array();
@@ -65,6 +65,12 @@ class PsikotestResultPage extends Controller
 
     public function getResultByParameter(Request $request){
         // $dateNow = date('Y-m-d', strtotime( '-5 days' ));
+        //$request->psi_result  
+        //$request->network
+        //$request->planDateFrom
+        //$request->planDateTo
+    //    print_r($request->network);
+    //     die();
         $dateNow = date('Y-m-d');
         $paramApplicantName = $request->full_name;
         $paramApplicantId = $request->applicant_id;
@@ -83,43 +89,66 @@ class PsikotestResultPage extends Controller
             $paramActualDateTo = date('Y-m-d', strtotime($request->startDateTo));
         $paramJobName = $request->jobName;
 
+        // $records2 = ScheduleHistories::select('mst_applicant.candidate_id','mst_applicant.full_name','mst_applicant.applicant_id','mst_applicant.ktp','psy_schedule_histories.test_status','psy_schedule_histories.plan_start_date','psy_schedule_histories.plan_end_date','psy_schedule_histories.actual_start_date','psy_schedule_histories.reschedule_seq','psy_schedule_histories.schedule_history_id')
+        //     ->join("psy_schedules", 'psy_schedules.schedule_id', '=', 'psy_schedule_histories.schedule_id')
+        //     ->join("mst_applicant", 'mst_applicant.candidate_id', '=', 'psy_schedules.candidate_id')
+        //     ->join("mst_city", 'mst_city.city', '=', 'mst_applicant.city')
+        //     ->join("mst_networks", 'mst_networks.network_id', '=', 'mst_city.network_id')
+        //     ->join("psy_job_mapping_versions", 'psy_job_mapping_versions.job_mapping_id', '=', 'psy_schedule_histories.job_mapping_id');
+        //     $records2 = $records2->distinct()->get();
+
         $records2 = ScheduleHistories::select('mst_applicant.candidate_id','mst_applicant.full_name','mst_applicant.applicant_id','mst_applicant.ktp','psy_schedule_histories.test_status','psy_schedule_histories.plan_start_date','psy_schedule_histories.plan_end_date','psy_schedule_histories.actual_start_date','psy_schedule_histories.reschedule_seq','psy_schedule_histories.schedule_history_id')
             ->join("psy_schedules", 'psy_schedules.schedule_id', '=', 'psy_schedule_histories.schedule_id')
-            ->join("mst_applicant", 'mst_applicant.candidate_id', '=', 'psy_schedules.candidate_id')
-            ->join("mst_city", 'mst_city.city', '=', 'mst_applicant.city')
-            ->join("mst_networks", 'mst_networks.network_id', '=', 'mst_city.network_id')
-            ->join("psy_job_mapping_versions", 'psy_job_mapping_versions.job_mapping_id', '=', 'psy_schedule_histories.job_mapping_id');
-            if($paramApplicantName != null)
-                $records2->where('mst_applicant.full_name','like','%'.$paramApplicantName.'%');
-            if($paramApplicantId != null)
-                $records2->where('mst_applicant.applicant_id','=',$paramApplicantId);
-            if($paramKTP != null)
-                $records2->where('mst_applicant.ktp','=',$paramKTP);
+            ->join("mst_applicant", 'mst_applicant.candidate_id', '=', 'psy_schedules.candidate_id');
+            // ->where('psy_schedule_histories.plan_start_date','<=',$dateNow)
+            // ->where('psy_schedule_histories.plan_end_date','>=',$dateNow)
+            // ->join("mst_city", 'mst_city.city', '=', 'mst_applicant.city')
+            // ->join("mst_networks", 'mst_networks.network_id', '=', 'mst_city.network_id');
             if($paramPsiResult != null)
-                $records2->where('psy_schedule_histories.test_status','=',$paramPsiResult);
-            if($paramRecomendation != null){
-                $records2->join("psy_test_result", 'psy_test_result.schedule_id', '=', 'psy_schedules.schedule_id');
-                $records2->where('psy_test_result.recomendation_by_system','=',$paramRecomendation);
+               $records2->where('psy_schedule_histories.TEST_STATUS','=',$paramPsiResult);
+            if($request->planDateFrom){
+                $records2->where('psy_schedule_histories.PLAN_START_DATE','>=',$request->planDateFrom);
             }
-            if($request->planDateFrom)
-                $records2->where('psy_schedule_histories.plan_start_date','>=',$paramPlanDateFrom);
-            if($request->planDateTo)
-                $records2->where('psy_schedule_histories.plan_end_date','<=',$paramPlanDateTo);
-            if($request->startDateFrom)
-                $records2->whereDate('psy_schedule_histories.actual_start_date','>=',$paramActualDateFrom);
-            if($request->startDateTo)
-                $records2->whereDate('psy_schedule_histories.actual_start_date','<=',$paramActualDateTo);
-            if($paramLocation != null)
-                $records2->where('mst_applicant.city','=',$paramLocation);
-            if($paramNetwork != null)
-                $records2->where('mst_networks.network','=',$paramNetwork);
-            if($paramJobName != null){
-                $records2->join("psy_job_mappings", 'psy_job_mappings.job_mapping_id', '=', 'psy_job_mapping_versions.job_mapping_id');
-                $records2->where('psy_job_mappings.name','=',$paramJobName);
-            }
-        // $records2->groupBy('psy_schedule_histories.RESCHEDULE_SEQ');
+            if($request->planDateTo){
+                $records2->where('psy_schedule_histories.PLAN_END_DATE','<=',$request->planDateTo); 
+            }  
+            // if($paramNetwork != null){
+            //     $records2->where('mst_networks.NETWORK','=',$paramNetwork);
+            // }
+            $records2 = $records2->distinct()->get();  
 
-        $records2 = $records2->distinct()->get();
+          
+            // if($paramApplicantName != null)
+            //     $records2->where('mst_applicant.full_name','like','%'.$paramApplicantName.'%');
+            // if($paramApplicantId != null)
+            //     $records2->where('mst_applicant.applicant_id','=',$paramApplicantId);
+            // if($paramKTP != null)
+            //     $records2->where('mst_applicant.ktp','=',$paramKTP);
+            // if($paramPsiResult != null)
+            //     $records2->where('psy_schedule_histories.test_status','=',$paramPsiResult);
+            // if($paramRecomendation != null){
+            //     $records2->join("psy_test_result", 'psy_test_result.schedule_id', '=', 'psy_schedules.schedule_id');
+            //     $records2->where('psy_test_result.recomendation_by_system','=',$paramRecomendation);
+            // }
+            // if($request->planDateFrom)
+            //     $records2->where('psy_schedule_histories.plan_start_date','>=',$paramPlanDateFrom);
+            // if($request->planDateTo)
+            //     $records2->where('psy_schedule_histories.plan_end_date','<=',$paramPlanDateTo);
+            // if($request->startDateFrom)
+            //     $records2->whereDate('psy_schedule_histories.actual_start_date','>=',$paramActualDateFrom);
+            // if($request->startDateTo)
+            //     $records2->whereDate('psy_schedule_histories.actual_start_date','<=',$paramActualDateTo);
+            // if($paramLocation != null)
+            //     $records2->where('mst_applicant.city','=',$paramLocation);
+            // if($paramNetwork != null)
+            //     $records2->where('mst_networks.network','=',$paramNetwork);
+            // if($paramJobName != null){
+            //     $records2->join("psy_job_mappings", 'psy_job_mappings.job_mapping_id', '=', 'psy_job_mapping_versions.job_mapping_id');
+            //     $records2->where('psy_job_mappings.name','=',$paramJobName);
+            // }
+      
+
+        //
 
 
         $records = array();
@@ -300,11 +329,13 @@ class PsikotestResultPage extends Controller
                 ->where('psy_job_profiles.job_id',$jobId)
                 ->where('psy_job_profile_score.category_id',$i)
                 ->first();
-
+            ;
             if($records){
                 $categoriesResult['standard'][] = $records->standard_score;
+                $categoriesResult['definition'][] = $this->getNormaDefinition($records->standard_score,$i);
             }else{
                 $categoriesResult['standard'][] = 0;
+                $categoriesResult['definition'][] = "";
             }
 
             if($records2){
@@ -312,7 +343,7 @@ class PsikotestResultPage extends Controller
             }else{
                 $categoriesResult['pass'][] = 0;
             }
-        }
+        } 
         $data[] = $name;
         $data[] = $jobname;
         $data[] = $recomendation;
@@ -330,5 +361,32 @@ class PsikotestResultPage extends Controller
           PDF::AddPage();
           PDF::writeHTML($html, true, false, true, false, '');
           PDF::Output($nama_file);
+    }
+
+
+    private function getNormaDefinition($standard_score,$category_id){
+        $definition = "";
+        $dataScore = DB::table('psy_norma')
+                ->join("psy_norma_versions", 'psy_norma_versions.NORMA_ID', '=', 'psy_norma.NORMA_ID')
+                ->join("psy_norma_score", 'psy_norma_score.VERSION_ID', '=', 'psy_norma_versions.VERSION_ID') 
+                ->where('psy_norma_score.STANDARD_SCORE',$standard_score)
+                ->where('psy_norma.CATEGORY_ID',$category_id) 
+                ->limit(1)
+                ->select('psy_norma_score.VERSION_ID','psy_norma_score.PSYCHOGRAM_ASPECT')->get()->toArray(); 
+
+        if(!empty($dataScore)){
+            $data = DB::table('psy_norma_aspect')
+                 
+                ->where('psy_norma_aspect.VERSION_ID',$dataScore[0]->VERSION_ID)
+                ->where('psy_norma_aspect.PSYCHOGRAM_ASPECT',$dataScore[0]->PSYCHOGRAM_ASPECT)  
+                ->select('psy_norma_aspect.DEFINITION')->get()->toArray(); 
+            if(!empty($data)){
+                $definition = $data[0]->DEFINITION;
+            }
+        }
+
+         return $definition;
+
+        
     }
 }

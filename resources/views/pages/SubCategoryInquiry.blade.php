@@ -24,6 +24,19 @@
 
                                     <!-- widget div-->
                                     <div>
+                                        @if(session()->has('result'))
+                                        @if(session()->get('result'))
+                                          <div class="alert alert-success alert-block">
+                                            <button type="button" class="close" data-dismiss="alert">×</button> 
+                                              <strong>{{ session()->get('msg') }}</strong>
+                                          </div>
+                                        @else
+                                         <div class="alert alert-danger alert-block">
+                                            <button type="button" class="close" data-dismiss="alert">×</button> 
+                                              <strong>{{ session()->get('msg') }}</strong>
+                                          </div>
+                                        @endif
+                                        @endif
 
                                         <!-- widget edit box -->
                                         <div class="jarviswidget-editbox">
@@ -200,7 +213,7 @@
                 {
                     "data": "sub_category_id",
                     "render": function (data, type, row) {
-                        let url = "workspace#psi/sub-category/" + data + "/edit"
+                        let url = "workspace#editsubcategory/" + data;
                         return "<a onClick=\"window.location='" + url + "';\">Edit</a> | <a href=\"workspace#viewQuestion/" + data + "\">View Question</a>";
                         // return "<span onClick=\"window.location='" + url + "';\">Edit</span> | <a href=\"workspace#viewQuestion/" + data + "'>View Question</a>";
                     }

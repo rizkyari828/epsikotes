@@ -37,7 +37,7 @@
                                             Category Must be Filled</label>
                                     </div>
                                 </div>
-                                <input type="hidden" name="subCatId" id="subCateId"
+                                <input type="hidden" name="subCateId" id="subCateId"
                                        value="{{$getSubCat->SUB_CATEGORY_ID}}">
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Description *</label>

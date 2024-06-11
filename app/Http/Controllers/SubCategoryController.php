@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\DB;
 class SubCategoryController extends Controller
 {
     function index(){
+        Session::forget('result');
+        Session::forget('msg');
         return view('pages.SubCategoryInquiry');
     }
 
@@ -46,17 +48,21 @@ class SubCategoryController extends Controller
             $datas->join('que_questions','que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID');
             $datas->where('que_questions.QUESTION_TEXT', 'like', '%' . $question . '%');
         }
+        // $data->group_by("sub_category_id");
+
+
         $datas->orderBy('creation_date','DESC');
-        $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION']);
+        $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION','que_sub_category_versions.LAST_UPDATE_DATE']);
         $result = array();
-        $result['data'] = array();
+        $result['data'] = array();  
         foreach ($datas as $key=>$value){
+            $new_version = $this->findCurrentVersion($value['SUB_CATEGORY_ID']);
             $duration = 0;
             //GET DURATION DATA
             $countDurra = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
             ->join('que_questions', 'que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID')
             ->where('que_sub_categories.SUB_CATEGORY_ID', '=', $value['SUB_CATEGORY_ID'])
-            ->where('que_sub_category_versions.VERSION_NUMBER', '=', 1)
+            ->where('que_sub_category_versions.VERSION_NUMBER', '=', $new_version)
             ->where('que_questions.IS_ACTIVED', '=',1)
             ->where('que_questions.EXAMPLE', '=',0)
             ->orderBy('que_sub_categories.CREATION_DATE')
@@ -72,7 +78,7 @@ class SubCategoryController extends Controller
              $countActive= SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
             ->join('que_questions', 'que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID')
             ->where('que_sub_categories.SUB_CATEGORY_ID', '=', $value['SUB_CATEGORY_ID'])
-            ->where('que_sub_category_versions.VERSION_NUMBER', '=', 1)
+            ->where('que_sub_category_versions.VERSION_NUMBER', '=', $new_version)
             ->where('que_questions.IS_ACTIVED', '=',1)
             ->where('que_questions.EXAMPLE', '=',0)
             ->orderBy('que_sub_categories.CREATION_DATE')
@@ -84,7 +90,7 @@ class SubCategoryController extends Controller
             $countexample = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID')
             ->join('que_questions', 'que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID')
             ->where('que_sub_categories.SUB_CATEGORY_ID', '=', $value['SUB_CATEGORY_ID'])
-            ->where('que_sub_category_versions.VERSION_NUMBER', '=', 1)
+            ->where('que_sub_category_versions.VERSION_NUMBER', '=', $new_version)
             ->where('que_questions.EXAMPLE', '=',1)
             ->orderBy('que_sub_categories.CREATION_DATE')
             ->get([
@@ -105,8 +111,42 @@ class SubCategoryController extends Controller
                 'last_update_date' => $value['LAST_UPDATE_DATE']
             ];
             $vv = '';
+        }  
+        $final_result = $result['data'];
+        $newArray = array(); 
+        $final_array['data'] = array(); 
+        foreach ($final_result as $value) { 
+            if( !isset( $value[ $value["sub_category_id"] ] ) ) {
+                $final_array['data'] [ $value["sub_category_id"] ] = $value;
+                continue;
+            } else {
+                $time_1 = strtotime($final_array['data'] [$value["sub_category_id"]]["last_update_date"]);
+                $time_2 = strtotime($value["last_update_date"] );
+                if($time_1 < $time_2) {
+                    $final_array['data'] [$value["sub_category_id"] ]["last_update_date"] = $value["last_update_date"];
+                }
+            }
+        }   
+ 
+        $test['data'] = array();
+        foreach ($final_array['data'] as $key=>$value) {  
+            $test['data'][] = [
+                'sub_category_id' => $value['sub_category_id'],
+                'sub_category_name' => $value['sub_category_name'],
+                'total_example'=>$value['total_example'],
+                'total_que_active'=>$value['total_que_active'],
+                'total_duration'=>$value['total_duration'],
+                'is_random_que'=>$value['is_random_que'],
+                'created_by' => $value['created_by'],
+                'creation_date' => $value['creation_date'],
+                'last_updated_by' => $value['last_updated_by'],
+                'last_update_date' => $value['last_update_date']
+            ];
         }
-        return $result;
+        // print_r($result);
+        // print_r($final_array);
+        // die();
+        return $test;
     }
 
     function save(Request $request){
@@ -175,9 +215,7 @@ class SubCategoryController extends Controller
 
     function findCurrentVersion($id){
         $version = SubCategory::join('que_sub_category_versions','que_sub_category_versions.sub_category_id', '=', 'que_sub_categories.sub_category_id')
-        ->where('que_sub_categories.sub_category_id', '=', $id)
-        ->where('que_sub_category_versions.date_from', '<=', now())
-        ->where('que_sub_category_versions.date_to', '>=', now())
+        ->where('que_sub_categories.sub_category_id', '=', $id) 
         ->max('que_sub_category_versions.version_number');
 
         return $version;
@@ -262,11 +300,18 @@ class SubCategoryController extends Controller
     }
     public function getViewQuestion($id){
         $kategori_id = $id;
+
+        $version = SubCategory::join('que_sub_category_versions','que_sub_category_versions.sub_category_id', '=', 'que_sub_categories.sub_category_id')
+        ->where('que_sub_categories.sub_category_id', '=', $id) 
+        ->max('que_sub_category_versions.version_number');
+
+
         $datas = SubCategory::join('que_sub_category_versions','que_sub_category_versions.SUB_CATEGORY_ID', '=', 'que_sub_categories.SUB_CATEGORY_ID') ;
         $datas->join('que_questions','que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID');
         $datas->where('que_sub_categories.SUB_CATEGORY_ID', '=', $kategori_id);
+        $datas->where('que_sub_category_versions.version_number', '=', $version);
         $datas->orderBy('creation_date','DESC');
-        $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION','que_questions.*']);
+        $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION','que_sub_category_versions.VERSION_ID as versionIdSubCategory','que_questions.*']); 
 
         $result = [];
         foreach ($datas as $key=>$value){
@@ -310,19 +355,24 @@ class SubCategoryController extends Controller
                 'que_sub_categories.SUB_CATEGORY_ID',
                 'que_sub_categories.sub_category_name',
             ]);
+            if(!empty($value['QUESTION_IMG'])){
 
+                $img ="<img width='80px' src='".'uploads/question_url/'.$value['QUESTION_IMG']."'>";
+            }else{
+                $img =""; 
+            }
             $result['data'][] =[
                 'sub_category_id' => $value['SUB_CATEGORY_ID'],
                 'question_id' => $value['QUESTION_ID'],
                 'sub_category_name' => $value['SUB_CATEGORY_NAME'],
                 'question_text' => $value['QUESTION_TEXT'],
-                'question_image' => $value['QUESTION_IMAGE'],
+                'question_image' => $img,
                 'question_digit' => $value['QUESTION_SEQUENCE'],
-                'total_duration'=>$duration,
+                'total_duration'=>$value['DURATION_PER_QUE'],
                 'is_example'=> $value['EXAMPLE'],
                 'is_actived'=> $value['IS_ACTIVED'],
                 'type_answer'=> $value['TYPE_ANSWER'],
-                'is_random_que'=> $value['RANDOM_QUESTION']
+                'is_random_que'=> $value['RANDOM_ANSWER']
             ];
             $vv = '';
         }
@@ -333,7 +383,7 @@ class SubCategoryController extends Controller
         $datas->join('que_questions','que_questions.VERSION_ID', '=', 'que_sub_category_versions.VERSION_ID');
         $datas->where('que_questions.QUESTION_ID', '=', $id);
         $datas->orderBy('creation_date','DESC');
-        $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION','que_questions.*'])->toArray();
+        $datas = $datas->get(['que_sub_categories.*', 'que_sub_category_versions.RANDOM_QUESTION','que_sub_category_versions.VERSION_ID as versionIdSubCategory','que_questions.*'])->toArray();
 
 
         return view('pages.SubCategoryAnswerListView')
@@ -348,9 +398,13 @@ class SubCategoryController extends Controller
             $datas = DB::table('que_ans_choices')->where('QUESTION_ID', '=', $question_id)->get();
 
             foreach ($datas as $key=>$value){
+                $image = "";
+                if(!empty($value->CHOICE_IMG)){
+                    $image =  "<img width='80px' src='".'uploads/answer_url/'. $value->CHOICE_IMG."'>";
+                } 
                 $result['data'][] =[
                     'CHOICE_TEXT' => $value->CHOICE_TEXT,
-                    'CHOICE_IMG' => $value->CHOICE_IMG,
+                    'CHOICE_IMG' =>$image,
                     'CORRECT_ANSWER' => $value->CORRECT_ANSWER
                 ];
             }
@@ -376,470 +430,616 @@ class SubCategoryController extends Controller
         return $result;
     }
 
-     public function editSubCategory($id){
+    public function editSubCategory($id){
         $SubCategories = new SubCategory();
         $getSubCat = $SubCategories->getSubcategoryById($id);
-        $getVersionNumber = $SubCategories->getVersionNumber($id);
+        $getLastVersion = $SubCategories->getVersionNumberLast($id);  
+        $getVersionNumber = $SubCategories->getVersionNumber($id);  
         $Questions = new Questions();
-        $getQuestions = $Questions->getQuestionByVersionId2($getSubCat->VERSION_ID);
-        $getAnsChoices = array();
-        $getAnsGroup = array();
-        $getAnsTextSeries = array();
+        $getQuestions = $Questions->getQuestionOnSubCategory($getLastVersion->VERSION_ID);
+        
         foreach ($getQuestions as $key => $value) {
+            $value->answers = array();
             if($value->TYPE_ANSWER === 'MULTIPLE_CHOICE'){
-                $getAns = $Questions->getAnsChoicesByQuestionId($value->QUESTION_ID);
-                array_push($getAnsChoices, $getAns);
+                $value->answers = $Questions->getAnsChoicesByQuestionId($value->QUESTION_ID);
+                // array_push($getAnsChoices, $getAns);
             }elseif($value->TYPE_ANSWER === 'MULTIPLE_GROUP'){
-                $getAns = $Questions->getAnsGroupByQuestionId($value->QUESTION_ID);
-                array_push($getAnsGroup, $getAns);
+                $value->answers = $Questions->getAnsGroupByQuestionId($value->QUESTION_ID);
+ 
             }elseif($value->TYPE_ANSWER === 'TEXT_SERIES'){
-                $getAns = $Questions->getAnsTextSeriesByQuestionId($value->QUESTION_ID);
-                array_push($getAnsTextSeries, $getAns);
+                $value->answers = $Questions->getAnsTextSeriesByQuestionId($value->QUESTION_ID); 
             }
         } 
+ 
+        $subCat =  DB::table('que_sub_categories')
+        ->join('que_sub_category_versions','que_sub_categories.sub_category_id','=','que_sub_category_versions.sub_category_id') 
+        ->get();
+        
+        $temp_array = array(); 
+        $key_array = array(); 
+        foreach($subCat as $key=> $val) { 
+            if (!in_array($val->SUB_CATEGORY_ID,$key_array)) {
+                $key_array[$key] = $val->SUB_CATEGORY_ID;
+                $temp_array[$key] = $val;
+            } 
+        }  
 
-        $subCat = SubCategory::all();
         $Narrations = new Narrations();
         $getNar = $Narrations->getAllNarations();
-        return view('pages.SubCategoryEdit')
+        return view('pages.subcategory.edit')
             ->with('getSubCat', $getSubCat)
             ->with('getVersionNumber', $getVersionNumber)
-            ->with('getQuestions', $getQuestions)
-            ->with('getAnsChoices', $getAnsChoices)
-            ->with('getAnsGroup', $getAnsGroup)
-            ->with('getAnsTextSeries', $getAnsTextSeries)
-            ->with('subCat', $subCat)
+            ->with('getLastVersion', $getLastVersion)
+            ->with('getQuestions', $getQuestions) 
+            ->with('subCat', $temp_array)
             ->with('narations', $getNar);
     }
 
-    public function addSubCategory() {
-        $psiSubCategory = new PsiSubCategory();
-        $psiSubCategory->fill([
-            'SUB_CATEGORY_NAME' => '',
-            'CREATED_BY' => 'CMS.ADMIN',
-            'LAST_UPDATED_BY' => 'CMS.ADMIN'
-        ]);
-        $psiSubCategory->save();
+    public function checkNameSubCategory(Request $request){
+        $response = array();
+        $response['status'] = false;
+        $response['msg'] = "";
+        $response['data'] = array();
+        $subCateName = $request->subCateName;
+        $data = DB::table('que_sub_categories')->where("SUB_CATEGORY_NAME",$subCateName)->get();  
+        if(count($data) >= 1){
+            $response['msg'] = "Sub Category Name is Exist";
+        }else{
+            $response['status']  = true;
 
-        $psiSubCategoryVersion = new PsiSubCategoryVersion();
-        $psiSubCategoryVersion->fill([
-            'SUB_CATEGORY_ID' => $psiSubCategory->SUB_CATEGORY_ID,
-            'VERSION_NUMBER' => 1,
-            'DATE_FROM' => Carbon::now()->format('d-m-Y'),
-            'DATE_TO' => '31-12-4712',
-            'DESCRIPTION' => '',
-            'WORK_INSTRUCTION' => '',
-            'RANDOM_QUESTION' => 0,
-            'CREATED_BY' => 'CMS.ADMIN',
-            'LAST_UPDATED_BY' => 'CMS.ADMIN',
-        ]);
-        $psiSubCategoryVersion->save();
-
-        $psiQuestion = new PsiQuestion();
-        $psiQuestion->fill([
-            'VERSION_ID' => $psiSubCategoryVersion->VERSION_ID,
-            'IS_ACTIVED' => 0,
-            'DURATION_PER_QUE' => 0,
-            'EXAMPLE' => 0,
-            'RANDOM_CHARACTER' => 0,
-            'RANDOM_ANSWER' => 0,
-        ]);
-        $psiQuestion->save();
-
-        // return view('psi.sub_category.create', ['data' => $psiSubCategory]);
+            $response['msg'] = "Success Create SubCategory";
+        }
 
 
-        $catFrom = Carbon::tomorrow()->format('d-m-Y');
-        $catTo = '31-12-4712';
+        echo json_encode($response);
+    }
+
+    public function addSubCategory() { 
+        $catFrom = Carbon::tomorrow()->format('Y-m-d');
+        $catTo = '4712-12-31';
         $arrDate = array('from' => $catFrom, 'to' => $catTo);
         $subCat =  DB::table('que_sub_categories')
         ->join('que_sub_category_versions','que_sub_categories.sub_category_id','=','que_sub_category_versions.sub_category_id')
         // ->whereRaw('date(sysdate()) between que_sub_category_versions.date_from and que_sub_category_versions.date_to')
         ->get();
+        // echo "<pre>"; 
+
+        $temp_array = array(); 
+        $key_array = array();
+
+        foreach($subCat as $key=> $val) {
+            if (!in_array($val->SUB_CATEGORY_ID,$key_array)) {
+                $key_array[$key] = $val->SUB_CATEGORY_ID;
+                $temp_array[$key] = $val;
+            } 
+        } 
+        // print_r($subCat);
+        // print_r($temp_array);
+        // die();
         $Narrations = new Narrations();
         $getNar = $Narrations->getAllNarations();
-        return view('pages.SubCategoryForm')
-            ->with('subCat', $subCat)
+        return view('pages.subcategory.add')
+            ->with('subCat', $temp_array)
             ->with('narations', $getNar)
             ->with('arrDate', $arrDate);
     }
 
-    public function saveAddSubCategory(Request $request){
-        $SubCategories = new SubCategory();
+    public function saveAddSubCategory(Request $request){  
         $Questions = new Questions();
-        $username = Session::get('user.username');;
-        $catName = strtoupper($request->subCateName);
+        $username = Session::get('user.username');
+        $current = Carbon::now();
+        $current = new Carbon();
+        $result = true;
+        $paramInsertSubCategory = array();
+        $paramInsertSubCategoryVersion = array();
 
-        $prevSubCategory = SubCategory::query()
-            ->where('SUB_CATEGORY_NAME', $catName)
-            ->count();
+        $paramInsertSubCategory['sub_category_name'] = $request->subCateName;
+        $paramInsertSubCategory['CREATED_BY'] = $username;
+        $paramInsertSubCategory['LAST_UPDATED_BY'] = $username;
+        $paramInsertSubCategory['LAST_UPDATE_DATE'] = date('Y-m-d H:i:s');
+        DB::table('psi.que_sub_categories')->insert($paramInsertSubCategory);
+        $idSubCategory = DB::getPdo()->lastInsertId(); 
+        if(!$idSubCategory){
+            $result = false;
+        }  
 
-        if ($prevSubCategory > 0) {
-            return "Sub category name already exists!";
+         if($request->subCateRandom == "on"){
+            $request->subCateRandom = 1;
+        }else{
+            $request->subCateRandom = 0;
         }
 
-        $catDesc = $request->subCateDesc;
-        $catInst = $request->subCateInst;
-        $catRand = $request->subCateRandom;
-        $SubcatFrom = date('Y-m-d', strtotime($request->subDateFrom));
-        $SubcatTo = date('Y-m-d', strtotime($request->subDateTo));
-        $result = true;
-
-        if($catRand)
-            $catRand = 1;
-        else
-            $catRand = 0;
-        $catFrom = date('Y-m-d');
-        $catTo = '4712-12-31';
-
-
-        $quesLists = json_decode($request->queLists, true);
-        //dd($quesLists);
-
-
-        // var_dump($quesLists);
-        $ansMultChoices = json_decode($request->ansMultipleChoice, true);
-        $ansTextSeries = json_decode($request->ansTextSeries, true);
-        $ansMultGroups = json_decode($request->ansMultipleGroup, true);
-        // var_dump($quesLists);
-
-        // INSERT SUB CATEGORY
-        $paramInsertSubCategory['sub_category_name'] = $catName;
-        $paramInsertSubCategory['created_by'] = $username;
-        $paramInsertSubCategory['last_updated_by'] = $username;
-        $idSubCategory = $SubCategories->insertSubCategory($paramInsertSubCategory);
-
-        if(!$idSubCategory)
-            $result = false;
-
+        $defaultTo = '4712-12-31';
         // INSERT SUB CATEGORY VERSIONS
         $paramInsertSubCategoryVersion['sub_category_id'] = $idSubCategory;
         $paramInsertSubCategoryVersion['version_number'] = 1;
-        $paramInsertSubCategoryVersion['date_from'] = $SubcatFrom;
-        $paramInsertSubCategoryVersion['date_to'] = $catTo;
-        $paramInsertSubCategoryVersion['description'] = $catDesc;
-        $paramInsertSubCategoryVersion['work_instruction'] = $catInst;
-        $paramInsertSubCategoryVersion['random_question'] = $catRand;
+        $paramInsertSubCategoryVersion['date_from'] = $request->subDateFrom;
+        $paramInsertSubCategoryVersion['date_to'] = (!empty($request->subDateTo)?$request->subDateTo:$defaultTo);
+        $paramInsertSubCategoryVersion['description'] = $request->subCateDesc;
+        $paramInsertSubCategoryVersion['work_instruction'] = $request->workInst;
+        $paramInsertSubCategoryVersion['random_question'] = $request->subCateRandom;
         $paramInsertSubCategoryVersion['created_by'] = $username;
-        $paramInsertSubCategoryVersion['last_updated_by'] = $username;
+        $paramInsertSubCategoryVersion['last_updated_by'] = $username; 
+        $paramInsertSubCategoryVersion['LAST_UPDATE_DATE'] = date('Y-m-d H:i:s');
         if($idSubCategory){
-            $versionIdSubCategory = $SubCategories->insertSubCategoryVersion($paramInsertSubCategoryVersion);
-            if($versionIdSubCategory){
-                // $paramInsertSubCategoryList['version_id'] = $versionIdSubCategory;
-                // $paramInsertSubCategoryList['SUB_CATEGORY_SEQUENCE'] = 1;
-                // $paramInsertSubCategoryList['sub_category_id'] = $idSubCategory;
-                // $subCategoryList = $SubCategories->insertSubCategoryList($paramInsertSubCategoryList);
-                // if(!$subCategoryList){
-                //     $result = false;
-                // }
+            DB::table('psi.que_sub_category_versions')->insert($paramInsertSubCategoryVersion);
+
+            $versionIdSubCategory = DB::getPdo()->lastInsertId();
+            if($versionIdSubCategory){ 
                 $result = true;
             }else{
                 $result = false;
             }
-        }
+        } 
+        $questions = $request->listSubCat; 
+        $queSequence = 1; 
+        for ($i = 0; $i < count($questions) ; $i++) {
+            $paramInsertQuestion = array(); 
+            $isActive = (!empty($request->isActive[$i]))?$request->isActive[$i]:0;
+            if($isActive == "on"){
+                $isActive = 1;
+            }
+            $duration = (!empty($request->duration[$i]))?$request->duration[$i]:0;
+            $isExample = (!empty($request->isExample[$i]))?$request->isExample[$i]:0;
+ 
+            if($isExample === "on"){
+                $isExample = 1;
+            } 
+            $txtareaHint = (!empty($request->txtareaHint[$i]))?$request->txtareaHint[$i]:"";
+            $imgHint = (!empty($request->imgHint[$i]))?$request->imgHint[$i]:"";
+            if(!empty($imgHint)){  
+                $curDate = $current->year.
+                ''.$current->month.''.$current->day.''
+                .$current->hour.''.$current->minute.''.$current->second;
+                $file = $request->file('imgHint')[$i];
+               
+                $imageName = $curDate.'_hint'.'_'.$file->getClientOriginalName();
+                $imgHint = $imageName;
+                $file->move(public_path('uploads/question_url/'), $imageName);
+            } 
+            $txtAreaQue = (!empty($request->txtAreaQue[$i]))?$request->txtAreaQue[$i]:""; 
+            $imgQue = (!empty($request->imgQue[$i]))?$request->imgQue[$i]:""; 
+            if(!empty($imgQue)){  
+                $curDate = $current->year.
+                ''.$current->month.''.$current->day.''
+                .$current->hour.''.$current->minute.''.$current->second;
+                $file = $request->file('imgQue')[$i];
+               
+                $imageName = $curDate.'_img'.'_'.$file->getClientOriginalName();
+                $imgQue = $imageName;
+                $file->move(public_path('uploads/question_url/'), $imageName);
+            } 
 
+            $queCharacter = (!empty($request->queCharacter[$i]))?$request->queCharacter[$i]:"";  
 
+            $listTypeOfAnswer = (!empty($request->listTypeOfAnswer[$i]))?$request->listTypeOfAnswer[$i]:""; 
+           
+            $randomCha = 0;
+            $randomAnswer = 0;
+            if(!empty($request->randomCha[$i])){ 
+                if($request->randomCha[$i] == "on"){
+                    $randomCha = 1;
+                } 
+            }  
+            if(!empty($request->randomAnswer[$i])){ 
+                if($request->randomAnswer[$i] == "on"){
+                    $randomAnswer = 1;
+                } 
+            }
 
-        //INSERT QUESTIONS
-        $queSequence = 0;
-        for ($i=0; $i < count($quesLists) ; $i++) {
-            $queSequence++;
-            if($quesLists[$i][6] === ""){
+            if(!empty($request->naration_id[$i])){ 
+                $narrations = new Narrations(); 
+                $data_naration = $narrations->getNarrationsId($request->naration_id[$i]); 
+                $narraId = $data_naration[0];
+            }else{
                 $narraId = 0;
             }
-            else{
-                $Narrations = new Narrations();
-                $narId = $Narrations->getNarrationsId($quesLists[$i][6]);
-                $narraId = $narId[0];
-            }
-
-            if($quesLists[$i][11] === ""){
-                $queChar = 0;
-            }else{
-                $queChar = $quesLists[$i][11];
-            }
-
             $paramInsertQuestion['version_id'] = $versionIdSubCategory;
             $paramInsertQuestion['question_sequence'] = $queSequence;
-            $paramInsertQuestion['type_sub_category'] = $quesLists[$i][0];
-            $paramInsertQuestion['is_actived'] = $quesLists[$i][1];
-            $paramInsertQuestion['duration_per_que'] = $quesLists[$i][2];
-            $paramInsertQuestion['example'] = $quesLists[$i][3];
-            $paramInsertQuestion['hint_text'] = $quesLists[$i][4];
-            $paramInsertQuestion['hint_img'] = $quesLists[$i][5];
+            $paramInsertQuestion['type_sub_category'] = $questions[$i];
+            $paramInsertQuestion['is_actived'] = $isActive;
+            $paramInsertQuestion['duration_per_que'] = $duration;
+            $paramInsertQuestion['example'] = $isExample;
+            $paramInsertQuestion['hint_text'] = $txtareaHint;
+            $paramInsertQuestion['hint_img'] = $imgHint;
             $paramInsertQuestion['narration_id'] = $narraId;
-            $paramInsertQuestion['question_text'] = $quesLists[$i][7];
-            $paramInsertQuestion['question_img'] = $quesLists[$i][8];
-            $paramInsertQuestion['random_character'] = $quesLists[$i][12];
-            // $paramInsertQuestion['question_character'] = $queChar;
-            $paramInsertQuestion['question_character'] = 0;
-            $paramInsertQuestion['type_answer'] = $quesLists[$i][9];
-            $paramInsertQuestion['random_answer'] = $quesLists[$i][10];
-            // print_r($quesLists[$i][11]);
-            // exit();
+            $paramInsertQuestion['question_text'] = $txtAreaQue;
+            $paramInsertQuestion['question_img'] = $imgQue;
+            $paramInsertQuestion['random_character'] = $randomCha;
+            $paramInsertQuestion['question_character'] = $queCharacter; 
+            $paramInsertQuestion['type_answer'] = $listTypeOfAnswer;
+            $paramInsertQuestion['random_answer'] = $randomAnswer;  
+
             if($idSubCategory){
                 $QuestionId = $Questions->insertQuestions($paramInsertQuestion);
                 if(!$QuestionId){
                     $result = false;
                 }
             }
-            // INSERT ANSWER
-            if($quesLists[$i][9] === 'MULTIPLE_CHOICE'){
-                $indexChoices = array();
-                for ($j=0; $j < count($ansMultChoices); $j++) {
-                    if($ansMultChoices[$j][0] == $i){
-                        $indexChoices[] = $j;
-                    }
-                }
-                $ansSeq = 0;
-                for ($k=0; $k < count($indexChoices); $k++) {
-                    $indx = $indexChoices[$k];
-                    $ansSeq++;
+
+            if($request->listTypeOfAnswer[$i] == "MULTIPLE_CHOICE"){
+                $data_answer_text = $request->multChoiceTxt[$i];
+                $data_answer_img = !empty($request->multChoiceImg[$i])?$request->multChoiceImg[$i]:array();
+                $data_answer_correct = !empty($request->multChoiceCorrect[$i])?$request->multChoiceCorrect[$i]:array();  
+
+                $ansSeq = 1;
+                for ($j = 0; $j < count($data_answer_text); $j++) {
+                    $paramInsertMultChoice = [];
                     $paramInsertMultChoice['question_id'] = $QuestionId;
+                    if(!empty($data_answer_img)){ 
+                        $curDate = $current->year.
+                        ''.$current->month.''.$current->day.''
+                        .$current->hour.''.$current->minute.''.$current->second;
+                        if(!empty($data_answer_img[$j])){ 
+                            $file = $request->file('multChoiceImg')[$i][$j];
+                            $imageName = $curDate.$ansSeq.'_'.$file->getClientOriginalName(); 
+                            $file->move(public_path('uploads/answer_url/'), $imageName);
+                            $paramInsertMultChoice['choice_img'] = $imageName;
+                        }
+                       
+                        
+                    } 
+                    if(!empty($data_answer_correct[$j])){ 
+                        if($data_answer_correct[$j] == "on"){
+                            $correct = 1;
+                        }else{
+                            $correct = 0;
+                        }
+                    }else{
+                         $correct = 0;
+                    }
+                    
                     $paramInsertMultChoice['ans_sequence'] = $ansSeq;
-                    $paramInsertMultChoice['choice_text'] = $ansMultChoices[$indx][1];
-                    $paramInsertMultChoice['choice_img'] = $ansMultChoices[$indx][2];
-                    if($ansMultChoices[$indx][3] === true)
-                        $correct = 1;
-                    else
-                        $correct = 0;
-                    $paramInsertMultChoice['correct_answer'] = $correct;
+                    $paramInsertMultChoice['choice_text'] = $data_answer_text[$j]; 
+                    $paramInsertMultChoice['correct_answer'] = $correct; 
 
                     if($idSubCategory){
                         $ansChoiceId = $Questions->insertAnsMultChoice($paramInsertMultChoice);
-                        if(!$ansChoiceId){
-                            $result = false;
-                        }
                     }
+                    $ansSeq++;
                 }
-            }else if($quesLists[$i][9] === 'TEXT_SERIES'){
-                $ansSeq=0;
-                for ($j=0; $j < count($ansTextSeries); $j++) {
-                    if($ansTextSeries[$j][0] == $i){
-                        $ansSeq++;
+            }
+            if($request->listTypeOfAnswer[$i] == "TEXT_SERIES"){
+                if(!empty($request->txtSeriesChoices[$i])){
+                    $ansSeq = 1;
+
+                    $data_answer_text = $request->txtSeriesChoices[$i];
+                    for ($j = 0; $j < count($data_answer_text); $j++) {
                         $paramInsertTxtSeries['question_id'] = $QuestionId;
-                        $paramInsertTxtSeries['correct_text'] = $ansTextSeries[$j][1];
+                        $paramInsertTxtSeries['correct_text'] = $data_answer_text[$j];
                         $paramInsertTxtSeries['ans_sequence'] = $ansSeq;
 
-                        if($idSubCategory){
+                        if($idSubCategory){ 
                             $ansChoiceId = $Questions->insertAnsTxtSeries($paramInsertTxtSeries);
-                            if(!$ansChoiceId){
-                                $result = false;
-                            }
                         }
-                    }
+                        $ansSeq++;
+                    } 
                 }
-            }else if($quesLists[$i][9] === 'MULTIPLE_GROUP'){
-                $indexChoices = array();
-                for ($j=0; $j < count($ansMultGroups); $j++) {
-                    if($ansMultGroups[$j][0] == $i)
-                        $indexChoices[] = $j;
-                }
-                for ($k=0; $k < count($indexChoices); $k++) {
-                    $indx = $indexChoices[$k];
-                    $paramInsertMultGroup['question_id'] = $QuestionId;
-                    $paramInsertMultGroup['img_sequence'] = $ansMultGroups[$indx][1];
-                    $paramInsertMultGroup['group_img'] = $ansMultGroups[$indx][2];
-                    if($idSubCategory){
-                        $ansChoiceId = $Questions->insertAnsMultGroup($paramInsertMultGroup);
-                        if(!$ansChoiceId){
-                            $result = false;
+            } 
+            if($request->listTypeOfAnswer[$i] === 'MULTIPLE_GROUP'){
+                if(!empty($request->ansMultGroupImgSeq[$i])){
+                    $data_answer_seq = $request->ansMultGroupImgSeq[$i];
+                    $dataGroupImage = $request->ansMultGroupImg[$i];
+                    for ($j = 0; $j < count($data_answer_seq); $j++) { 
+
+                        $paramInsertMultGroup['question_id'] = $QuestionId;
+                        $paramInsertMultGroup['img_sequence'] = $data_answer_seq[$j];
+                        $paramInsertMultGroup['group_img'] = $dataGroupImage[$j];
+                        if($idSubCategory){
+                            $ansChoiceId = $Questions->insertAnsMultGroup($paramInsertMultGroup); 
                         }
                     }
                 }
             }
+            $queSequence++; 
+        }   
+        $msg ="";  
+        if($result){
+            $msg = 'Sub category has been successfully added!';
+        }else{
+            $msg =  'Failed to create a new sub category!';
         }
 
-        if($result)
-            return 'Sub category has been successfully added!';
-        else
-            return 'Failed to create a new sub category!';
+         
 
-        // return $result;
+
+        Session::put('result', $result);
+        Session::put('msg', $msg);
+        return redirect('/workspace#subcategory');
     }
 
     public function saveEditSubCategory(Request $request){
+        // ini_set('display_errors', 1);
+        // ini_set('display_startup_errors', 1);
+        // error_reporting(E_ALL);
+        // ini_set("max_input_vars",1000000);
+        // ini_set("max_file_uploads",50);
+        // echo "<pre>";
+        // echo "post_max_size :".ini_get("post_max_size");
+        // echo "<br>";
+        // echo "upload_max_filesize :".ini_get("upload_max_filesize");
+        // echo "<br>";
+        // echo "max_input_vars :".ini_get("max_input_vars");
+        // echo "<br>";
+        // echo "max_file_uploads :".ini_get("max_file_uploads");
+
+        // dd($request->all());  
         $SubCategories = new SubCategory();
-        $Questions = new Questions();
-        $username = Session::get('user.username');;
-        $catName = strtoupper($request->subCateName);
-        $catDesc = $request->subCateDesc;
-        $catInst = $request->subCateInst;
-        $catRand = $request->subCateRandom;
-        $catVersionId = $request->subVersionId;
-        $SubcatFrom = date('Y-m-d', strtotime($request->subDateFrom));
-        $SubcatTo = date('Y-m-d', strtotime($request->subDateTo));
-
         $idSubCategory = $request->subCateId;
+        
         $getVersionNumber = $SubCategories->getVersionNumberLast($idSubCategory);
-        $futureVersion = $getVersionNumber->version_number + 1;
+        $choose_version = $request->version;
+        $versionID =  $request->versionID;
 
+        $Questions = new Questions();
+        $username = Session::get('user.username');
+        $current = Carbon::now();
+        $current = new Carbon();
         $result = true;
+        $paramInsertSubCategory = array();
+        $paramInsertSubCategoryVersion = array();
 
-        if($catRand)
-            $catRand = 1;
-        else
-            $catRand = 0;
-        $catFrom = date('Y-m-d');
-        $endDate = date('Y-m-d', strtotime('-1 day', strtotime($SubcatFrom)));
-        $catTo = '4712-12-31';
-
-
-        $quesLists = json_decode($request->queLists, true);
-        //dd($quesLists);
-
-
-        var_dump($quesLists);
-        $ansMultChoices = json_decode($request->ansMultipleChoice, true);
-        $ansTextSeries = json_decode($request->ansTextSeries, true);
-        $ansMultGroups = json_decode($request->ansMultipleGroup, true);
-        // var_dump($quesLists);
-
-        // UPDATE SUB CATEGORY VERSIONS
-        $paramUpdateSubCategoryVersion['version_id'] = $getVersionNumber->version_id;
-        $paramUpdateSubCategoryVersion['date_to'] = $endDate;
-        $paramUpdateSubCategoryVersion['last_update_by'] = $username;
-        $paramUpdateSubCategoryVersion['last_update_date'] = $catFrom;
-
-        $versionIdSubCategory = $SubCategories->updateSubCategoryVersion($paramUpdateSubCategoryVersion);
-        if(!$versionIdSubCategory){
-            $paramInsertSubCategoryVersion['sub_category_id'] = $idSubCategory;
-            $paramInsertSubCategoryVersion['version_number'] = $futureVersion;
-            $paramInsertSubCategoryVersion['date_from'] = $SubcatFrom;
-            $paramInsertSubCategoryVersion['date_to'] = $catTo;
-            $paramInsertSubCategoryVersion['description'] = $catDesc;
-            $paramInsertSubCategoryVersion['work_instruction'] = $catInst;
-            $paramInsertSubCategoryVersion['random_question'] = $catRand;
-            $paramInsertSubCategoryVersion['created_by'] = $username;
-            $paramInsertSubCategoryVersion['creation_date'] = $catFrom;
-            $paramInsertSubCategoryVersion['last_update_by'] = $username;
-            $paramInsertSubCategoryVersion['last_update_date'] = $catFrom;
-            $InsertNewVersion = $SubCategories->insertSubCategoryVersion($paramInsertSubCategoryVersion);
-            if($InsertNewVersion){
-                // $paramInsertSubCategoryList['version_id'] = $InsertNewVersion;
-                // $paramInsertSubCategoryList['SUB_CATEGORY_SEQUENCE'] = 1;
-                // $paramInsertSubCategoryList['sub_category_id'] = $idSubCategory;
-                // $subCategoryList = $SubCategories->insertSubCategoryList($paramInsertSubCategoryList);
-                // if(!$subCategoryList){
-                //     $result = false;
-                // }
-                $result = true;
-            }else{
-                $result = false;
-            }
+        $paramInsertSubCategory['sub_category_name'] = $request->subCateName; 
+        $paramInsertSubCategory['LAST_UPDATED_BY'] = $username;
+        DB::table('psi.que_sub_categories')
+              ->where('sub_category_id', $idSubCategory)
+              ->update($paramInsertSubCategory); 
+        if($request->subCateRandom == "on"){
+            $request->subCateRandom = 1;
+        }else{
+            $request->subCateRandom = 0;
         }
+        // INSERT SUB CATEGORY VERSIONS
 
-        //UPDATE QUESTIONS
-        $queSequence = 0;
-        for ($i=0; $i < count($quesLists) ; $i++) {
-            $queSequence++;
-            if($quesLists[$i][6] === ""){
+        $defaultTo = '4712-12-31';
+        // INSERT SUB CATEGORY VERSIONS 
+        $paramInsertSubCategoryVersion['sub_category_id'] = $idSubCategory;
+        $paramInsertSubCategoryVersion['version_number'] = 1;
+        $paramInsertSubCategoryVersion['date_from'] = $request->subDateFrom;
+        $paramInsertSubCategoryVersion['date_to'] = (!empty($request->subDateTo)?$request->subDateTo:$defaultTo);
+        $paramInsertSubCategoryVersion['description'] = $request->subCateDesc;
+        $paramInsertSubCategoryVersion['work_instruction'] = $request->workInst;
+        $paramInsertSubCategoryVersion['random_question'] = $request->subCateRandom;
+        $paramInsertSubCategoryVersion['created_by'] = $username;
+        $paramInsertSubCategoryVersion['last_updated_by'] = $username;
+        if($idSubCategory){
+            if($choose_version == "New"){
+                $new_version = $this->findCurrentVersion($idSubCategory);
+
+                $paramInsertSubCategoryVersion['version_number'] = $new_version+1;
+
+                DB::table('psi.que_sub_category_versions')
+                ->insert($paramInsertSubCategoryVersion);
+
+                $versionID = DB::getPdo()->lastInsertId();
+                if($versionID){ 
+                    $result = true;
+                }else{
+                    $result = false;
+                }
+            }else{
+                DB::table('psi.que_sub_category_versions')
+                ->where('VERSION_ID', $versionID)
+                ->update($paramInsertSubCategoryVersion) ;
+ 
+                if($versionID){ 
+                    $result = true;
+                }else{
+                    $result = false;
+                } 
+            }
+           
+        } 
+        $questions = $request->listSubCat; 
+        // print_r($questions);
+        $queSequence = 1; 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('que_questions')->where('VERSION_ID', $versionID)->delete();
+        for ($i = 0; $i < count($questions) ; $i++) {
+            $paramInsertQuestion = array(); 
+            $isActive = (!empty($request->isActive[$i]))?$request->isActive[$i]:0;
+            if($isActive === "on"){
+                $isActive = 1;
+            }
+            $duration = (!empty($request->duration[$i]))?$request->duration[$i]:0;
+            $isExample = (!empty($request->isExample[$i]))?$request->isExample[$i]:0;
+
+            if($isExample === "on"){
+                $isExample = 1;
+            }
+            $txtareaHint = (!empty($request->txtareaHint[$i]))?$request->txtareaHint[$i]:"";
+            $imgHint = (!empty($request->imgHint[$i]))?$request->imgHint[$i]:"";
+            if(!empty($imgHint)){  
+                $curDate = $current->year.
+                ''.$current->month.''.$current->day.''
+                .$current->hour.''.$current->minute.''.$current->second;
+                $file = $request->file('imgHint')[$i];
+               
+                $imageName = $curDate.'_hint'.'_'.$file->getClientOriginalName();
+                $file->move(public_path('uploads/question_url/'), $imageName);
+                $imgHint = $imageName;
+            }else{
+                if($choose_version != "New"){
+                    $imgHint = $request->imgHintText[$i];
+                }
+            } 
+            $txtAreaQue = (!empty($request->txtAreaQue[$i]))?$request->txtAreaQue[$i]:""; 
+            $imgQue = (!empty($request->imgQue[$i]))?$request->imgQue[$i]:""; 
+           
+            if(!empty($imgQue)){  
+                $curDate = $current->year.
+                ''.$current->month.''.$current->day.''
+                .$current->hour.''.$current->minute.''.$current->second;
+                $file = $request->file('imgQue')[$i];
+               
+                $imageName = $curDate.'_img'.'_'.$file->getClientOriginalName();
+                $imgQue = $imageName;
+                $file->move(public_path('uploads/question_url/'), $imageName);
+            }else{
+                if($choose_version != "New"){
+                  
+                    $imgQue = $request->imgQueText[$i];
+                }
+            } 
+
+            $queCharacter = (!empty($request->queCharacter[$i]))?$request->queCharacter[$i]:"";  
+
+            $listTypeOfAnswer = (!empty($request->listTypeOfAnswer[$i]))?$request->listTypeOfAnswer[$i]:""; 
+           
+            $randomCha = 0;
+            $randomAnswer = 0;
+            if(!empty($request->randomCha[$i])){ 
+                if($request->randomCha[$i] == "on"){
+                    $randomCha = 1;
+                } 
+            }  
+            if(!empty($request->randomAnswer[$i])){ 
+                if($request->randomAnswer[$i] == "on"){
+                    $randomAnswer = 1;
+                } 
+            }
+
+            if(!empty($request->naration_id[$i])){ 
+                $narrations = new Narrations(); 
+                $data_naration = $narrations->getNarrationsId($request->naration_id[$i]); 
+                $narraId = $data_naration[0];
+            }else{
                 $narraId = 0;
             }
-            else{
-                $Narrations = new Narrations();
-                $narId = $Narrations->getNarrationsId($quesLists[$i][6]);
-                $narraId = $narId[0];
-            }
-            if($quesLists[$i][11] === ""){
-                $queChar = null;
-            }else{
-                $queChar = $quesLists[$i][11];
-            }
-
-            // $paramInsertQuestion['question_id'] = $quesLists[$i][13];
-            $paramInsertQuestion['version_id'] = $InsertNewVersion;
+            $paramInsertQuestion['version_id'] = $versionID;
             $paramInsertQuestion['question_sequence'] = $queSequence;
-            $paramInsertQuestion['type_sub_category'] = $quesLists[$i][0];
-            $paramInsertQuestion['is_actived'] = $quesLists[$i][1];
-            $paramInsertQuestion['duration_per_que'] = $quesLists[$i][2];
-            $paramInsertQuestion['example'] = $quesLists[$i][3];
-            $paramInsertQuestion['hint_text'] = $quesLists[$i][4];
-            $paramInsertQuestion['hint_img'] = $quesLists[$i][5];
+            $paramInsertQuestion['type_sub_category'] = $questions[$i];
+            $paramInsertQuestion['is_actived'] = $isActive;
+            $paramInsertQuestion['duration_per_que'] = $duration;
+            $paramInsertQuestion['example'] = $isExample;
+            $paramInsertQuestion['hint_text'] = $txtareaHint;
+            $paramInsertQuestion['hint_img'] = $imgHint;
             $paramInsertQuestion['narration_id'] = $narraId;
-            $paramInsertQuestion['question_text'] = $quesLists[$i][7];
-            $paramInsertQuestion['question_img'] = $quesLists[$i][8];
-            $paramInsertQuestion['random_character'] = $quesLists[$i][12];
-            $paramInsertQuestion['question_character'] = $queChar;
-            $paramInsertQuestion['type_answer'] = $quesLists[$i][9];
-            $paramInsertQuestion['random_answer'] = $quesLists[$i][10];
+            $paramInsertQuestion['question_text'] = $txtAreaQue;
+            $paramInsertQuestion['question_img'] = $imgQue;
+            $paramInsertQuestion['random_character'] = $randomCha;
+            $paramInsertQuestion['question_character'] = $queCharacter; 
+            $paramInsertQuestion['type_answer'] = $listTypeOfAnswer;
+            $paramInsertQuestion['random_answer'] = $randomAnswer;  
 
-            if($idSubCategory){
+            if($idSubCategory){ 
                 $QuestionId = $Questions->insertQuestions($paramInsertQuestion);
-                if(!$QuestionId)
+                if(!$QuestionId){
                     $result = false;
+                }
             }
-            // UPDATE ANSWER
-            if($quesLists[$i][9] === 'MULTIPLE_CHOICE'){
-                $indexChoices = array();
-                for ($j=0; $j < count($ansMultChoices); $j++) {
-                    if($ansMultChoices[$j][0] == $i){
-                        $indexChoices[] = $j;
-                    }
-                }
-                $ansSeq = 0;
-                for ($k=0; $k < count($indexChoices); $k++) {
-                    $indx = $indexChoices[$k];
-                    $ansSeq++;
-                    $paramInsertMultChoice['question_id'] = $QuestionId;
-                    $paramInsertMultChoice['ans_sequence'] = $ansSeq;
-                    $paramInsertMultChoice['choice_text'] = $ansMultChoices[$indx][1];
-                    $paramInsertMultChoice['choice_img'] = $ansMultChoices[$indx][2];
-                    if($ansMultChoices[$indx][3] === true)
-                        $correct = 1;
-                    else
-                        $correct = 0;
-                    $paramInsertMultChoice['correct_answer'] = $correct;
 
-                    if($idSubCategory){
-                        $ansChoiceId = $Questions->insertAnsMultChoice($paramInsertMultChoice);
-                        if(!$ansChoiceId){
-                            $result = false;
-                        }
-                    }
+            if($request->listTypeOfAnswer[$i] == "MULTIPLE_CHOICE"){
+                if(isset($request->multChoiceTxt[$i])){ 
+                $data_answer_text = $request->multChoiceTxt[$i];
+                $data_answer_img = !empty($request->multChoiceImg[$i])?$request->multChoiceImg[$i]:array();
+                $data_answer_correct = !empty($request->multChoiceCorrect[$i])?$request->multChoiceCorrect[$i]:array();  
+
+                $ansSeq = 1;
+                if($choose_version != "New"){
+                    $old_question_id = $request->question_id[$i];
+                }else{
+                    $old_question_id = $QuestionId;
                 }
-            }else if($quesLists[$i][9] === 'TEXT_SERIES'){
-                $ansSeq=0;
-                for ($j=0; $j < count($ansTextSeries); $j++) {
-                    if($ansTextSeries[$j][0] == $i){
-                        $ansSeq++;
+                DB::statement('SET FOREIGN_KEY_CHECKS=0');
+                DB::table('que_ans_choices')->where('QUESTION_ID', $old_question_id)->delete();
+                for ($j = 0; $j < count($data_answer_text); $j++) {
+                    $paramInsertMultChoice = [];
+                    $paramInsertMultChoice['question_id'] = $QuestionId;
+                    if(!empty($data_answer_img[$j])){ 
+                        $curDate = $current->year.
+                        ''.$current->month.''.$current->day.''
+                        .$current->hour.''.$current->minute.''.$current->second;
+                        $file = $request->file('multChoiceImg')[$i][$j];
+                       
+                        $imageName = $curDate.'_'.$file->getClientOriginalName(); 
+                        $file->move(public_path('uploads/answer_url/'), $imageName);
+                        $paramInsertMultChoice['choice_img'] = $imageName;
+                    }else{
+                        if($choose_version != "New"){
+                            $imageName = $request->multChoiceImgText[$i][$j]; 
+                            $paramInsertMultChoice['choice_img'] = $imageName;
+                        }
+                    } 
+                    if(!empty($data_answer_correct[$j])){ 
+                        if($data_answer_correct[$j] == "on"){
+                            $correct = 1;
+                        }else{
+                            $correct = 0;
+                        }
+                    }else{
+                         $correct = 0;
+                    }
+                    
+                    $paramInsertMultChoice['ans_sequence'] = $ansSeq;
+                    $paramInsertMultChoice['choice_text'] = $data_answer_text[$j]; 
+                    $paramInsertMultChoice['correct_answer'] = $correct; 
+                    if($idSubCategory){ 
+                        $ansChoiceId = $Questions->insertAnsMultChoice($paramInsertMultChoice);
+                    }
+                    $ansSeq++;
+                } 
+                }
+            }
+            if($request->listTypeOfAnswer[$i] == "TEXT_SERIES"){
+                if(!empty($request->txtSeriesChoices[$i])){
+                    if($choose_version != "New"){
+                        $old_question_id = $request->question_id[$i];
+                    }else{
+                        $old_question_id = $QuestionId;
+                    }
+                    $ansSeq = 1;
+                    DB::statement('SET FOREIGN_KEY_CHECKS=0');
+                    DB::table('que_ans_text_series')->where('QUESTION_ID', $old_question_id)->delete();
+                    $data_answer_text = $request->txtSeriesChoices[$i];
+                    for ($j = 0; $j < count($data_answer_text); $j++) {
                         $paramInsertTxtSeries['question_id'] = $QuestionId;
-                        $paramInsertTxtSeries['correct_text'] = $ansTextSeries[$j][1];
+                        $paramInsertTxtSeries['correct_text'] = $data_answer_text[$j];
                         $paramInsertTxtSeries['ans_sequence'] = $ansSeq;
 
-                        if($idSubCategory){
+                        if($idSubCategory){ 
+                            
                             $ansChoiceId = $Questions->insertAnsTxtSeries($paramInsertTxtSeries);
-                            if(!$ansChoiceId){
-                                $result = false;
-                            }
+                        }
+                        $ansSeq++;
+                    } 
+                }
+            } 
+            if($request->listTypeOfAnswer[$i] === 'MULTIPLE_GROUP'){
+                if(!empty($request->ansMultGroupImgSeq[$i])){
+                    $data_answer_seq = $request->ansMultGroupImgSeq[$i];
+                    $dataGroupImage = $request->ansMultGroupImg[$i];
+                    if($choose_version != "New"){
+                        $old_question_id = $request->question_id[$i];
+                    }else{
+                        $old_question_id = $QuestionId;
+                    }
+                    DB::statement('SET FOREIGN_KEY_CHECKS=0');
+                    DB::table('que_ans_group')->where('QUESTION_ID', $old_question_id)->delete();
+                    for ($j = 0; $j < count($data_answer_seq); $j++) { 
+
+                        $paramInsertMultGroup['question_id'] = $QuestionId;
+                        $paramInsertMultGroup['img_sequence'] = $data_answer_seq[$j];
+                        $paramInsertMultGroup['group_img'] = $dataGroupImage[$j];
+                        if($idSubCategory){
+                           
+                            $ansChoiceId = $Questions->insertAnsMultGroup($paramInsertMultGroup); 
                         }
                     }
                 }
-            }else if($quesLists[$i][9] === 'MULTIPLE_GROUP'){
-                $indexChoices = array();
-                for ($j=0; $j < count($ansMultGroups); $j++) {
-                    if($ansMultGroups[$j][0] == $i)
-                        $indexChoices[] = $j;
-                }
-                for ($k=0; $k < count($indexChoices); $k++) {
-                    $indx = $indexChoices[$k];
-                    $paramInsertMultGroup['question_id'] = $QuestionId;
-                    $paramInsertMultGroup['img_sequence'] = $ansMultGroups[$indx][1];
-                    $paramInsertMultGroup['group_img'] = $ansMultGroups[$indx][2];
-                    if($idSubCategory){
-                        $ansChoiceId = $Questions->insertAnsMultGroup($paramInsertMultGroup);
-                        if(!$ansChoiceId)
-                            $result = false;
-                    }
-                }
             }
-        }
+            $queSequence++; 
+        }   
+        $msg ="";  
+        if($result){
+            $msg = 'Sub category has been successfully added!';
+        }else{
+            $msg =  'Failed to create a new sub category!';
+        } 
 
-        if($result)
-            return 'Sub category has been successfully edited!';
-        else
-            return 'Failed to edit sub category!';
-
-        // return $result;
+        // die();
+        Session::put('result', $result);
+        Session::put('msg', $msg);
+        return redirect('/workspace#subcategory');
     }
 }

@@ -49,8 +49,13 @@
                                         <label class="label col col-2">Category Name</label>
                                             <div class="col col-8">
                                                 <label class="input">
+                                                    <?php 
+                                                    $disabled = "";
+                                                    if(!empty($valeInput['NORMA_ID'])){
+                                                        $disabled = "disabled";
+                                                    }?>
                                                     <i class="icon-append fa fa-search"></i>
-                                                    <input type="input" value="{{$valeInput['CATEGORY_NAME']}}" id="sub_category_name" name="sub_category_name" placeholder="Category Name" {{$isDisable}}>
+                                                    <input type="input" value="{{$valeInput['CATEGORY_NAME']}}" id="sub_category_name" name="sub_category_name" placeholder="Category Name" {{$disabled}}>
                                                     <input type="hidden" value="{{$valeInput['CATEGORY_ID']}}" name="category_id" id="category_id">
                                                 </label>
                                             </div>
@@ -293,9 +298,61 @@
             // Do not change code below
             errorPlacement : function(error, element) {
                 error.insertAfter(element.parent());
+            },
+
+            submitHandler : function(form) { 
+                var norma_id =  $('input[name="NORMA_ID"]').val();
+                if(norma_id.length ==0){
+
+                    $.ajax({
+                        type: "POST",
+                        url: "checkNameCategory",
+                        dataType : "json",
+                        cache : false,
+                        data: { 
+                                _token : $('input[name="_token"]').val(),
+                                CATEGORY_ID:$('#category_id').val()
+                             },
+                        success: function( msg ) {  
+                            if(msg.status){
+                                console.log("Success");
+                                form.submit();
+                            }else{ 
+                                dialogSuccess(msg.msg); 
+                                return false;
+                            } 
+                        },
+                        error: function (msg) { 
+                            dialogSuccess(msg.msg); 
+                                return false;
+                        }
+                    });   
+                }else{
+                    form.submit();
+                }
             }
         });
-
+        function dialogSuccess(responseText){
+            $('.message_dialog').html(responseText);
+            $('#dialog_simple').dialog({
+                autoOpen : false,
+                width : 600,
+                resizable : false,
+                modal : true,
+                title : "<div class='widget-header'><h4><i class='fa fa-warning'></i>Information</h4></div>",
+                buttons : [{
+                    html : "<i class='fa fa-check'></i>&nbsp; Ok",
+                    "class" : "btn btn-success",
+                    click : function() {
+                        $(this).dialog("close");
+                        if (responseText.contains("Success")) {
+                            location.href = "#normasetup";
+                        }
+                    }
+                } ]
+            });
+            $('#dialog_simple').dialog('open');
+        }
         $('#startdate').datepicker({
                 defaultDate: "+1d",
                 minDate:1,
@@ -350,37 +407,30 @@
             }
         });
 
-        var table_normatest = $('#table-normatest').DataTable({
-                    "sDom": "<'row'<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>>"+
-                        "<'row't>"+
-                        "<'row'<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>>",
-                    "oLanguage": {
-                        "sSearch": '<label class="input"><i class="icon-append fa fa-search"></i></label>'
-                    },
-                    "autoWidth" : true
-                });
+        var table_normatest = $('#table-normatest');
 
         var counter = 1;
 
         $('#add-row-normatest').on( 'click', function (e) {
              e.preventDefault();
-
-            table_normatest.row.add( [
-                '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline"> <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label>',
-                '<label class="input"><input type="text" name="raw_score[]" placeholder="Raw Score"> </label>',
-                '<label class="input"><input type="text" name="standard_score[]" placeholder="Standard Score"> </label>',
-                '{!!$aspectNameRawScoreList!!}'
-            ] ).draw( false );
+            var html='<tr>'+
+                '<td>'+
+                '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">'+ 
+                '<input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" /> <span></span> </label>'+
+                '</td>'+
+                '<td><label class="input"><input type="text" name="raw_score[]" placeholder="Raw Score"> </label></td>'+
+                '<td><label class="input"><input type="text" name="standard_score[]" placeholder="Standard Score"> </label></td>'+
+                '<td>{!!$aspectNameRawScoreList!!}</td></tr>';
+            table_normatest.append(html);
 
             counter++;
         });
 
         $('#delete-row-normatest').on( 'click', function (e) {
             e.preventDefault();
-            table_normatest
-            .row( $('input:checkbox:checked').parents('tr') )
-            .remove()
-            .draw();
+            table_normatest.find('input:checkbox:checked').parents('tr') 
+             
+            .remove() ;
         });
 
 

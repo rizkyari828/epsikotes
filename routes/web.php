@@ -23,9 +23,9 @@ Route::get('/testAPI', 'Dashboard\DasboardPage@index');
 
 Route::resource('/', 'Authenticate\LoginPage');
 Route::post('/processLogin', 'Authenticate\LoginPage@prosesLogin');
-Route::get('/processLogin', function () {
-    return redirect('/');
-});
+// Route::get('/processLogin', function () {
+//     return redirect('/');
+// });
 Route::get('/processLogout', 'Authenticate\LoginPage@prosesLogout');
 Route::post('/checkLogin', 'Authenticate\LoginPage@checkSession');
 
@@ -49,7 +49,8 @@ Route::post('/getExistsUserId', 'Peopleentermaintenance\PeopleentermaintenancePa
 Route::get('/viewPerson/{personId}/{action}/{menuType}', 'Peopleentermaintenance\PeopleentermaintenancePageAdd@index');
 Route::post('/resetPassword', 'Peopleentermaintenance\PeopleentermaintenancePageAdd@processResetPassword');
 //test box html
-Route::get('/testbox', 'Peopleentermaintenance\PeopleentermaintenancePage@testBox');
+//Route::get('/testbox', 'Peopleentermaintenance\PeopleentermaintenancePage@testBox');
+Route::put('/testbox', 'Peopleentermaintenance\PeopleentermaintenancePage@testBox');
 
 /*end route basic setup*/
 
@@ -89,6 +90,8 @@ Route::get('/categoryValidate', 'Questionmanagement\CategoryAddPage@index');
 Route::post('/getCategoryByVersion', 'Questionmanagement\CategoryAddPage@getCategoryByVersion');
 //Route::post('/gategoryProcess', 'Questionmanagement\CategoryAddPage@processCategory');
 Route::post('/getExistsCategoryName', 'Questionmanagement\CategoryAddPage@getExistsCategoryName');
+
+Route::post('/categorydelete/{normaId}', 'Questionmanagement\CategoryPage@delete');
 /*end route Category Setup*/
 
 /*start route Jobmapping Setup*/
@@ -138,10 +141,13 @@ Route::get('viewQuestion/{id}','SubCategoryController@viewQuestion');
 Route::get('getViewQuestion/{id}','SubCategoryController@getViewQuestion');
 Route::get('viewAnswer/{id}','SubCategoryController@viewAnswer');
 Route::get('getViewAnswer/{id}/{type_answer}','SubCategoryController@getViewAnswer');
-Route::get('addsubcategory','SubCategoryController@addSubCategory');
+Route::get('addsubcategory','SubCategoryController@addSubCategory'); 
 //Route::post('getSubCategories', 'SubCategoryController@subCategories');
-Route::post('addSubCate', 'SubCategoryController@saveAddSubCategory');
+Route::post('saveAddSubCategory', 'SubCategoryController@saveAddSubCategory');
 Route::get('editsubcategory/{id}','SubCategoryController@editSubCategory');
+Route::post('saveEditSubCategory','SubCategoryController@saveEditSubCategory');
+Route::post('checkNameSubCategory','SubCategoryController@checkNameSubCategory');
+Route::post('checkNameCategory','Norma\NormaAddPage@checkNameCategory');
 /*end route SubCategory Setup*/
 
 

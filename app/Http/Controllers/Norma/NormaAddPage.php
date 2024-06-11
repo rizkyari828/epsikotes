@@ -155,6 +155,24 @@ class NormaAddPage extends Controller
 
     }
 
+     public function checkNameCategory(Request $request){
+        $response = array();
+        $response['status'] = false;
+        $response['msg'] = "";
+        $response['data'] = array();
+        $CATEGORY_ID = $request->CATEGORY_ID;
+        $data = DB::table('psy_norma')->where("CATEGORY_ID",$CATEGORY_ID)->get();  
+        if(count($data) >= 1){
+            $response['msg'] = "Category Name is Exist";
+        }else{
+            $response['status']  = true; 
+            $response['msg'] = "";
+        }
+
+
+        echo json_encode($response);
+    }
+
     public function lookupPsychogramAspect(){
 
         $this->middleware('auth');
@@ -214,7 +232,7 @@ class NormaAddPage extends Controller
             foreach ($param['PSYCHOGRAM_ASPECT'] as $key => $value) {
                 $paramInsertNormaAspect['VERSION_ID'] = $idNormaVersion;
                 $paramInsertNormaAspect['PSYCHOGRAM_ASPECT'] = $param['PSYCHOGRAM_ASPECT'][$key];
-                $paramInsertNormaAspect['DEFINITION'] = $param['DEFINITION'][$key];
+                $paramInsertNormaAspect['DEFINITION'] = (isset($param['DEFINITION'][$key])?$param['DEFINITION'][$key]:"");
 
                 $norma->insertNormaAspect($paramInsertNormaAspect);
             }
@@ -228,7 +246,7 @@ class NormaAddPage extends Controller
             $paramFilter['isPast'] = $isPast->isEmpty() ? 0 : 1;
             $paramFilter['isCurrent'] = $isCurrent->isEmpty() ? 0 : 1;
 
-            if(($param['version_number'] == 'New') &&  $paramFilter['isCurrent']){
+            if(($param['version_number'] == 'New')){
 
                 $paramFilter['normaId'] = $param['NORMA_ID'];
                 $paramFilter['versionNumber'] = $maxVersionNumber[0]->version_number;
@@ -269,8 +287,9 @@ class NormaAddPage extends Controller
                     $norma->insertNormaAspect($paramInsertNormaAspect);
                 }
             }else{
+
                 $paramFilter['normaId'] = $param['NORMA_ID'];
-                $paramFilter['versionNumber'] = $param['version_number'];
+                $paramFilter['versionNumber'] = $maxVersionNumber[0]->version_number;
 
                 $dataNorma = $norma->getNormaVersion($paramFilter);
                 $paramFilter['value']['DATE_TO'] =  isset($param['date_to']) ? date( "Y-m-d", strtotime( $param['date_to'] ) ) : date( "Y-m-d", strtotime( '4712-12-31' ) );
@@ -340,13 +359,14 @@ class NormaAddPage extends Controller
         foreach ($norma->getVersionNumber($paramFilter) as $indexNorma => $rowNorma ){
             if($paramFilter['countNorma'] == 1 ){
                 $versionNumber .= '<option value="'.$rowNorma->VERSION_NUMBER.'" selected>'.$rowNorma->VERSION_NUMBER.'</option>';
-                if($paramFilter['isCurrent'] || $paramFilter['isPast']  ){
+                if($paramFilter['isFuture'] || $paramFilter['isPast']  ){
                     $versionNumber .= '<option value=New>New</option>';
                 }
-            }else{
-
+            }else{ 
                 if($paramFilter['isFuture'] && ($maxVersionNumber[0]->version_number == $rowNorma->VERSION_NUMBER)){
                     $versionNumber .= '<option value="'.$rowNorma->VERSION_NUMBER.'" selected>'.$rowNorma->VERSION_NUMBER.'</option>';
+                    
+                    $versionNumber .= '<option value=New>New</option>';
                 }else if($paramFilter['isCurrent'] && ($maxVersionNumber[0]->version_number == $rowNorma->VERSION_NUMBER)){
                     $versionNumber .= '<option value="'.$rowNorma->VERSION_NUMBER.'" selected>'.$rowNorma->VERSION_NUMBER.'</option>';
                     $versionNumber .= '<option value=New>New</option>';

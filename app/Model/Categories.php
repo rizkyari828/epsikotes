@@ -25,7 +25,7 @@ class Categories extends Model
         $categories = DB::table('que_categories')
         ->join('que_category_versions','que_category_versions.category_id','=','que_categories.category_id')
         ->whereRaw('upper(que_categories.category_name) like upper(\'%'.$categoryName.'%\')')
-        ->whereRaw('date(sysdate()) between que_category_versions.date_from and que_category_versions.date_to')
+        // ->whereRaw('date(sysdate()) between que_category_versions.date_from and que_category_versions.date_to')
         ->select('que_categories.category_name','que_categories.category_id','que_categories.last_updated_by','que_categories.last_update_date')
         ->get();
 
@@ -121,33 +121,25 @@ class Categories extends Model
         return $data;
     }
 
-    public function getAllCategory($paramFilter){
-
-        $categories = /*DB::table('psi.que_sub_categories')
-        ->join('psi.que_sub_category_versions','que_sub_categories.sub_category_id','=','que_sub_category_versions.sub_category_id')
-       // ->whereBetween(date("Y-m-d"), ['que_sub_category_versions.date_from','que_sub_category_versions.date_to'])
-        ->whereRaw('date(sysdate()) between que_sub_category_versions.date_from and que_sub_category_versions.date_to')
-        ->whereRaw('upper(que_sub_categories.sub_category_name) like upper(\'%'.$categoryName.'%\')')
-        ->select('que_sub_categories.sub_category_name','que_sub_categories.sub_category_id','que_sub_categories.last_updated_by','que_sub_categories.last_update_date')
-        ->get();*/
+    public function getAllCategory($paramFilter){ 
         $where = 'where que_category_versions.version_id in (select MAX(que_category_versions.version_id) as version_id from que_category_versions group by que_category_versions.category_id) ';
 
         if(isset($paramFilter)){
 
             if(($paramFilter['categoryId'] != null) || ($paramFilter['subCategoryId'] != null) || ($paramFilter['isRandomCategory'] != 0) || ($paramFilter['onlySubCategory'] != 0) ){
-                    $where .= 'and 1=1 ';
+                    // $where .= 'and 1=1 ';
             }
 
             if(isset($paramFilter['categoryId'])){
                 if($paramFilter['categoryId'] != null)
                 {
-                    $where .= 'and que_categories.category_id = '.$paramFilter['categoryId'];
+                    $where .= ' and que_categories.category_id = '.$paramFilter['categoryId'];
                 }
             }
             if(isset($paramFilter['subCategoryId'])){
                 if($paramFilter['subCategoryId'] != null)
                 {
-                    $where .= 'and que_sub_category_list.sub_category_id = '.$paramFilter['subCategoryId'];
+                    $where .= ' and que_sub_category_list.SUB_CATEGORY_ID = '.$paramFilter['subCategoryId'];
 
                 }
             }
@@ -155,7 +147,7 @@ class Categories extends Model
                 if($paramFilter['isRandomCategory'] != 0)
                 {
                         $paramFilter['isRandomCategory'] = $paramFilter['isRandomCategory'] == 2 ? 0 : 1;
-                        $where .= 'and que_category_versions.random_sub_category = '.$paramFilter['isRandomCategory'];
+                        $where .= ' and que_category_versions.random_sub_category = '.$paramFilter['isRandomCategory'];
 
                 }
             }
@@ -163,37 +155,10 @@ class Categories extends Model
                 if($paramFilter['onlySubCategory'] != 0)
                 {
                         $paramFilter['onlySubCategory'] = $paramFilter['onlySubCategory'] == 2 ? 0 : 1;
-                        $where .= 'and que_category_versions.get_one_sub_category = '.$paramFilter['onlySubCategory'];
+                        $where .= ' and que_category_versions.get_one_sub_category = '.$paramFilter['onlySubCategory'];
                 }
             }
-        }
-
-        /*
-        $categories = DB::select('select
-                            DISTINCT
-                            que_categories.category_id,
-                            que_categories.category_name,
-                            que_category_versions.RANDOM_SUB_CATEGORY,
-                            que_category_versions.GET_ONE_SUB_CATEGORY,
-                            count(que_sub_category_list.list_id) as total_sub_category,
-                            que_category_versions.last_updated_by,
-                            que_category_versions.last_update_date
-                        from   que_categories
-                        left join que_category_versions on que_categories.category_id = que_category_versions.category_id
-                        left join que_sub_category_list on que_category_versions.version_id = que_sub_category_list.version_id
-                                                     '.$where.'
-                        group by
-                            que_categories.category_id,
-                            que_categories.category_name,
-                            que_category_versions.RANDOM_SUB_CATEGORY,
-                            que_category_versions.GET_ONE_SUB_CATEGORY,
-                            que_sub_category_list.version_id,
-                            que_category_versions.last_updated_by,
-                            que_category_versions.last_update_date
-                        order by  que_category_versions.last_update_date desc
-
-                         ');
-                         */
+        }  
         $categories = DB::select('
                          select
                             que_categories.category_id,
@@ -207,13 +172,12 @@ class Categories extends Model
                             que_category_versions.last_updated_by,
                             que_category_versions.last_update_date
                         from   que_categories
-                        left join que_category_versions on que_categories.category_id = que_category_versions.category_id
+                          left join que_category_versions on que_categories.category_id = que_category_versions.category_id
+                          left join que_sub_category_list on que_category_versions.VERSION_ID = que_sub_category_list.VERSION_ID
                         '.$where.'
                         order by  que_category_versions.last_update_date desc
                      ');
-
-                               //     date(sysdate()) between que_category_versions.date_from and que_category_versions.date_to
-
+ 
         return $categories;
 
     }

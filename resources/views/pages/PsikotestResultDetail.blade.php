@@ -41,7 +41,7 @@
 
                         <form action="" id="order-form" class="smart-form" novalidate="novalidate">
                             <header>
-                                applicant 
+                                applicant
                             </header>
                             <fieldset>
                                 <div class="row">
@@ -136,8 +136,9 @@
                                                         <th width="15%"> inductive reasoning </th>
                                                         <th width="15%"> decductive reasoning </th>
                                                         <th width="15%"> reading comp </th>
-                                                        <th width="15%"> spatial ability </th>
+                                                        
                                                         <th width="15%"> arithmatic ability </th>
+                                                        <th width="15%"> spatial ability </th>
                                                         <th width="15%"> memory </th>
                                                         <th width="15%"> total score </th>
                                                     </tr>

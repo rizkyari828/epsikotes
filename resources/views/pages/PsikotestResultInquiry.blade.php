@@ -385,7 +385,8 @@
                         "type": "POST",
                         "data":{ _token : $('input[name="_token"]').val() },
                         "dataType": "JSON",
-                        "url": "getResultAll" // ajax source
+                       // "url": "getResultAll" // ajax source getResultByParameter
+                        "url": "getResultByParameter"
                     },
                     "order": [
                         [1, "asc"]

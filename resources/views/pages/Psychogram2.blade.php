@@ -119,8 +119,7 @@
 							<h5>Definisi</h5>
 						</td>
 						<td colspan="20"  style="width: 420px; text-align: left;">
-							<p>kemampuan seseorang untuk menarik kesimpulan umum berdasarkan sejumlah hal-hal yang
-spesifik</p>
+							<p><?php echo $categoriesResult['definition'][0];?></p>
 						</td>
 					</tr>
 					<tr>
@@ -159,7 +158,7 @@ spesifik</p>
 							<h5>Definisi</h5>
 						</td>
 						<td colspan="20"  style="width: 420px; text-align: left;">
-							<p>kemampuan membuat kesimpulan dari suatu hukum/dalil/prinsip yang umum kepada suatu keadaan yang khusus</p>
+							<p><?php echo $categoriesResult['definition'][1];?></p>
 						</td>
 					</tr>
 					<tr>
@@ -198,8 +197,7 @@ spesifik</p>
 							<h5>Definisi</h5>
 						</td>
 						<td colspan="20"  style="width: 420px; text-align: left;">
-							<p>kemampuan untuk memahami, melihat hubungan antar kata, dan menggunakan kata-
-kata yang meliputi pemahaman makna kata secara tepat, idiom, dan struktur bahasa</p>
+							<p><?php echo $categoriesResult['definition'][2];?></p>
 						</td>
 					</tr>
 					<tr>
@@ -238,7 +236,7 @@ kata yang meliputi pemahaman makna kata secara tepat, idiom, dan struktur bahasa
 							<h5>Definisi</h5>
 						</td>
 						<td colspan="20" style="width: 420px; text-align: left;" >
-							<p>kecepatan dan akurasi dalam mengerjakan tugas-tugas berhitung sederhana yang meliputi penjumlahan, pengurangan, pembagian dan perkalian</p>
+							<p><?php echo $categoriesResult['definition'][3];?></p>
 						</td>
 					</tr>
 					<tr>
@@ -277,7 +275,7 @@ kata yang meliputi pemahaman makna kata secara tepat, idiom, dan struktur bahasa
 							<h5>Definisi</h5>
 						</td>
 						<td colspan="20"  style="width: 420px; text-align: left;">
-							<p>kemampuan menerima, mengolah, memaknai dan mentransformasi informasi keruangan dalam bentuk-bentuk visual</p>
+							<p><?php echo $categoriesResult['definition'][4];?></p>
 						</td>
 					</tr>
 					<tr>
@@ -316,7 +314,7 @@ kata yang meliputi pemahaman makna kata secara tepat, idiom, dan struktur bahasa
 							<h5>Definisi</h5>
 						</td>
 						<td colspan="20" style="width: 420px; text-align: left;" >
-							<p>kemampuan untuk menangkap dan mengingat secara langsung informasi/instruksi sederhana yang disampaikan orang lain</p>
+							<p><?php echo $categoriesResult['definition'][5];?></p>
 						</td>
 					</tr>
 				</tbody>

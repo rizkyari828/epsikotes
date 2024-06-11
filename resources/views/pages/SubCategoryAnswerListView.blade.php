@@ -28,7 +28,11 @@
                             <div class="form-group"> 
                                 <label class="col-md-3 control-label">Question Image </label>
                                 <div class="col-md-8"> 
-                                    <?php echo $subCat['QUESTION_IMG'];?>
+                                    <?php if(!empty($subCat['QUESTION_IMG'])){?>
+                                    <img width='80px' 
+                                    src='<?php echo  url("uploads/question_url/".$subCat['QUESTION_IMG']);?> '>
+                                    <?php }?>
+                                   
                                 </div>
                             </div> 
                             <div class="form-group"> 

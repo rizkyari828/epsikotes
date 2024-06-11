@@ -9,6 +9,7 @@ use App\Model\Menus;
 use App\Model\Role;
 use App\Model\PersonalInformations;
 use Carbon\Carbon;
+use DB;
 
 
 class PeopleentermaintenancePageAdd extends Controller
@@ -420,27 +421,45 @@ class PeopleentermaintenancePageAdd extends Controller
 
     public function processResetPassword(Request $request){
 
-        $peopleEnter = new PersonalInformations();
-
-        $this->middleware('auth');
-        $param = $request->all();
-        unset($param['_token']);        
-
-        foreach ($param['passwordPeople'] as $key => $value) {
-            $valuePassword = explode('/',$value);
-            $paramInsert['PERSON_ID'] = $valuePassword[0];
-            $paramInsert['PASSWORD'] = Crypt::encryptString($this->random_strings(8));
-            $paramInsert['CONFIRM_PASSWORD'] = $paramInsert['PASSWORD'];
-            $paramInsert['CREATED_BY'] = $request->session()->get('user.username');
-            $paramInsert['CREATION_DATE'] = date("Y-m-d h:i:s");
-            $paramInsert['LAST_UPDATED_BY'] = $request->session()->get('user.username');
-            $paramInsert['LAST_UPDATE_DATE'] = date("Y-m-d h:i:s");
-            $peopleEnter->updatePeopleEnter($paramInsert);
+        $id  = $_POST['nilai'];
+        $sts = $_POST['status'];
+       
+        if ($sts == "0"){
+            $applicant = DB::table('mst_applicant')->where('applicant_id',$id)->first();
+            $nama      =  $applicant->FULL_NAME;
+            $applid    =  $applicant->APPLICANT_ID;
+            $balikin = array($nama , $applid);
+            $balikin = json_encode($balikin);
+            echo $balikin ;
+            //echo $sts ;
+        }else {
+            DB::table('mst_applicant')->where('applicant_id',$id)->delete();
+            echo "hapus";
 
         }
+        die();
+
+        // $peopleEnter = new PersonalInformations();
+
+        // $this->middleware('auth');
+        // $param = $request->all();
+        // unset($param['_token']);        
+
+        // foreach ($param['passwordPeople'] as $key => $value) {
+        //     $valuePassword = explode('/',$value);
+        //     $paramInsert['PERSON_ID'] = $valuePassword[0];
+        //     $paramInsert['PASSWORD'] = Crypt::encryptString($this->random_strings(8));
+        //     $paramInsert['CONFIRM_PASSWORD'] = $paramInsert['PASSWORD'];
+        //     $paramInsert['CREATED_BY'] = $request->session()->get('user.username');
+        //     $paramInsert['CREATION_DATE'] = date("Y-m-d h:i:s");
+        //     $paramInsert['LAST_UPDATED_BY'] = $request->session()->get('user.username');
+        //     $paramInsert['LAST_UPDATE_DATE'] = date("Y-m-d h:i:s");
+        //     $peopleEnter->updatePeopleEnter($paramInsert);
+
+        // }
 
 
-        return redirect('/workspace#peopleenter');
+        // return redirect('/workspace#peopleenter');
 
     }
 

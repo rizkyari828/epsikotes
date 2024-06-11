@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Model\Applicant;
 use App\Model\ScheduleHistories;
 use App\Model\Schedules;
+
+use App\Model\Jobmapping;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -45,26 +47,33 @@ class GaweController extends Controller
         }
         $applicant['CREATED_BY'] = 'API';
         $applicant['LAST_UPDATED_BY'] = 'API';
+	$applicant['CABANG_ID'] = $kandidat['network_id'];
         $applicant->save();
         $schedule = new Schedules();
+	$schedule->SCHEDULE_GAWE_ID = $kandidat['id_schedule'];
         $schedule->CANDIDATE_ID = $applicant->CANDIDATE_ID;
-        $schedule->CREATED_BY = 'API';
-        $schedule->CREATION_DATE = now()->format('Y-M-d H:m:s');
+        //$schedule->CREATED_BY = 'API';
+        $schedule->CREATED_BY = $kandidat['sim_id'];
+        $schedule->CREATION_DATE = date('Y-m-d H:m:s');
         $schedule->LAST_UPDATED_BY = 'API';
-        $schedule->LAST_UPDATE_DATE = now()->format('Y-M-d H:m:s');
+        $schedule->LAST_UPDATE_DATE = date('Y-m-d H:m:s');
         $schedule->save();
         $history = new ScheduleHistories();
         $history->SCHEDULE_ID = $schedule->id;
-        $history->JOB_MAPPING_ID = 1;
-        $history->JOB_MAPPING_VERSION_ID = 1;
-        $history->PLAN_START_DATE = $kandidat['plan_start_date'];
-        $history->PLAN_END_DATE = $kandidat['plan_end_date'];
+        $history->JOB_MAPPING_ID = $kandidat['job_id'];
+
+        $Jobmapping = new Jobmapping();
+        $maxVersionNumber = $Jobmapping->getMaxVersion($kandidat['job_id']); 
+
+        $history->JOB_MAPPING_VERSION_ID = $maxVersionNumber[0]->version_number;
+        $history->PLAN_START_DATE =  date('Y-m-d',strtotime($kandidat['plan_start_date']));
+        $history->PLAN_END_DATE = date('Y-m-d',strtotime($kandidat['plan_end_date']));
         $history->RESCHEDULE_SEQ = 0;
         $history->TEST_STATUS = 'NOT_ATTEMPT';
-        $history->CREATED_BY = 'ADMIN';
-        $history->CREATION_DATE = now()->format('Y-M-d H:m:s');
-        $history->LAST_UPDATED_BY = 'ADMIN';
-        $history->LAST_UPDATE_DATE = now()->format('Y-M-d H:m:s');
+        $history->CREATED_BY = 'API';
+        $history->CREATION_DATE = date('Y-m-d H:m:s');
+        $history->LAST_UPDATED_BY = 'API';
+        $history->LAST_UPDATE_DATE = date('Y-m-d H:m:s');
         $history->save();
         return $this->successResponse("Data received successfully", $applicant);
     }
@@ -83,7 +92,7 @@ class GaweController extends Controller
         return response()->json([
             "kdStatus" => 0,
             "ketStatus" => $successMessage,
-            "url" => env('APPLICANT_URL') . "/auth/" . base64_encode($data['APPLICANT_ID']),
+            "url" => "http://epsikotest.gawe.id/auth/" . base64_encode($data['APPLICANT_ID']),
             "data" => $data,
             "responseDate" => Carbon::now()->toIso8601String()
         ], 200);
